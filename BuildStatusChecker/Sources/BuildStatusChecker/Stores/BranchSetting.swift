@@ -10,8 +10,8 @@ public enum BranchSetting: String {
 extension BranchSetting {
     var defaultValue: String {
         switch self {
-            case .developBranchName: return "master"
-            case .masterBranchName: return "develop"
+            case .developBranchName: return "develop"
+            case .masterBranchName: return "master"
             case .releaseBranchPrefix: return "release/"
             case .hotfixBranchPrefix: return "hotfix/"
             case .featureBranchPrefix: return "feature/"
