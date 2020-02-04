@@ -1,39 +1,30 @@
-//
-//  AppDelegate.swift
-//  Lumina
-//
-//  Created by Engel, Stefan on 04.02.20.
-//  Copyright © 2020 Stefan Engel Software Development. All rights reserved.
-//
-
 import Cocoa
 import SwiftUI
+import BuildStatusChecker
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    var window: NSWindow!
-
+    var appCoordinator: AppCoordinator?
+    var statusItemCoordinator: StatusItemCoordinator?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView()
+        let model = BuildMonitorModel()
 
-        // Create the window and set the content view. 
-        window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        window.center()
-        window.setFrameAutosaveName("Main Window")
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(nil)
+        statusItemCoordinator = StatusItemCoordinator()
+        statusItemCoordinator?.start(model: model)
+
+        appCoordinator = AppCoordinator(model: model)
+        appCoordinator?.start()
+    }
+
+    @IBAction func refreshView(_ sender: Any) {
+        appCoordinator?.updateBuildMonitor()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
     }
 
-
+    @IBAction func openPreferences(_ sender: Any) {
+        appCoordinator?.openPreferences()
+    }
 }
-
