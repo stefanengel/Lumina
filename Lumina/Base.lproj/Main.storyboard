@@ -58,6 +58,28 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Edit" id="e5r-IK-fe5" userLabel="Edit">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Edit" id="kTD-fq-khh">
+                                    <items>
+                                        <menuItem title="Cut" keyEquivalent="x" id="cSL-hI-Y7V">
+                                            <connections>
+                                                <action selector="cut:" target="Ady-hI-5gd" id="agj-jh-QE4"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Copy" keyEquivalent="c" id="Asz-6X-i1h">
+                                            <connections>
+                                                <action selector="copy:" target="Ady-hI-5gd" id="bxn-Ak-kz5"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Paste" keyEquivalent="v" id="t0O-Ro-yJA">
+                                            <connections>
+                                                <action selector="paste:" target="Ady-hI-5gd" id="Jms-NX-Lgc"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="View" id="kpO-dC-Cnl">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="View" systemMenu="apple" id="clh-cm-wsI">
