@@ -2,12 +2,6 @@ import Foundation
 import Combine
 import os.log
 
-public enum BuildFetcherError: Error {
-    case noNetworkConnection
-    case requestFailed(message: String)
-    case incompleteProviderConfiguration
-}
-
 public class BitriseBuildFetcher {
     let settings: SettingsStoreProtocol = SettingsStore()
 
