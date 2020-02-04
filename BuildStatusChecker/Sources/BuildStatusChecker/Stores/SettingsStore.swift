@@ -25,7 +25,13 @@ public class SettingsStore: SettingsStoreProtocol {
     }
 
     public func readUpdateInterval() -> Int {
-        defaults.integer(forKey: updateIntervalKey)
+        let interval = defaults.integer(forKey: updateIntervalKey)
+
+        guard interval > 0 else {
+            return 60
+        }
+
+        return interval
     }
 
     public func store(updateInterval: Int) {
