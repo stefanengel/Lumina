@@ -1,7 +1,8 @@
 import AppKit
 import SwiftUI
+import BuildStatusChecker
 
-class AppCoordinator {
+class AppCoordinator: NSObject {
     private var buildMonitorWindow: NSWindow?
     private var preferencesWindow: NSWindow?
 
@@ -9,6 +10,13 @@ class AppCoordinator {
 
     init(model: BuildMonitorModel) {
         self.buildMonitorModel = model
+        super.init()
+
+        model.register(observer: self)
+    }
+
+    deinit {
+        buildMonitorModel.unregister(observer: self)
     }
 }
 
@@ -25,6 +33,8 @@ extension AppCoordinator {
         buildMonitorWindow?.setFrameAutosaveName("Main Window")
         buildMonitorWindow?.contentView = NSHostingView(rootView: contentView)
         buildMonitorWindow?.makeKeyAndOrderFront(nil)
+
+        buildMonitorModel.startUpdating()
     }
 }
 
@@ -47,12 +57,38 @@ extension AppCoordinator {
                 backing: .buffered, defer: false)
             preferencesWindow.title = "Preferences"
             preferencesWindow.center()
-            preferencesWindow.isReleasedWhenClosed = true
             preferencesWindow.contentView = NSHostingView(rootView: contentView)
             preferencesWindow.isReleasedWhenClosed = false
+            preferencesWindow.delegate = self
             self.preferencesWindow = preferencesWindow
-        }
 
-        preferencesWindow?.makeKeyAndOrderFront(nil)
+            preferencesWindow.makeKeyAndOrderFront(nil)
+        }
+    }
+}
+
+// MARK: - Checking if settings are incomplete
+extension AppCoordinator: ModelObserver {
+    func startetLoading() {
+    }
+
+    func stoppedLoading() {
+    }
+
+    func updateFailed(error: BuildFetcherError) {
+        switch error {
+            case .incompleteProviderConfiguration: openPreferences()
+            default: break
+        }
+    }
+
+    func update(builds: Builds) {
+    }
+}
+
+// MARK: - NSWindowDelegate (used for preferencesWindow)
+extension AppCoordinator: NSWindowDelegate {
+    func windowWillClose(_ notification: Notification) {
+        preferencesWindow = nil
     }
 }
