@@ -33,6 +33,8 @@ extension AppCoordinator {
         buildMonitorWindow?.setFrameAutosaveName("Main Window")
         buildMonitorWindow?.contentView = NSHostingView(rootView: contentView)
         buildMonitorWindow?.makeKeyAndOrderFront(nil)
+
+        buildMonitorModel.startUpdating()
     }
 }
 
