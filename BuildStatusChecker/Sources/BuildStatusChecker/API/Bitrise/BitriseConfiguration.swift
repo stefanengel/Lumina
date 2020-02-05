@@ -12,7 +12,7 @@ class BitriseConfiguration {
     }()
 
     public var isComplete: Bool {
-         return [authToken, baseUrl, appSlug]
+         return ![authToken, baseUrl, appSlug]
             .map { $0.isEmpty }
             .contains(true)
     }
