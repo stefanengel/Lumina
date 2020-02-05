@@ -16,7 +16,7 @@ class StatusItemView: NSObject {
         viewModel.viewDelegate = self
 
         statusItem.button?.title = viewModel.title
-        statusItem.button?.image =  NSImage(named:NSImage.Name("StatusBarButtonImage"))
+        statusItem.button?.image =  NSImage(imageLiteralResourceName: "StatusBarButtonImage")
         statusItem.menu = NSMenu()
         statusItem.menu?.addItem(withTitle: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
     }
