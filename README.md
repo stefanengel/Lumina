@@ -5,7 +5,7 @@ Your branches should follow the gitflow pattern but the specific names can be co
 
 ## Functionality
 
-Lumina provides a window with the status of all your builds that can be used as a status board. It also provides a status bar icon that lists all your builds, so you do not loase any screen real estate.
+Lumina provides a window with the status of all your builds that can be used as a status board. It also provides a status bar icon that lists all your builds, so you do not loose any screen real estate.
 
 Clicking on any build will open it in your browser.
 
