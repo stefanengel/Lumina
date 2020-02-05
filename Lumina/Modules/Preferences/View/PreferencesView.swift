@@ -4,6 +4,10 @@ struct PreferencesView: View {
     @ObservedObject private var viewModel: PreferencesViewModel
     @State var selectedIgnorePattern: IgnorePattern? = nil
 
+    @State var sliderValue = 60.0
+    var minSliderValue = 60.0
+    var maxSliderValue = 600.00
+
     init(viewModel: PreferencesViewModel) {
         self.viewModel = viewModel
     }
@@ -14,8 +18,6 @@ struct PreferencesView: View {
             VStack {
                 HStack(alignment: .center) {
                     VStack(alignment: .trailing, spacing: 10.0) {
-                        Text("Update interval:")
-                            .frame(maxHeight: .infinity)
                         Text("Master branch name:")
                             .frame(maxHeight: .infinity)
                         Text("Develop branch name:")
@@ -27,10 +29,9 @@ struct PreferencesView: View {
                         Text("Hotfix branch prefix:")
                             .frame(maxHeight: .infinity)
                         Text("Hide feature branches including:")
-                        .frame(maxHeight: .infinity)
+                            .frame(maxHeight: .infinity)
                     }
                     VStack(spacing: 10.0) {
-                        Stepper("\(viewModel.updateIntervalInSeconds) seconds", value: $viewModel.updateIntervalInSeconds, in: 60...6000)
                         TextField("master", text: $viewModel.masterBranchName)
                         TextField("develop", text: $viewModel.developBranchName)
                         TextField("feature/", text: $viewModel.featureBranchPrefix)
@@ -43,6 +44,17 @@ struct PreferencesView: View {
                 .fixedSize(horizontal: false, vertical: true)
 
                 VStack(alignment: HorizontalAlignment.leading) {
+                    HStack {
+                        VStack {
+                            Text("Update interval:")
+                                .frame(maxHeight: .infinity)
+                        }
+                        VStack {
+                            Stepper("\(viewModel.updateIntervalInSeconds) seconds", value: $viewModel.updateIntervalInSeconds, in: 60...6000)
+                        }
+                    }
+                    .padding(.bottom, 10.0)
+                    .fixedSize(horizontal: false, vertical: true)
                     HStack {
                         Text("Ignore branches containing:")
                     }
@@ -80,10 +92,11 @@ struct PreferencesView: View {
                 Button(action: {
                     self.viewModel.saveSettings()
                 }) {
-                    Text("Save")
+                    Text("Apply")
                 }
                 .padding()
             }
+            .padding(.top, 10.0)
             .tabItem({ Text("Settings") })
             .tag(1)
 
@@ -114,7 +127,7 @@ struct PreferencesView: View {
                 Button(action: {
                     self.viewModel.saveSettings()
                 }) {
-                    Text("Save")
+                    Text("Apply")
                 }
                 .padding()
             }
