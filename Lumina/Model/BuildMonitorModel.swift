@@ -5,8 +5,11 @@ class BuildMonitorModel {
     private var buildFetcher = BuildFetcherFactory.createBuildFetcher()
     private var updateTimer: Timer?
     private var observers: [ModelObserver] = []
+}
 
-    init() {
+// MARK: - Start update mechanism
+extension BuildMonitorModel {
+    func startUpdating() {
         fetchBuilds()
 
         let interval = TimeInterval(SettingsStore().readUpdateInterval())
