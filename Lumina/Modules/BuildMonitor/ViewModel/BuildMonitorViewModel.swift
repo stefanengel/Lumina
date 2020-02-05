@@ -46,7 +46,7 @@ extension BuildMonitorViewModel {
 
 // MARK - Model observer
 extension BuildMonitorViewModel: ModelObserver {
-    func startetLoading() {
+    func startedLoading() {
         DispatchQueue.main.async {
             self.isLoading = true
         }

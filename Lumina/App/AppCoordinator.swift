@@ -69,7 +69,7 @@ extension AppCoordinator {
 
 // MARK: - Checking if settings are incomplete
 extension AppCoordinator: ModelObserver {
-    func startetLoading() {
+    func startedLoading() {
     }
 
     func stoppedLoading() {
