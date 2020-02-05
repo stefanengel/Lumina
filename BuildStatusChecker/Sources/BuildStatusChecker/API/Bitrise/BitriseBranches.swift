@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 public struct BitriseBranches: Codable {
     public let data: [String]
@@ -22,7 +23,12 @@ extension BitriseBranches {
 extension BitriseBranches {
     func hasVersionPostfix(branchName: String) -> Bool {
         let range = NSRange(location: 0, length: branchName.utf16.count)
-        let regex = try! NSRegularExpression(pattern: "[a-zA-Z]/\\d+.\\d+.\\d+")
-        return regex.firstMatch(in: branchName, options: [], range: range) != nil
+        do {
+            let regex = try NSRegularExpression(pattern: "[a-zA-Z]/\\d+.\\d+.\\d+")
+            return regex.firstMatch(in: branchName, options: [], range: range) != nil
+        } catch {
+            os_log("Error building the regualar expression: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, error.localizedDescription)
+            return false
+        }
     }
 }
