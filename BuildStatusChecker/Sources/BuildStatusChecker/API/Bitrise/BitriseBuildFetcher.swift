@@ -50,7 +50,7 @@ extension BitriseBuildFetcher: BuildFetcher {
             switch compl {
                 case .finished: os_log("getRecentBuilds finished", log: OSLog.buildFetcher, type: .debug)
                 case .failure(let error):
-                    os_log("getRecentBuilds finished with error: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error)
+                    os_log("getRecentBuilds finished with error: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, error.localizedDescription)
                     completion(.failure(error))
             }
         }, receiveValue: { (bitriseBuilds) in
