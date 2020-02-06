@@ -30,6 +30,7 @@ extension AppCoordinator {
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)
         buildMonitorWindow?.center()
+        buildMonitorWindow?.title = "Lumina"
         buildMonitorWindow?.setFrameAutosaveName("Main Window")
         buildMonitorWindow?.contentView = NSHostingView(rootView: contentView)
         buildMonitorWindow?.makeKeyAndOrderFront(nil)

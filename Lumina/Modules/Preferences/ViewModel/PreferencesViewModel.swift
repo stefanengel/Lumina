@@ -44,7 +44,7 @@ class PreferencesViewModel: ObservableObject {
         settings.store(value: releaseBranchPrefix, for: .releaseBranchPrefix)
         settings.store(value: hotfixBranchPrefix, for: .hotfixBranchPrefix)
 
-        settings.store(branchIgnoreList: Array(ignoreList).map{ $0.pattern })
+        settings.store(branchIgnoreList: ignoreList.map { $0.pattern })
 
         bitrise.store(setting: .bitriseBaseUrl, value: bitriseBaseUrl)
         bitrise.store(setting: .bitriseAuthToken, value: bitriseAuthToken)
