@@ -17,25 +17,12 @@ struct BuildMonitorView: View {
                     ProgressIndicatorView()
                 }
 
-                if viewModel.errorMessage != nil {
-                    ErrorView(message: viewModel.errorMessage!)
-                }
-
-                if viewModel.development != nil {
-                    BuildView(viewModel: BuildViewModel(from: viewModel.development!))
-                }
-
-                if viewModel.master != nil {
-                    BuildView(viewModel: BuildViewModel(from: viewModel.master!))
-                }
-
-                if viewModel.release != nil {
-                    BuildView(viewModel: BuildViewModel(from: viewModel.release!))
-                }
-
-                if viewModel.hotfix != nil {
-                    BuildView(viewModel: BuildViewModel(from: viewModel.hotfix!))
-                }
+                viewModel.errorMessage.map { ErrorView(message: $0) }
+               
+                viewModel.development.map { BuildView(viewModel: BuildViewModel(from: $0)) }
+                viewModel.master.map { BuildView(viewModel: BuildViewModel(from: $0)) }
+                viewModel.release.map { BuildView(viewModel: BuildViewModel(from: $0)) }
+                viewModel.hotfix.map { BuildView(viewModel: BuildViewModel(from: $0)) }
 
                 ForEach(viewModel.feature, id: \.self) { featureBuild in
                     BuildView(viewModel: BuildViewModel(from: featureBuild))

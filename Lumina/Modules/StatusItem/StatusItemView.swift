@@ -24,20 +24,9 @@ class StatusItemView: NSObject {
     func update() {
         statusItem.menu = NSMenu()
 
-        if let master = viewModel.master {
-            statusItem.menu?.addItem(statusItem(for: master))
-        }
-
-        if let develop = viewModel.development {
-            statusItem.menu?.addItem(statusItem(for: develop))
-        }
-
-        if let release = viewModel.release {
-            statusItem.menu?.addItem(statusItem(for: release))
-        }
-
-        if let hotfix = viewModel.hotfix {
-            statusItem.menu?.addItem(statusItem(for: hotfix))
+        let branches = [viewModel.master, viewModel.development, viewModel.release, viewModel.hotfix]
+        for case let branch? in branches {
+             statusItem.menu?.addItem(statusItem(for: branch))
         }
 
         statusItem.menu?.addItem(NSMenuItem.separator())
