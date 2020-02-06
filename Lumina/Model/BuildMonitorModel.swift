@@ -31,7 +31,7 @@ extension BuildMonitorModel {
 
     func notifyStartedLoading() {
         for observer in observers {
-            observer.startetLoading()
+            observer.startedLoading()
         }
     }
 

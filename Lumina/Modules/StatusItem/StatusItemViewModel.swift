@@ -89,7 +89,7 @@ extension StatusItemViewModel {
 
 // MARK - Model observer
 extension StatusItemViewModel: ModelObserver {
-    func startetLoading() {
+    func startedLoading() {
     }
 
     func stoppedLoading() {
