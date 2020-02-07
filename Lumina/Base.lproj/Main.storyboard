@@ -77,6 +77,12 @@
                                                 <action selector="paste:" target="Ady-hI-5gd" id="Jms-NX-Lgc"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="TpQ-jL-Kc4"/>
+                                        <menuItem title="Select All" keyEquivalent="a" id="Ft5-6z-T3J">
+                                            <connections>
+                                                <action selector="selectAll:" target="Ady-hI-5gd" id="Wde-Ia-uwm"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
