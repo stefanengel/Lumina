@@ -32,4 +32,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         appCoordinator?.start()
     }
 
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if flag {
+            return false
+        } else {
+            openMainWindow(self)
+            return true
+        }
+    }
 }
