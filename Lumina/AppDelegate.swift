@@ -27,4 +27,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func openPreferences(_ sender: Any) {
         appCoordinator?.openPreferences()
     }
+    
+    @IBAction func openMainWindow(_ sender: Any) {
+        appCoordinator?.start()
+    }
+
 }
