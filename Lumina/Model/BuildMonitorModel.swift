@@ -13,7 +13,7 @@ extension BuildMonitorModel {
         fetchBuilds()
 
         let interval = TimeInterval(SettingsStore().readUpdateInterval())
-        self.updateTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.requestUpdate), userInfo: nil, repeats: true)
+        self.updateTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(fetchBuilds), userInfo: nil, repeats: true)
     }
 }
 
@@ -57,10 +57,11 @@ extension BuildMonitorModel {
 // MARK: - Update mechanism
 extension BuildMonitorModel {
     @objc func requestUpdate() {
-        fetchBuilds()
+        updateTimer?.invalidate()
+        startUpdating()
     }
 
-    private func fetchBuilds() {
+    @objc private func fetchBuilds() {
         notifyStartedLoading()
         buildFetcher.getRecentBuilds() { result in
             switch result {
