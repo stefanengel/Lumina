@@ -47,7 +47,6 @@ public class Builds {
             }
         }
         else {
-            debugPrint("Builds of branches with name %{PUBLIC}@ will be ignored.")
             os_log("Builds of branches with name %{PUBLIC}@ will be ignored.", log: OSLog.builds, type: .info, build.branch)
         }
     }
