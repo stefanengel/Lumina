@@ -15,7 +15,7 @@ extension BitriseBuilds {
     func latestBuild(for branch: Branch) -> BitriseBuild? {
         return data
             .filter { $0.branch == branch }
-            .sorted(by: { $0.startedOnWorkerAt > $1.startedOnWorkerAt })
+            .sorted(by: { $0.triggeredAt > $1.triggeredAt })
             .first
     }
 }
