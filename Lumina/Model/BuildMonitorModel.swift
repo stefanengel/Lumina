@@ -1,9 +1,10 @@
 import Foundation
 import BuildStatusChecker
+import Combine
 
 class BuildMonitorModel {
     private var buildFetcher = BuildFetcherFactory.createBuildFetcher()
-    private var updateTimer: Timer?
+    private var timerToken: AnyCancellable?
     private var observers: [ModelObserver] = []
 }
 
@@ -13,7 +14,10 @@ extension BuildMonitorModel {
         fetchBuilds()
 
         let interval = TimeInterval(SettingsStore().readUpdateInterval())
-        self.updateTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.requestUpdate), userInfo: nil, repeats: true)
+        let timer = Timer.publish(every: interval, on: .main, in: .common).autoconnect()
+        self.timerToken = timer.sink(receiveValue: {[weak self] _ in
+            self?.fetchBuilds()
+        })
     }
 }
 
@@ -57,10 +61,11 @@ extension BuildMonitorModel {
 // MARK: - Update mechanism
 extension BuildMonitorModel {
     @objc func requestUpdate() {
-        fetchBuilds()
+        timerToken?.cancel()
+        startUpdating()
     }
 
-    private func fetchBuilds() {
+    @objc private func fetchBuilds() {
         notifyStartedLoading()
         buildFetcher.getRecentBuilds() { result in
             switch result {
