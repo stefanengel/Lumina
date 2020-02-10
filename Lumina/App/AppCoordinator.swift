@@ -23,21 +23,27 @@ class AppCoordinator: NSObject {
 // MARK: - Starting the app
 extension AppCoordinator {
     func start() {
-        let contentView = BuildMonitorView(viewModel: BuildMonitorViewModel(model: buildMonitorModel))
+        if buildMonitorWindow == nil {
+            let contentView = BuildMonitorView(viewModel: BuildMonitorViewModel(model: buildMonitorModel))
 
-        buildMonitorWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 600),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        buildMonitorWindow?.center()
-        buildMonitorWindow?.title = "Lumina"
-        buildMonitorWindow?.setFrameAutosaveName("Main Window")
-        buildMonitorWindow?.contentView = NSHostingView(rootView: contentView)
-        buildMonitorWindow?.makeKeyAndOrderFront(nil)
+            buildMonitorWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 480, height: 600),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            buildMonitorWindow?.center()
+            buildMonitorWindow?.title = "Lumina"
+            buildMonitorWindow?.setFrameAutosaveName("Main Window")
+            buildMonitorWindow?.contentView = NSHostingView(rootView: contentView)
+            buildMonitorWindow?.isReleasedWhenClosed = false
+            buildMonitorWindow?.makeKeyAndOrderFront(nil)
 
-        buildMonitorModel.startUpdating()
+            buildMonitorModel.startUpdating()
+        } else {
+            NSApp.activate(ignoringOtherApps: true)
+        }
     }
 }
+
 
 // MARK: - Updating
 extension AppCoordinator {

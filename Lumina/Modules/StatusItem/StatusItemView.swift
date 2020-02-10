@@ -18,7 +18,7 @@ class StatusItemView: NSObject {
         statusItem.button?.title = viewModel.title
         statusItem.button?.image =  NSImage(imageLiteralResourceName: "StatusBarButtonImage")
         statusItem.menu = NSMenu()
-        statusItem.menu?.addItem(withTitle: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        addDefaultMenuItems()
     }
 
     func update() {
@@ -35,11 +35,18 @@ class StatusItemView: NSObject {
             statusItem.menu?.addItem(statusItem(for: featureBuild))
         }
 
+        addDefaultMenuItems()
+    }
+    
+    private func addDefaultMenuItems() {
+        statusItem.menu?.addItem(NSMenuItem.separator())
+        statusItem.menu?.addItem(withTitle: "Open Main Window...", action: #selector(AppDelegate.openMainWindow(_:)), keyEquivalent: "")
+        statusItem.menu?.addItem(withTitle: "Preferences...", action: #selector(AppDelegate.openPreferences(_:)), keyEquivalent: ",")
         statusItem.menu?.addItem(NSMenuItem.separator())
         statusItem.menu?.addItem(withTitle: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
     }
 
-    @objc func printTest(sender: Any) {
+    @objc func openInBrowser(sender: Any) {
         if let item = sender as? NSMenuItem, let build = viewModel.build(for: item.title) {
             viewModel.openInBrowser(build: build)
         }
@@ -50,7 +57,7 @@ class StatusItemView: NSObject {
 extension StatusItemView {
     func statusItem(for build: Build) -> NSMenuItem {
         let attributedTitle = NSAttributedString(string: build.branch, attributes: viewModel.attributes(for: build.status))
-        let menuItem = NSMenuItem(title: build.branch, action: #selector(printTest(sender:)), keyEquivalent: "")
+        let menuItem = NSMenuItem(title: build.branch, action: #selector(openInBrowser(sender:)), keyEquivalent: "")
         menuItem.attributedTitle = attributedTitle
         menuItem.target = self
 

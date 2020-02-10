@@ -27,4 +27,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func openPreferences(_ sender: Any) {
         appCoordinator?.openPreferences()
     }
+    
+    @IBAction func openMainWindow(_ sender: Any) {
+        appCoordinator?.start()
+    }
+
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if flag {
+            return false
+        } else {
+            openMainWindow(self)
+            return true
+        }
+    }
 }
