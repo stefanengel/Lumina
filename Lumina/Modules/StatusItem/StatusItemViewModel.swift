@@ -3,30 +3,32 @@ import AppKit
 import BuildStatusChecker
 
 class StatusItemViewModel {
+    private static let strokeWidth: CGFloat = -3.0
+
     static let successfulBuildAttributes: [NSAttributedString.Key: Any] = [
         .foregroundColor: NSColor.systemGreen,
         .strokeColor: NSColor.black,
-        .strokeWidth: -3.0
+        .strokeWidth: strokeWidth
     ]
     static let failedBuildAttributes: [NSAttributedString.Key: Any] = [
         .foregroundColor: NSColor.systemRed,
         .strokeColor: NSColor.black,
-        .strokeWidth: -3.0
+        .strokeWidth: strokeWidth
     ]
     static let abortedBuildAttributes: [NSAttributedString.Key: Any] = [
         .foregroundColor: NSColor.systemOrange,
         .strokeColor: NSColor.black,
-        .strokeWidth: -3.0
+        .strokeWidth: strokeWidth
     ]
     static let runningBuildAttributes: [NSAttributedString.Key: Any] = [
         .foregroundColor: NSColor.systemBlue,
         .strokeColor: NSColor.black,
-        .strokeWidth: -3.0
+        .strokeWidth: strokeWidth
     ]
     static let unknownBuildAttributes: [NSAttributedString.Key: Any] = [
         .foregroundColor: NSColor.systemGray,
         .strokeColor: NSColor.black,
-        .strokeWidth: -3.0
+        .strokeWidth: strokeWidth
     ]
 
     var development: Build?
@@ -89,7 +91,7 @@ extension StatusItemViewModel {
 
 // MARK - Model observer
 extension StatusItemViewModel: ModelObserver {
-    func startetLoading() {
+    func startedLoading() {
     }
 
     func stoppedLoading() {
