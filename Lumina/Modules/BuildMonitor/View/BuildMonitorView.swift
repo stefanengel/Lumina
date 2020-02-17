@@ -18,14 +18,9 @@ struct BuildMonitorView: View {
                 }
 
                 viewModel.errorMessage.map { ErrorView(message: $0) }
-               
-                viewModel.development.map { BuildView(viewModel: BuildViewModel(from: $0)) }
-                viewModel.master.map { BuildView(viewModel: BuildViewModel(from: $0)) }
-                viewModel.release.map { BuildView(viewModel: BuildViewModel(from: $0)) }
-                viewModel.hotfix.map { BuildView(viewModel: BuildViewModel(from: $0)) }
 
-                ForEach(viewModel.feature, id: \.self) { featureBuild in
-                    BuildView(viewModel: BuildViewModel(from: featureBuild))
+                ForEach(builds, id: \.self) { build in
+                    BuildView(viewModel: BuildViewModel(from: build))
                 }
 
                 Spacer()
@@ -34,6 +29,13 @@ struct BuildMonitorView: View {
             .padding(.trailing, 15)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+    }
+    
+    private var builds: [Build] {
+        var builds = [viewModel.development, viewModel.master, viewModel.release, viewModel.hotfix]
+        builds.append(contentsOf: viewModel.feature)
+        return builds
+            .compactMap { $0 }
     }
 }
 
