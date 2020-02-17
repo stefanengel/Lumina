@@ -12,7 +12,7 @@ extension BitriseBuildStatus: Codable {}
 
 public struct BitriseBuild: Codable {
     let triggeredAt: Date
-    let startedOnWorkerAt: Date
+    let startedOnWorkerAt: Date?
     let finishedAt: Date?
     let status: BitriseBuildStatus
     let branch: String

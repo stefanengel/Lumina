@@ -1,7 +1,7 @@
 import Foundation
 
 class IgnorePattern {
-    var pattern: String
+    private(set) var pattern: String
 
     init(pattern: String) {
         self.pattern = pattern

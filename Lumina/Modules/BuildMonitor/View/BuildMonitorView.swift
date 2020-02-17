@@ -17,28 +17,10 @@ struct BuildMonitorView: View {
                     ProgressIndicatorView()
                 }
 
-                if viewModel.errorMessage != nil {
-                    ErrorView(message: viewModel.errorMessage!)
-                }
+                viewModel.errorMessage.map { ErrorView(message: $0) }
 
-                if viewModel.development != nil {
-                    BuildView(viewModel: BuildViewModel(from: viewModel.development!))
-                }
-
-                if viewModel.master != nil {
-                    BuildView(viewModel: BuildViewModel(from: viewModel.master!))
-                }
-
-                if viewModel.release != nil {
-                    BuildView(viewModel: BuildViewModel(from: viewModel.release!))
-                }
-
-                if viewModel.hotfix != nil {
-                    BuildView(viewModel: BuildViewModel(from: viewModel.hotfix!))
-                }
-
-                ForEach(viewModel.feature, id: \.self) { featureBuild in
-                    BuildView(viewModel: BuildViewModel(from: featureBuild))
+                ForEach(builds, id: \.self) { build in
+                    BuildView(viewModel: BuildViewModel(from: build))
                 }
 
                 Spacer()
@@ -47,6 +29,13 @@ struct BuildMonitorView: View {
             .padding(.trailing, 15)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+    }
+    
+    private var builds: [Build] {
+        var builds = [viewModel.development, viewModel.master, viewModel.release, viewModel.hotfix]
+        builds.append(contentsOf: viewModel.feature)
+        return builds
+            .compactMap { $0 }
     }
 }
 
