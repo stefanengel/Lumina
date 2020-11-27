@@ -65,29 +65,29 @@ extension Builds {
     public var sortedDevelopBuilds: [Build] {
         return development
             .map{ $0.value }
-            .sorted{ $0.branch < $1.branch }
+            .sorted{ $0 < $1 }
     }
 
     public var sortedMasterBuilds: [Build] {
         return master
             .map{ $0.value }
-            .sorted{ $0.branch < $1.branch }
+            .sorted{ $0 < $1 }
     }
 
     public var sortedLatestReleaseBuilds: [Build] {
         return latestRelease
             .map{ $0.value }
-            .sorted{ $0.branch < $1.branch }
+            .sorted{ $0 < $1 }
     }
 
     public var sortedLatestHotfixBuilds: [Build] {
         return latestHotfix
             .map{ $0.value }
-            .sorted{ $0.branch < $1.branch }
+            .sorted{ $0 < $1 }
     }
     public var sortedFeatureBuilds: [Build] {
         return feature
             .map{ $0.value }
-            .sorted{ $0.branch < $1.branch }
+            .sorted{ $0 < $1 }
     }
 }

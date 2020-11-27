@@ -10,6 +10,13 @@ class BuildMonitorViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isLoading: Bool = true
 
+    @Published var search: String = "" {
+        didSet {
+            updateFilteredBuilds()
+        }
+    }
+    @Published var filteredBuilds: [Build] = []
+
     private let model: BuildMonitorModel?
 
     init(model: BuildMonitorModel) {
@@ -19,6 +26,15 @@ class BuildMonitorViewModel: ObservableObject {
 
     deinit {
         model?.unregister(observer: self)
+    }
+
+    private func updateFilteredBuilds() {
+        if search.isEmpty {
+            filteredBuilds = allBuilds
+        }
+        else {
+            filteredBuilds = allBuilds.filter{ $0.branch.contains(search) }
+        }
     }
 
     // Used for preview
@@ -71,6 +87,23 @@ extension BuildMonitorViewModel: ModelObserver {
             self.release = builds.sortedLatestReleaseBuilds
             self.hotfix = builds.sortedLatestHotfixBuilds
             self.feature = builds.sortedFeatureBuilds
+
+            self.updateFilteredBuilds()
         }
+    }
+}
+
+// MARK: - Putting together the filtered build list
+extension BuildMonitorViewModel {
+    private var allBuilds: [Build] {
+        var allBuilds = [Build]()
+
+        allBuilds.append(contentsOf: development)
+        allBuilds.append(contentsOf: master)
+        allBuilds.append(contentsOf: release)
+        allBuilds.append(contentsOf: hotfix)
+        allBuilds.append(contentsOf: feature)
+
+        return allBuilds
     }
 }
