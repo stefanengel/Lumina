@@ -23,14 +23,27 @@ struct BuildViewModel {
             case .success: backgroundColor = .green
             case .failed(let error):
                 backgroundColor = .red
-                subtitle = error
+                if let error = error {
+                    subtitle = "\(error)\n"
+                }
             case .running:
                 backgroundColor = .blue
                 isRunning = true
             case .aborted(let reason):
                 backgroundColor = .orange
-                subtitle = reason
+                if let reason = reason {
+                    subtitle = "\(reason)\n"
+                }
             default: backgroundColor = .gray
+        }
+
+        if let info = build.info {
+            if var subtitle = subtitle {
+                subtitle.append(info)
+            }
+            else {
+                subtitle = info
+            }
         }
 
         url = build.url

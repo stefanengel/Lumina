@@ -2,10 +2,10 @@ import BuildStatusChecker
 import SwiftUI
 
 class BuildMonitorViewModel: ObservableObject {
-    @Published var development: Build?
-    @Published var master: Build?
-    @Published var release: Build?
-    @Published var hotfix: Build?
+    @Published var development: [Build] = []
+    @Published var master: [Build] = []
+    @Published var release: [Build] = []
+    @Published var hotfix: [Build] = []
     @Published var feature: [Build] = []
     @Published var errorMessage: String?
     @Published var isLoading: Bool = true
@@ -22,7 +22,7 @@ class BuildMonitorViewModel: ObservableObject {
     }
 
     // Used for preview
-    init(development: Build, master: Build, release: Build, hotfix: Build, feature: [Build]) {
+    init(development: [Build], master: [Build], release: [Build], hotfix: [Build], feature: [Build]) {
         self.development = development
         self.master = master
         self.release = release
@@ -66,10 +66,10 @@ extension BuildMonitorViewModel: ModelObserver {
 
     func update(builds: Builds) {
         DispatchQueue.main.async {
-            self.development = builds.development
-            self.master = builds.master
-            self.release = builds.latestRelease
-            self.hotfix = builds.latestHotfix
+            self.development = builds.sortedDevelopBuilds
+            self.master = builds.sortedMasterBuilds
+            self.release = builds.sortedLatestReleaseBuilds
+            self.hotfix = builds.sortedLatestHotfixBuilds
             self.feature = builds.sortedFeatureBuilds
         }
     }
