@@ -11,6 +11,10 @@ class BitriseConfiguration {
         return bitrise.read(setting: .bitriseAppSlug)
     }()
 
+    public var workflowList: [String] {
+        bitrise.readWorkflowList()
+    }
+
     public var isComplete: Bool {
          return ![authToken, baseUrl, appSlug]
             .map { $0.isEmpty }
