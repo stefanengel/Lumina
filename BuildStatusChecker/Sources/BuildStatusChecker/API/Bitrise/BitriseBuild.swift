@@ -18,6 +18,7 @@ public struct BitriseBuild: Codable {
     let branch: String
     let abortReason: String?
     let slug: String
+    let triggeredWorkflow: String
 }
 
 // MARK: - Conversion
@@ -32,6 +33,6 @@ extension BitriseBuild {
         }
 
         let url = "https://app.bitrise.io/build/\(slug)#?tab=log"
-        return Build(status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url)
+        return Build(status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: triggeredWorkflow)
     }
 }

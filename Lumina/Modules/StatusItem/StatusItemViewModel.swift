@@ -31,10 +31,10 @@ class StatusItemViewModel {
         .strokeWidth: strokeWidth
     ]
 
-    var development: Build?
-    var master: Build?
-    var release: Build?
-    var hotfix: Build?
+    var development: [Build] = []
+    var master: [Build] = []
+    var release: [Build] = []
+    var hotfix: [Build] = []
     var feature: [Build] = []
 
     let model: BuildMonitorModel
@@ -54,26 +54,30 @@ class StatusItemViewModel {
 
 // MARK: - Helpers used by the StatusItem
 extension StatusItemViewModel {
-    func build(for branch: Branch) -> Build? {
-        if development?.branch == branch { return development }
-        if master?.branch == branch { return master }
-        if release?.branch == branch { return release }
-        if hotfix?.branch == branch { return hotfix }
+//    func builds(for branch: Branch) -> [Build] {
+//        var results = [Build]()
+//
+//        results.append(contentsOf: development.filter{ $0.branch == branch })
+//
+//        if development?.branch == branch { return development }
+//        if master?.branch == branch { return master }
+//        if release?.branch == branch { return release }
+//        if hotfix?.branch == branch { return hotfix }
+//
+//        for featureBuild in feature {
+//            if featureBuild.branch == branch { return featureBuild }
+//        }
+//
+//        return nil
+//    }
 
-        for featureBuild in feature {
-            if featureBuild.branch == branch { return featureBuild }
-        }
-
-        return nil
-    }
-
-    func url(for branch: Branch) -> URL? {
-        guard let build = build(for: branch) else {
-            return nil
-        }
-
-        return URL(string: build.url)
-    }
+//    func url(for branch: Branch) -> URL? {
+//        guard let build = build(for: branch) else {
+//            return nil
+//        }
+//
+//        return URL(string: build.url)
+//    }
 }
 
 // MARK: - Helpers for color
@@ -101,10 +105,10 @@ extension StatusItemViewModel: ModelObserver {
     }
 
     func update(builds: Builds) {
-        development = builds.development
-        master = builds.master
-        release = builds.latestRelease
-        hotfix = builds.latestHotfix
+        development = builds.sortedDevelopBuilds
+        master = builds.sortedMasterBuilds
+        release = builds.sortedLatestReleaseBuilds
+        hotfix = builds.sortedLatestHotfixBuilds
         feature = builds.sortedFeatureBuilds
 
         DispatchQueue.main.async {

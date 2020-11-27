@@ -25,8 +25,10 @@ class StatusItemView: NSObject {
         statusItem.menu = NSMenu()
 
         let branches = [viewModel.master, viewModel.development, viewModel.release, viewModel.hotfix]
-        for case let branch? in branches {
-             statusItem.menu?.addItem(statusItem(for: branch))
+        for branchBuilds in branches {
+            for build in branchBuilds {
+                statusItem.menu?.addItem(statusItem(for: build))
+            }
         }
 
         statusItem.menu?.addItem(NSMenuItem.separator())
@@ -47,7 +49,7 @@ class StatusItemView: NSObject {
     }
 
     @objc func openInBrowser(sender: Any) {
-        if let item = sender as? NSMenuItem, let build = viewModel.build(for: item.title) {
+        if let item = sender as? NSMenuItem, let build = item.representedObject as? Build {
             viewModel.openInBrowser(build: build)
         }
     }
@@ -60,6 +62,7 @@ extension StatusItemView {
         let menuItem = NSMenuItem(title: build.branch, action: #selector(openInBrowser(sender:)), keyEquivalent: "")
         menuItem.attributedTitle = attributedTitle
         menuItem.target = self
+        menuItem.representedObject = build
 
         return menuItem
     }
