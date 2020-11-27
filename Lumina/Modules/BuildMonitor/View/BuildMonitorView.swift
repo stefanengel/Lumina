@@ -10,16 +10,16 @@ struct BuildMonitorView: View {
 
     var body: some View {
         ScrollView(.vertical) {
-            VStack(alignment: HorizontalAlignment.center, spacing: 20) {
-                Spacer()
+            TextField("Search", text: $viewModel.search)
 
+            VStack(alignment: HorizontalAlignment.center, spacing: 20) {
                 if viewModel.isLoading {
                     ProgressIndicatorView()
                 }
 
                 viewModel.errorMessage.map { ErrorView(message: $0) }
 
-                ForEach(builds, id: \.self) { build in
+                ForEach(viewModel.filteredBuilds, id: \.self) { build in
                     BuildView(viewModel: BuildViewModel(from: build))
                 }
 
@@ -29,18 +29,6 @@ struct BuildMonitorView: View {
             .padding(.trailing, 15)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-    }
-    
-    private var builds: [Build] {
-        var allBuilds = [Build]()
-
-        allBuilds.append(contentsOf: viewModel.development)
-        allBuilds.append(contentsOf: viewModel.master)
-        allBuilds.append(contentsOf: viewModel.release)
-        allBuilds.append(contentsOf: viewModel.hotfix)
-        allBuilds.append(contentsOf: viewModel.feature)
-
-        return allBuilds
     }
 }
 

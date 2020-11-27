@@ -79,3 +79,14 @@ extension Build {
         return branch.starts(with: settings.read(setting: .featureBranchPrefix))
     }
 }
+
+// MARK: Comparable
+extension Build: Comparable {
+    public static func <(lhs: Build, rhs: Build) -> Bool {
+        if lhs.branch != rhs.branch {
+            return lhs.branch < rhs.branch
+        }
+
+        return lhs.triggeredAt < rhs.triggeredAt
+    }
+}
