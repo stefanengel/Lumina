@@ -3,6 +3,7 @@ import SwiftUI
 struct PreferencesView: View {
     @ObservedObject private var viewModel: PreferencesViewModel
     @State var selectedIgnorePattern: IgnorePattern? = nil
+    @State var selectedWorkflow: String? = nil
 
     @State var sliderValue = 60.0
     var minSliderValue = 60.0
@@ -55,6 +56,8 @@ struct PreferencesView: View {
                     }
                     .padding(.bottom, 10.0)
                     .fixedSize(horizontal: false, vertical: true)
+
+                    // Ignore branches
                     HStack {
                         Text("Ignore branches containing:")
                     }
@@ -120,7 +123,41 @@ struct PreferencesView: View {
                     .padding(.leading)
                 }
                 .padding(.horizontal)
+                .padding(.bottom, 10.0)
                 .fixedSize(horizontal: false, vertical: true)
+
+                // Workflows
+                HStack {
+                    Text("Workflows to consider:")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                    TextField("Branches running with this workflow will be considered", text: $viewModel.newWorkflowString)
+                    Button(action: {
+                        self.viewModel.workflowList.insert( self.viewModel.newWorkflowString)
+                        self.viewModel.newWorkflowString = ""
+                        debugPrint("Selected: \(self.selectedWorkflow ?? "none")")
+                    }) {
+                        Text("Add")
+                    }
+                    .disabled(viewModel.newWorkflowString == "")
+                    Button(action: {
+                        if let selected = self.selectedWorkflow {
+                            self.viewModel.workflowList.remove(selected)
+                            self.selectedWorkflow = nil
+                        }
+                    }) {
+                        Text("Delete selected")
+                    }
+                    .disabled(selectedWorkflow == nil)
+                }
+                HStack {
+                    List(Array(viewModel.workflowList), id: \.self, selection:
+                    $selectedWorkflow) { workflow in
+                        Text(workflow)
+                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    }
+                }
 
                 Spacer()
 

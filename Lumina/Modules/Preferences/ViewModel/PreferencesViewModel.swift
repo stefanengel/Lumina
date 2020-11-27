@@ -10,6 +10,8 @@ class PreferencesViewModel: ObservableObject {
     @Published var hotfixBranchPrefix: String = ""
     @Published var newIgnoreSubstring: String = ""
     @Published var ignoreList: Set = Set<IgnorePattern>()
+    @Published var newWorkflowString: String = ""
+    @Published var workflowList: Set = Set<String>()
 
     @Published var bitriseBaseUrl: String = ""
     @Published var bitriseAuthToken: String = ""
@@ -27,6 +29,7 @@ class PreferencesViewModel: ObservableObject {
         hotfixBranchPrefix = settings.read(setting: .hotfixBranchPrefix)
 
         ignoreList = Set(settings.readBranchIgnoreList().map{ IgnorePattern(pattern: $0) })
+        workflowList = Set(bitrise.readWorkflowList())
 
         bitriseBaseUrl = bitrise.read(setting: .bitriseBaseUrl)
         bitriseAuthToken = bitrise.read(setting: .bitriseAuthToken)
@@ -45,6 +48,7 @@ class PreferencesViewModel: ObservableObject {
         settings.store(value: hotfixBranchPrefix, for: .hotfixBranchPrefix)
 
         settings.store(branchIgnoreList: ignoreList.map { $0.pattern })
+        bitrise.store(workflowList: Array(workflowList))
 
         bitrise.store(setting: .bitriseBaseUrl, value: bitriseBaseUrl)
         bitrise.store(setting: .bitriseAuthToken, value: bitriseAuthToken)
