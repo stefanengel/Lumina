@@ -58,7 +58,13 @@ class StatusItemView: NSObject {
 // MARK: - Mapping builds to status items
 extension StatusItemView {
     func statusItem(for build: Build) -> NSMenuItem {
-        let attributedTitle = NSAttributedString(string: build.branch, attributes: viewModel.attributes(for: build.status))
+        var string = build.branch
+
+        if let info = build.info {
+            string.append(" - \(info)")
+        }
+
+        let attributedTitle = NSAttributedString(string: string, attributes: viewModel.attributes(for: build.status))
         let menuItem = NSMenuItem(title: build.branch, action: #selector(openInBrowser(sender:)), keyEquivalent: "")
         menuItem.attributedTitle = attributedTitle
         menuItem.target = self
