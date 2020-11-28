@@ -19,6 +19,8 @@ public struct BitriseBuild: Codable {
     let abortReason: String?
     let slug: String
     let triggeredWorkflow: String
+    let triggeredBy: String?
+    let commitHash: String
 }
 
 // MARK: - Conversion
