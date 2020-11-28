@@ -15,6 +15,10 @@ class BitriseConfiguration {
         bitrise.readWorkflowList()
     }
 
+    public var groupByCommitHash: Bool {
+        bitrise.groupByCommitHash
+    }
+
     public var isComplete: Bool {
          return ![authToken, baseUrl, appSlug]
             .map { $0.isEmpty }

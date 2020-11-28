@@ -42,7 +42,7 @@ struct PreferencesView: View {
                     .padding(.leading)
                 }
                 .padding(.horizontal)
-                .fixedSize(horizontal: false, vertical: true)
+//                .fixedSize(horizontal: false, vertical: true)
 
                 VStack(alignment: HorizontalAlignment.leading) {
                     HStack {
@@ -55,7 +55,7 @@ struct PreferencesView: View {
                         }
                     }
                     .padding(.bottom, 10.0)
-                    .fixedSize(horizontal: false, vertical: true)
+//                    .fixedSize(horizontal: false, vertical: true)
 
                     // Ignore branches
                     HStack {
@@ -119,12 +119,15 @@ struct PreferencesView: View {
                         TextField("Bitrise base URL", text: $viewModel.bitriseBaseUrl)
                         TextField("Bitrise auth token", text: $viewModel.bitriseAuthToken)
                         TextField("Bitrise app slug", text: $viewModel.bitriseAppSlug)
+                        Toggle(isOn: $viewModel.groupByCommitHash) {
+                            Text("Group builds by commit hash")
+                        }
                     }
                     .padding(.leading)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10.0)
-                .fixedSize(horizontal: false, vertical: true)
+//                .fixedSize(horizontal: false, vertical: true)
 
                 // Workflows
                 HStack {
@@ -158,8 +161,6 @@ struct PreferencesView: View {
                         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                     }
                 }
-
-                Spacer()
 
                 Button(action: {
                     self.viewModel.saveSettings()
