@@ -10,8 +10,8 @@ struct BuildViewModel {
     var url: String
     var isRunning: Bool = false
 
-    init(from build: Build) {
-        title = build.branch
+    init(from build: BuildRepresentation) {
+        title = build.wrapped.branch
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium

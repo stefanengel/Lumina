@@ -122,7 +122,6 @@
 				2C54561523E9DB5A00226FA2 /* Assets.xcassets */,
 				2C54562A23E9DB5A00226FA2 /* Model */,
 				2C54561623E9DB5A00226FA2 /* Modules */,
-				2C54563023E9DB5A00226FA2 /* ViewModel */,
 				2C5455FA23E9D9C100226FA2 /* Info.plist */,
 				2C5455FB23E9D9C100226FA2 /* Lumina.entitlements */,
 				2C5455F423E9D9C100226FA2 /* Preview Content */,
@@ -234,6 +233,7 @@
 			children = (
 				2C54562B23E9DB5A00226FA2 /* ModelObserver.swift */,
 				2C54562C23E9DB5A00226FA2 /* BuildMonitorModel.swift */,
+				2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -244,14 +244,6 @@
 				2C54562E23E9DB5A00226FA2 /* AppCoordinator.swift */,
 			);
 			path = App;
-			sourceTree = "<group>";
-		};
-		2C54563023E9DB5A00226FA2 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		2C54564423E9DB6300226FA2 /* Base.lproj */ = {
@@ -540,7 +532,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lumina/Preview Content\"";
-				DEVELOPMENT_TEAM = FWM745VH37;
+				DEVELOPMENT_TEAM = XVBT48DGY3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lumina/Info.plist;
@@ -566,7 +558,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lumina/Preview Content\"";
-				DEVELOPMENT_TEAM = FWM745VH37;
+				DEVELOPMENT_TEAM = XVBT48DGY3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lumina/Info.plist;

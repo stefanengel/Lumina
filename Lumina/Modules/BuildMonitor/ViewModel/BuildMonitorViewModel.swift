@@ -2,11 +2,11 @@ import BuildStatusChecker
 import SwiftUI
 
 class BuildMonitorViewModel: ObservableObject {
-    @Published var development: [Build] = []
-    @Published var master: [Build] = []
-    @Published var release: [Build] = []
-    @Published var hotfix: [Build] = []
-    @Published var feature: [Build] = []
+    @Published var development: [BuildRepresentation] = []
+    @Published var master: [BuildRepresentation] = []
+    @Published var release: [BuildRepresentation] = []
+    @Published var hotfix: [BuildRepresentation] = []
+    @Published var feature: [BuildRepresentation] = []
     @Published var errorMessage: String?
     @Published var isLoading: Bool = true
 
@@ -15,7 +15,7 @@ class BuildMonitorViewModel: ObservableObject {
             updateFilteredBuilds()
         }
     }
-    @Published var filteredBuilds: [Build] = []
+    @Published var filteredBuilds: [BuildRepresentation] = []
 
     private let model: BuildMonitorModel?
 
@@ -38,7 +38,7 @@ class BuildMonitorViewModel: ObservableObject {
     }
 
     // Used for preview
-    init(development: [Build], master: [Build], release: [Build], hotfix: [Build], feature: [Build]) {
+    init(development: [BuildRepresentation], master: [BuildRepresentation], release: [BuildRepresentation], hotfix: [BuildRepresentation], feature: [BuildRepresentation]) {
         self.development = development
         self.master = master
         self.release = release
@@ -95,15 +95,19 @@ extension BuildMonitorViewModel: ModelObserver {
 
 // MARK: - Putting together the filtered build list
 extension BuildMonitorViewModel {
-    private var allBuilds: [Build] {
-        var allBuilds = [Build]()
+    private var allBuilds: [BuildRepresentation] {
+        var allBuilds = [BuildRepresentation]()
 
-        allBuilds.append(contentsOf: development)
-        allBuilds.append(contentsOf: master)
-        allBuilds.append(contentsOf: release)
-        allBuilds.append(contentsOf: hotfix)
-        allBuilds.append(contentsOf: feature)
+        allBuilds.append(contentsOf: buildRepresentation(from: development))
+        allBuilds.append(contentsOf: buildRepresentation(from: master))
+        allBuilds.append(contentsOf: buildRepresentation(from: release))
+        allBuilds.append(contentsOf: buildRepresentation(from: hotfix))
+        allBuilds.append(contentsOf: buildRepresentation(from: feature))
 
         return allBuilds
+    }
+
+    private func buildRepresentation(from builds: [BuildProtocol]) -> [BuildRepresentation] {
+        builds.map{ BuildRepresentation(wrapped: $0) }
     }
 }
