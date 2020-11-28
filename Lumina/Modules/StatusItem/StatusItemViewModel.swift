@@ -31,11 +31,11 @@ class StatusItemViewModel {
         .strokeWidth: strokeWidth
     ]
 
-    var development: [Build] = []
-    var master: [Build] = []
-    var release: [Build] = []
-    var hotfix: [Build] = []
-    var feature: [Build] = []
+    var development: [BuildRepresentation] = []
+    var master: [BuildRepresentation] = []
+    var release: [BuildRepresentation] = []
+    var hotfix: [BuildRepresentation] = []
+    var feature: [BuildRepresentation] = []
 
     let model: BuildMonitorModel
     let title = "Lumina"

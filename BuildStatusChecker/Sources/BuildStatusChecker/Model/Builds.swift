@@ -1,16 +1,16 @@
 import os.log
 
 public class Builds {
-    public var development: [String: Build] = [:]
-    public var master: [String: Build] = [:]
-    public var latestRelease: [String: Build] = [:]
-    public var latestHotfix: [String: Build] = [:]
-    public var feature: [String: Build] = [:]
+    public var development: [String: BuildRepresentation] = [:]
+    public var master: [String: BuildRepresentation] = [:]
+    public var latestRelease: [String: BuildRepresentation] = [:]
+    public var latestHotfix: [String: BuildRepresentation] = [:]
+    public var feature: [String: BuildRepresentation] = [:]
     public var filter: BuildFilter = BuildFilter()
 
-    public func add(build: Build) {
+    public func add(build: BuildRepresentation) {
         if build.isDevelopBranch {
-            if let existingDevelopBuild = development[build.id], existingDevelopBuild.triggeredAt > build.triggeredAt {
+            if let existingDevelopBuild = development[build.id], existingDevelopBuild.wrapped.triggeredAt > build.wrapped.triggeredAt {
                 return
             }
 
@@ -62,30 +62,30 @@ public class Builds {
 
 // MARK: - Sorting
 extension Builds {
-    public var sortedDevelopBuilds: [Build] {
+    public var sortedDevelopBuilds: [BuildRepresentation] {
         return development
             .map{ $0.value }
             .sorted{ $0 < $1 }
     }
 
-    public var sortedMasterBuilds: [Build] {
+    public var sortedMasterBuilds: [BuildRepresentation] {
         return master
             .map{ $0.value }
             .sorted{ $0 < $1 }
     }
 
-    public var sortedLatestReleaseBuilds: [Build] {
+    public var sortedLatestReleaseBuilds: [BuildRepresentation] {
         return latestRelease
             .map{ $0.value }
             .sorted{ $0 < $1 }
     }
 
-    public var sortedLatestHotfixBuilds: [Build] {
+    public var sortedLatestHotfixBuilds: [BuildRepresentation] {
         return latestHotfix
             .map{ $0.value }
             .sorted{ $0 < $1 }
     }
-    public var sortedFeatureBuilds: [Build] {
+    public var sortedFeatureBuilds: [BuildRepresentation] {
         return feature
             .map{ $0.value }
             .sorted{ $0 < $1 }

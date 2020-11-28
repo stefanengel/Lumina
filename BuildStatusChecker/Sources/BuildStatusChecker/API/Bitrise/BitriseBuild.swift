@@ -25,7 +25,17 @@ public struct BitriseBuild: Codable {
 
 // MARK: - Conversion
 extension BitriseBuild {
-    public var asBuild: Build {
+    public var asBuildRepresentation: BuildRepresentation {
+        let bitriseStore = BitriseStore()
+
+        var groupId: String?
+        var groupItemDescription: String?
+
+        if bitriseStore.groupByCommitHash {
+            groupId = commitHash
+            groupItemDescription = triggeredWorkflow
+        }
+
         var buildStatus: BuildStatus = .unknown
         switch status {
             case .running: buildStatus = BuildStatus.running
@@ -35,6 +45,6 @@ extension BitriseBuild {
         }
 
         let url = "https://app.bitrise.io/build/\(slug)#?tab=log"
-        return Build(status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: triggeredWorkflow)
+        return BuildRepresentation(wrapped: Build(status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: triggeredWorkflow, groupId: groupId, groupItemDescription: groupItemDescription))
     }
 }
