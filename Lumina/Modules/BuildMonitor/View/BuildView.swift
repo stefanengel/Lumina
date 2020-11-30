@@ -1,4 +1,5 @@
 import SwiftUI
+import BuildStatusChecker
 
 struct BuildView: View {
     private var viewModel: BuildViewModel
@@ -28,6 +29,11 @@ struct BuildView: View {
                         Text("\(viewModel.subtitle!)")
                         .font(.system(size: 12))
                     }
+                    HStack {
+                        ForEach(viewModel.subBuilds, id: \.self) { subBuild in
+                            SubBuildView(viewModel: SubBuildViewModel(from: subBuild))
+                        }
+                    }
                 }
             }
             Spacer()
@@ -50,6 +56,13 @@ struct BuildView: View {
 
 struct BuildView_Previews: PreviewProvider {
     static var previews: some View {
-        BuildView(viewModel: BuildViewModel(title: "Test Build", triggeredAt: "Triggered at", subtitle: "This is a subtitle", backgroundColor: .green, url: ""))
+        let runningBuild = Build(buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
+        let succeededBuild = Build(buildNumber: 12345, status: .success, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
+
+        return Group {
+            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: runningBuild)))
+            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: succeededBuild)))
+            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: GroupedBuild(builds: [BuildRepresentation(wrapped: runningBuild), BuildRepresentation(wrapped: succeededBuild)]))))
+        }
     }
 }

@@ -119,8 +119,8 @@ struct PreferencesView: View {
                         TextField("Bitrise base URL", text: $viewModel.bitriseBaseUrl)
                         TextField("Bitrise auth token", text: $viewModel.bitriseAuthToken)
                         TextField("Bitrise app slug", text: $viewModel.bitriseAppSlug)
-                        Toggle(isOn: $viewModel.groupByCommitHash) {
-                            Text("Group builds by commit hash")
+                        Toggle(isOn: $viewModel.groupByBuildNumber) {
+                            Text("Group triggered builds by parent build number")
                         }
                     }
                     .padding(.leading)

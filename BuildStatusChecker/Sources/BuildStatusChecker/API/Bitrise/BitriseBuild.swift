@@ -10,7 +10,32 @@ public enum BitriseBuildStatus: Int {
 
 extension BitriseBuildStatus: Codable {}
 
+public struct OriginalBuildParams: Codable {
+    public let branch: Branch
+    public let environments: [[String: String]]?
+
+    public var sourceBitriseBuildNumber: Int? {
+        guard let environments = environments else { return nil }
+
+        let sourceBitriseBuildNumberKey = "SOURCE_BITRISE_BUILD_NUMBER"
+
+        #warning("This is horrible, but the JSON structure is crappy")
+        // "environments": [{
+        //  "value": "24572",
+        //  "key": "SOURCE_BITRISE_BUILD_NUMBER"
+        // }],
+        for dict in environments {
+            if dict.values.contains(sourceBitriseBuildNumberKey), let numberString = dict["value"] {
+                return Int(numberString)
+            }
+        }
+
+        return nil
+    }
+}
+
 public struct BitriseBuild: Codable {
+    let buildNumber: Int
     let triggeredAt: Date
     let startedOnWorkerAt: Date?
     let finishedAt: Date?
@@ -21,6 +46,11 @@ public struct BitriseBuild: Codable {
     let triggeredWorkflow: String
     let triggeredBy: String?
     let commitHash: String
+    let originalBuildParams: OriginalBuildParams?
+
+    var parentBuildNumber: Int? {
+        originalBuildParams?.sourceBitriseBuildNumber
+    }
 }
 
 // MARK: - Conversion
@@ -31,7 +61,7 @@ extension BitriseBuild {
         var groupId: String?
         var groupItemDescription: String?
 
-        if bitriseStore.groupByCommitHash {
+        if bitriseStore.groupByBuildNumber {
             groupId = commitHash
             groupItemDescription = triggeredWorkflow
         }
@@ -45,6 +75,6 @@ extension BitriseBuild {
         }
 
         let url = "https://app.bitrise.io/build/\(slug)#?tab=log"
-        return BuildRepresentation(wrapped: Build(status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: triggeredWorkflow, groupId: groupId, groupItemDescription: groupItemDescription))
+        return BuildRepresentation(wrapped: Build(buildNumber: buildNumber, parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber, status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: triggeredWorkflow, commitHash: commitHash, groupId: groupId, groupItemDescription: groupItemDescription))
     }
 }

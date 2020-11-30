@@ -14,6 +14,14 @@ extension BuildRepresentation: BuildProtocol {
         wrapped.id
     }
 
+    public var buildNumber: Int {
+        wrapped.buildNumber
+    }
+
+    public var parentBuildNumber: Int? {
+        wrapped.parentBuildNumber
+    }
+
     public var status: BuildStatus {
         wrapped.status
     }
@@ -38,12 +46,24 @@ extension BuildRepresentation: BuildProtocol {
         wrapped.info
     }
 
+    public var commitHash: String {
+        wrapped.commitHash
+    }
+
     public var groupId: String? {
         wrapped.groupId
     }
 
     public var groupItemDescription: String? {
         wrapped.groupItemDescription
+    }
+
+    public var isGroupedBuild: Bool {
+        wrapped is GroupedBuild
+    }
+
+    public var subBuilds: [BuildRepresentation] {
+        (wrapped as? GroupedBuild)?.builds ?? []
     }
 }
 

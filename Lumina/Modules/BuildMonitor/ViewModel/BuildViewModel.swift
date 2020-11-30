@@ -1,14 +1,15 @@
-import Cocoa
 import SwiftUI
 import BuildStatusChecker
 
-struct BuildViewModel {
-    var title: String
-    var triggeredAt: String
+class BuildViewModel: ObservableObject {
+    let title: String
+    let triggeredAt: String
     var subtitle: String?
-    var backgroundColor: Color
-    var url: String
-    var isRunning: Bool = false
+    let backgroundColor: Color
+    let url: String
+    let subBuilds: [BuildRepresentation]
+
+    @Published var isRunning: Bool = false
 
     init(from build: BuildRepresentation) {
         title = build.wrapped.branch
@@ -47,14 +48,7 @@ struct BuildViewModel {
         }
 
         url = build.url
-    }
-
-    init(title: String, triggeredAt: String, subtitle: String? = nil, backgroundColor: Color, url: String) {
-        self.title = title
-        self.triggeredAt = triggeredAt
-        self.subtitle = subtitle
-        self.backgroundColor = backgroundColor
-        self.url = url
+        subBuilds = build.subBuilds
     }
 
     func openInBrowser() {

@@ -15,8 +15,8 @@ class BitriseConfiguration {
         bitrise.readWorkflowList()
     }
 
-    public var groupByCommitHash: Bool {
-        bitrise.groupByCommitHash
+    public var groupByBuildNumber: Bool {
+        bitrise.groupByBuildNumber
     }
 
     public var isComplete: Bool {

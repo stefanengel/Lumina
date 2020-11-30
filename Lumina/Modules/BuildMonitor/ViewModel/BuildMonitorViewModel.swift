@@ -98,16 +98,12 @@ extension BuildMonitorViewModel {
     private var allBuilds: [BuildRepresentation] {
         var allBuilds = [BuildRepresentation]()
 
-        allBuilds.append(contentsOf: buildRepresentation(from: development))
-        allBuilds.append(contentsOf: buildRepresentation(from: master))
-        allBuilds.append(contentsOf: buildRepresentation(from: release))
-        allBuilds.append(contentsOf: buildRepresentation(from: hotfix))
-        allBuilds.append(contentsOf: buildRepresentation(from: feature))
+        allBuilds.append(contentsOf: development)
+        allBuilds.append(contentsOf: master)
+        allBuilds.append(contentsOf: release)
+        allBuilds.append(contentsOf: hotfix)
+        allBuilds.append(contentsOf: feature)
 
         return allBuilds
-    }
-
-    private func buildRepresentation(from builds: [BuildProtocol]) -> [BuildRepresentation] {
-        builds.map{ BuildRepresentation(wrapped: $0) }
     }
 }
