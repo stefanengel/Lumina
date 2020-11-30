@@ -1,57 +1,64 @@
 import Foundation
 
-class GroupedBuild: BuildProtocol {
-    public var id: String {
-        if let info = info {
-            return "\(branch)_\(info)"
-        }
-        else {
-            return branch
-        }
+public class GroupedBuild: BuildProtocol {
+    public var buildNumber: Int {
+        builds.first?.buildNumber ?? 0
     }
 
-    var status: BuildStatus {
+    public var parentBuildNumber: Int? {
+        builds.first?.parentBuildNumber
+    }
+
+    public var id: String {
+        branch
+    }
+
+    public var status: BuildStatus {
         builds.first?.status ?? .unknown
     }
 
-    var branch: Branch {
+    public var branch: Branch {
         builds.first?.branch ?? "Unknown branch"
     }
 
-    var triggeredAt: Date {
+    public var triggeredAt: Date {
         builds.first?.triggeredAt ?? Date()
     }
 
-    var startedAt: Date? {
+    public var startedAt: Date? {
         builds.first?.startedAt
     }
 
-    var url: String {
+    public var url: String {
         builds.first!.url
     }
 
-    var info: String? {
+    public var info: String? {
         builds.first?.info
     }
 
-    var groupId: String? {
+    public var commitHash: String {
+        builds.first?.commitHash ?? "Unknown commit hash"
+    }
+
+    public var groupId: String? {
         builds.first?.groupId
     }
 
-    var groupItemDescription: String? {
+    public var groupItemDescription: String? {
         builds.first?.groupItemDescription
     }
 
-    var builds: [BuildRepresentation]
+    public var builds: [BuildRepresentation]
 
-    init(builds: [BuildRepresentation]) {
+    public init(builds: [BuildRepresentation]) {
         if builds.isEmpty {
             assertionFailure("Cannot initialize a GroupedBuild with 0 builds!")
         }
         self.builds = builds.sorted{ $0 < $1 }
     }
 
-    func append(build: BuildRepresentation) {
+    public func append(build: BuildRepresentation) {
         builds.append(build)
     }
 }

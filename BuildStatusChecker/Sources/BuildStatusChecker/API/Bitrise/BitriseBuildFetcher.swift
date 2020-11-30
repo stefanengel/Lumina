@@ -58,15 +58,16 @@ extension BitriseBuildFetcher: BuildFetcher {
 
             os_log("Received %{PUBLIC}d builds", log: OSLog.buildFetcher, type: .debug, bitriseBuilds.data.count)
 
-            if config.groupByCommitHash {
+            if config.groupByBuildNumber {
                 var buildGroups = [String: GroupedBuild]()
                 for bitriseBuild in bitriseBuilds.data {
-                    if let existingGroup = buildGroups[bitriseBuild.commitHash] {
+                    // grouping commitHash is not enough since rolling builds will have the same hash, we have to group by build number
+                    if let existingGroup = buildGroups["\(bitriseBuild.parentBuildNumber ?? bitriseBuild.buildNumber)"] {
                         existingGroup.append(build: bitriseBuild.asBuildRepresentation)
                     }
                     else {
                         let newGroup = GroupedBuild(builds: [bitriseBuild.asBuildRepresentation])
-                        buildGroups[bitriseBuild.commitHash] = newGroup
+                        buildGroups["\(bitriseBuild.parentBuildNumber ?? bitriseBuild.buildNumber)"] = newGroup
                     }
                 }
 

@@ -5,16 +5,16 @@ public class BitriseStore {
     private let keychain = KeychainSwift()
     private let defaults = UserDefaults.standard
     private let workflowListKey = "workflowList"
-    private let groupByCommitHashKey = "groupByCommitHash"
+    private let groupByBuildNumberKey = "groupByBuildNumber"
 
     public init() {}
 
-    public var groupByCommitHash: Bool {
+    public var groupByBuildNumber: Bool {
         get {
-            defaults.bool(forKey: groupByCommitHashKey)
+            defaults.bool(forKey: groupByBuildNumberKey)
         }
         set {
-            defaults.set(newValue, forKey: groupByCommitHashKey)
+            defaults.set(newValue, forKey: groupByBuildNumberKey)
         }
     }
 

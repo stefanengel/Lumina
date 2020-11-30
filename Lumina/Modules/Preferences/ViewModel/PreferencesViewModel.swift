@@ -16,7 +16,7 @@ class PreferencesViewModel: ObservableObject {
     @Published var bitriseBaseUrl: String = ""
     @Published var bitriseAuthToken: String = ""
     @Published var bitriseAppSlug: String = ""
-    @Published var groupByCommitHash: Bool = false
+    @Published var groupByBuildNumber: Bool = false
 
     private let settings: SettingsStoreProtocol = SettingsStore()
     private let bitrise: BitriseStore = BitriseStore()
@@ -35,7 +35,7 @@ class PreferencesViewModel: ObservableObject {
         bitriseBaseUrl = bitrise.read(setting: .bitriseBaseUrl)
         bitriseAuthToken = bitrise.read(setting: .bitriseAuthToken)
         bitriseAppSlug = bitrise.read(setting: .bitriseAppSlug)
-        groupByCommitHash = bitrise.groupByCommitHash
+        groupByBuildNumber = bitrise.groupByBuildNumber
     }
 
     func saveProvider(bitriseBaseUrl: String, bitriseAuthToken: String, bitriseAppSlug: String) {
@@ -55,7 +55,7 @@ class PreferencesViewModel: ObservableObject {
         bitrise.store(setting: .bitriseBaseUrl, value: bitriseBaseUrl)
         bitrise.store(setting: .bitriseAuthToken, value: bitriseAuthToken)
         bitrise.store(setting: .bitriseAppSlug, value: bitriseAppSlug)
-        bitrise.groupByCommitHash = groupByCommitHash
+        bitrise.groupByBuildNumber = groupByBuildNumber
     }
 
     private func updateFromStore() {

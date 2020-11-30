@@ -81,7 +81,13 @@ extension BitriseAPI {
         jsonDecoder.dateDecodingStrategy = .iso8601
 
         let publisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
-        .map { $0.data }
+        .map {
+            let text = String(data: $0.data, encoding: .utf8)
+            if let dict = try? JSONSerialization.jsonObject(with: $0.data, options: []) as? [String: Any] {
+                debugPrint(dict)
+            }
+            return $0.data
+        }
         .decode(type: BitriseBuilds.self, decoder: jsonDecoder)
 
         return publisher
