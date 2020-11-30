@@ -19,6 +19,10 @@ struct SubBuildView: View {
         .background(viewModel.backgroundColor)
         .cornerRadius(15)
         .opacity(opacity)
+        .overlay(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color.white, lineWidth: 2)
+        )
         .onTapGesture {
             self.viewModel.openInBrowser()
         }
