@@ -51,6 +51,10 @@ public struct BitriseBuild: Codable {
     var parentBuildNumber: Int? {
         originalBuildParams?.sourceBitriseBuildNumber
     }
+
+    var groupId: String {
+        "\(commitHash)_\(parentBuildNumber ?? buildNumber)"
+    }
 }
 
 // MARK: - Conversion
