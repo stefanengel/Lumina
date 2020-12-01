@@ -29,7 +29,7 @@ struct BuildView: View {
                         Text("\(viewModel.subtitle!)")
                         .font(.system(size: 12))
                     }
-                    if viewModel.subBuilds.count > 0 {
+                    if viewModel.hasSubBuilds {
                         HStack {
                             ForEach(viewModel.subBuilds, id: \.self) { subBuild in
                                 SubBuildView(viewModel: SubBuildViewModel(from: subBuild))
@@ -50,7 +50,7 @@ struct BuildView: View {
             self.viewModel.openInBrowser()
         }
         .onAppear() {
-            if self.viewModel.isRunning {
+            if self.viewModel.isRunning && !self.viewModel.hasSubBuilds {
                 withAnimation(self.repeatingAnimation) { self.opacity = 0.5 }
             }
         }
