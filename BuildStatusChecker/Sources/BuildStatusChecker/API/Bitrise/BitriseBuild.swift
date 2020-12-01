@@ -46,6 +46,7 @@ public struct BitriseBuild: Codable {
     let triggeredWorkflow: String
     let triggeredBy: String?
     let commitHash: String
+    let commitMessage: String?
     let originalBuildParams: OriginalBuildParams?
 
     var parentBuildNumber: Int? {
@@ -54,6 +55,18 @@ public struct BitriseBuild: Codable {
 
     var groupId: String {
         "\(commitHash)_\(parentBuildNumber ?? buildNumber)"
+    }
+
+    var info: String {
+        let settings = BitriseStore()
+
+        if settings.groupByBuildNumber {
+            if let commitMessage = commitMessage?.split(separator: "\n").first {
+                return "\(triggeredWorkflow) - \(commitMessage)"
+            }
+        }
+
+        return "\(triggeredWorkflow)"
     }
 }
 
@@ -79,6 +92,6 @@ extension BitriseBuild {
         }
 
         let url = "https://app.bitrise.io/build/\(slug)#?tab=log"
-        return BuildRepresentation(wrapped: Build(buildNumber: buildNumber, parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber, status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: triggeredWorkflow, commitHash: commitHash, groupId: groupId, groupItemDescription: groupItemDescription))
+        return BuildRepresentation(wrapped: Build(buildNumber: buildNumber, parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber, status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: info, commitHash: commitHash, groupId: groupId, groupItemDescription: groupItemDescription))
     }
 }

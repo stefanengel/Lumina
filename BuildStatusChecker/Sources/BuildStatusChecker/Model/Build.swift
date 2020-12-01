@@ -21,11 +21,7 @@ public struct Build: BuildProtocol {
     private let settings: SettingsStoreProtocol = SettingsStore()
 
     public var id: String {
-        if let parentBuildNumber = parentBuildNumber {
-            return "\(parentBuildNumber)"
-        }
-
-        return "\(buildNumber)"
+        "\(branch)_\(info ?? "")"
     }
 
     public init(buildNumber: Int, parentBuildNumber: Int? = nil, status: BuildStatus, branch: Branch, triggeredAt: Date, startedAt: Date? = nil, url: String, info: String? = nil, commitHash: String, groupId: String? = nil, groupItemDescription: String? = nil) {
