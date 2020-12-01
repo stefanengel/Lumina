@@ -13,15 +13,15 @@ class SubBuildViewModel: ObservableObject {
         url = build.url
 
         switch build.status {
-            case .success: backgroundColor = .green
+            case .success: backgroundColor = Colors.emerald
             case .failed(_):
-                backgroundColor = .red
+                backgroundColor = Colors.alizarin
             case .running:
-                backgroundColor = .blue
+                backgroundColor = Colors.belizeHole
                 isRunning = true
             case .aborted(_):
-                backgroundColor = .orange
-            default: backgroundColor = .gray
+                backgroundColor = Colors.carrot
+            default: backgroundColor = Colors.hoki
         }
     }
 

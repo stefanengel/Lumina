@@ -30,6 +30,7 @@
 		2C54564223E9DB5A00226FA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C54562F23E9DB5A00226FA2 /* AppDelegate.swift */; };
 		2C54564323E9DB5A00226FA2 /* IgnorePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */; };
 		2C54564723E9DB6300226FA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C54564523E9DB6300226FA2 /* Main.storyboard */; };
+		3B6F2FB52576FAE50072174B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F2FB42576FAE50072174B /* Colors.swift */; };
 		3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */; };
 		3BF07AF525742D0E00C7EE10 /* SubBuildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		2C54562F23E9DB5A00226FA2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnorePattern.swift; sourceTree = "<group>"; };
 		2C54564623E9DB6300226FA2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
+		3B6F2FB42576FAE50072174B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildViewModel.swift; sourceTree = "<group>"; };
 		3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,6 +122,7 @@
 		2C5455ED23E9D9BF00226FA2 /* Lumina */ = {
 			isa = PBXGroup;
 			children = (
+				3B6F2FB32576FAD20072174B /* Style */,
 				2C54564423E9DB6300226FA2 /* Base.lproj */,
 				2C54562D23E9DB5A00226FA2 /* App */,
 				2C54562F23E9DB5A00226FA2 /* AppDelegate.swift */,
@@ -260,6 +263,14 @@
 			path = Base.lproj;
 			sourceTree = "<group>";
 		};
+		3B6F2FB32576FAD20072174B /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				3B6F2FB42576FAE50072174B /* Colors.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -367,6 +378,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C54563523E9DB5A00226FA2 /* IgnorePatternRow.swift in Sources */,
+				3B6F2FB52576FAE50072174B /* Colors.swift in Sources */,
 				2C54563823E9DB5A00226FA2 /* BuildView.swift in Sources */,
 				2C54563323E9DB5A00226FA2 /* PreferencesViewModel.swift in Sources */,
 				2C54564323E9DB5A00226FA2 /* IgnorePattern.swift in Sources */,
