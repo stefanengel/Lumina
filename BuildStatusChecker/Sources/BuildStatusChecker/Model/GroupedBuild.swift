@@ -60,8 +60,5 @@ public class GroupedBuild: BuildProtocol {
 
     public func append(build: BuildRepresentation) {
         builds.append(build)
-        if builds.count > 5 {
-            debugPrint("whats going on?")
-        }
     }
 }
