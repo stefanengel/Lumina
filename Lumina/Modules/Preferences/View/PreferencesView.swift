@@ -29,15 +29,18 @@ struct PreferencesView: View {
                             .frame(maxHeight: .infinity)
                         Text("Hotfix branch prefix:")
                             .frame(maxHeight: .infinity)
-                        Text("Hide feature branches including:")
-                            .frame(maxHeight: .infinity)
                     }
                     VStack(spacing: 10.0) {
                         TextField("master", text: $viewModel.masterBranchName)
+                            .frame(maxHeight: .infinity)
                         TextField("develop", text: $viewModel.developBranchName)
+                            .frame(maxHeight: .infinity)
                         TextField("feature/", text: $viewModel.featureBranchPrefix)
+                            .frame(maxHeight: .infinity)
                         TextField("release/", text: $viewModel.releaseBranchPrefix)
+                            .frame(maxHeight: .infinity)
                         TextField("hotfix/", text: $viewModel.hotfixBranchPrefix)
+                            .frame(maxHeight: .infinity)
                     }
                     .padding(.leading)
                 }
@@ -117,17 +120,22 @@ struct PreferencesView: View {
                     }
                     VStack(spacing: 10.0) {
                         TextField("Bitrise base URL", text: $viewModel.bitriseBaseUrl)
+                            .frame(maxHeight: .infinity)
                         TextField("Bitrise auth token", text: $viewModel.bitriseAuthToken)
+                            .frame(maxHeight: .infinity)
                         TextField("Bitrise app slug", text: $viewModel.bitriseAppSlug)
-                        Toggle(isOn: $viewModel.groupByBuildNumber) {
-                            Text("Group triggered builds by parent build number")
-                        }
+                            .frame(maxHeight: .infinity)
                     }
                     .padding(.leading)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10.0)
 //                .fixedSize(horizontal: false, vertical: true)
+
+                Toggle(isOn: $viewModel.groupByBuildNumber) {
+                    Text("Group triggered builds by parent build number")
+                }
+                .padding(.vertical)
 
                 // Workflows
                 HStack {
@@ -173,6 +181,7 @@ struct PreferencesView: View {
             .tabItem({ Text("Provider") })
             .tag(0)
         }
+        .padding(.top)
     }
 
     struct PreferencesView_Previews: PreviewProvider {
