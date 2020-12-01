@@ -11,6 +11,10 @@ class BuildViewModel: ObservableObject {
 
     @Published var isRunning: Bool = false
 
+    var hasSubBuilds: Bool {
+        !subBuilds.isEmpty
+    }
+
     init(from build: BuildRepresentation) {
         title = build.wrapped.branch
 
