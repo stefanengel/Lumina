@@ -9,25 +9,27 @@ struct BuildMonitorView: View {
     }
 
     var body: some View {
-        ScrollView(.vertical) {
+        VStack(spacing: 0) {
             TextField("🔍 Filter for branches containing", text: $viewModel.search)
+                .padding(.bottom)
+            ScrollView(.vertical) {
+                VStack(alignment: HorizontalAlignment.center, spacing: 20) {
+                    if viewModel.isLoading {
+                        ProgressIndicatorView()
+                    }
 
-            VStack(alignment: HorizontalAlignment.center, spacing: 20) {
-                if viewModel.isLoading {
-                    ProgressIndicatorView()
+                    viewModel.errorMessage.map { ErrorView(message: $0) }
+
+                    ForEach(viewModel.filteredBuilds, id: \.self) { build in
+                        BuildView(viewModel: BuildViewModel(from: build))
+                    }
+
+                    Spacer()
                 }
-
-                viewModel.errorMessage.map { ErrorView(message: $0) }
-
-                ForEach(viewModel.filteredBuilds, id: \.self) { build in
-                    BuildView(viewModel: BuildViewModel(from: build))
-                }
-
-                Spacer()
+                .padding(.leading, 15)
+                .padding(.trailing, 15)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .padding(.leading, 15)
-            .padding(.trailing, 15)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
