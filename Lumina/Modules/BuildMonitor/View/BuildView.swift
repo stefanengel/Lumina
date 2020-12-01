@@ -29,10 +29,13 @@ struct BuildView: View {
                         Text("\(viewModel.subtitle!)")
                         .font(.system(size: 12))
                     }
-                    HStack {
-                        ForEach(viewModel.subBuilds, id: \.self) { subBuild in
-                            SubBuildView(viewModel: SubBuildViewModel(from: subBuild))
+                    if viewModel.subBuilds.count > 0 {
+                        HStack {
+                            ForEach(viewModel.subBuilds, id: \.self) { subBuild in
+                                SubBuildView(viewModel: SubBuildViewModel(from: subBuild))
+                            }
                         }
+                        .padding(.top, 10)
                     }
                 }
             }
