@@ -62,12 +62,12 @@ extension BitriseBuildFetcher: BuildFetcher {
                 var buildGroups = [String: GroupedBuild]()
                 for bitriseBuild in bitriseBuilds.data {
                     // grouping commitHash is not enough since rolling builds will have the same hash, we have to group by build number
-                    if let existingGroup = buildGroups["\(bitriseBuild.parentBuildNumber ?? bitriseBuild.buildNumber)"] {
+                    if let existingGroup = buildGroups[bitriseBuild.groupId] {
                         existingGroup.append(build: bitriseBuild.asBuildRepresentation)
                     }
                     else {
                         let newGroup = GroupedBuild(builds: [bitriseBuild.asBuildRepresentation])
-                        buildGroups["\(bitriseBuild.parentBuildNumber ?? bitriseBuild.buildNumber)"] = newGroup
+                        buildGroups[bitriseBuild.groupId] = newGroup
                     }
                 }
 
