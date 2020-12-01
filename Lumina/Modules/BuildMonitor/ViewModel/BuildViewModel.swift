@@ -25,21 +25,21 @@ class BuildViewModel: ObservableObject {
         triggeredAt = dateFormatter.string(from: build.triggeredAt)
 
         switch build.status {
-            case .success: backgroundColor = .green
+            case .success: backgroundColor = Colors.emerald
             case .failed(let error):
-                backgroundColor = .red
+                backgroundColor = Colors.alizarin
                 if let error = error {
                     subtitle = "\(error)\n"
                 }
             case .running:
-                backgroundColor = .blue
+                backgroundColor = Colors.belizeHole
                 isRunning = true
             case .aborted(let reason):
-                backgroundColor = .orange
+                backgroundColor = Colors.carrot
                 if let reason = reason {
                     subtitle = "\(reason)\n"
                 }
-            default: backgroundColor = .gray
+            default: backgroundColor = Colors.hoki
         }
 
         if let info = build.info {
