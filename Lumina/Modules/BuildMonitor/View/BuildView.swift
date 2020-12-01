@@ -28,6 +28,7 @@ struct BuildView: View {
                     if viewModel.subtitle != nil {
                         Text("\(viewModel.subtitle!)")
                         .font(.system(size: 12))
+                            .padding(.top, 5)
                     }
                     if viewModel.hasSubBuilds {
                         HStack {
@@ -59,7 +60,7 @@ struct BuildView: View {
 
 struct BuildView_Previews: PreviewProvider {
     static var previews: some View {
-        let runningBuild = Build(buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
+        let runningBuild = Build(buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", info: "Some info text", commitHash: "abc")
         let succeededBuild = Build(buildNumber: 12345, status: .success, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
 
         return Group {
