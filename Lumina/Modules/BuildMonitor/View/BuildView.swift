@@ -20,7 +20,7 @@ struct BuildView: View {
         HStack {
             Spacer()
             VStack {
-                Text("\(viewModel.title)")
+                Text("\(viewModel.decoratedTitle)")
                 .font(.system(size: 20))
                 Text("\(viewModel.triggeredAt)")
                 .font(.system(size: 12))

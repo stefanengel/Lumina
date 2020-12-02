@@ -8,6 +8,13 @@ class BuildViewModel: ObservableObject {
     let backgroundColor: Color
     let url: String
     let subBuilds: [BuildRepresentation]
+    var decoratedTitle: String {
+        if ChristmasDecorationProvider.showChristmasDecorations {
+            return ChristmasDecorationProvider.decorate(text: title)
+        }
+
+        return title
+    }
 
     @Published var isRunning: Bool = false
 
