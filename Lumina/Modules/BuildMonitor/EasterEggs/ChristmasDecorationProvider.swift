@@ -1,7 +1,7 @@
 import Foundation
 
 struct ChristmasDecorationProvider {
-    static let decorations = ["🎄", "🎁", "❄️", "☃️", "🛷"]
+    static let decorations = ["🎄", "🎁", "❄️", "☃️", "🛷", "🌟", "🔔"]
     static var decorationIndex = 0
 
     static var showChristmasDecorations: Bool {
