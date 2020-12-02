@@ -3,7 +3,7 @@ import AppKit
 import BuildStatusChecker
 
 class StatusItemViewModel {
-    private static let strokeWidth: CGFloat = -3.0
+    private static let strokeWidth: CGFloat = -1.0
 
     static let successfulBuildAttributes: [NSAttributedString.Key: Any] = [
         .foregroundColor: NSColor.systemGreen,

@@ -59,14 +59,30 @@ class StatusItemView: NSObject {
 extension StatusItemView {
     func statusItem(for build: BuildRepresentation) -> NSMenuItem {
         var string = build.wrapped.branch
+        let attributedTitle = NSAttributedString(string: string, attributes: viewModel.attributes(for: build.wrapped.status))
 
-        if let info = build.wrapped.info {
-            string.append(" - \(info)")
+        let statusAttributedString = NSMutableAttributedString()
+        statusAttributedString.append(attributedTitle)
+
+        if build.subBuilds.isEmpty {
+            if let info = build.wrapped.info {
+                string.append(" - \(info)")
+            }
+        }
+        else {
+            for build in build.subBuilds {
+                if let workflow = build.groupItemDescription {
+                    let attributedWorkflow = NSAttributedString(string: " [\(workflow)]", attributes: viewModel.attributes(for: build.wrapped.status))
+                    statusAttributedString.append(attributedWorkflow)
+                }
+            }
+
+            let workflows = build.subBuilds.compactMap{ $0.groupItemDescription }
+            workflows.forEach{ string.append(" [\($0)]") }
         }
 
-        let attributedTitle = NSAttributedString(string: string, attributes: viewModel.attributes(for: build.wrapped.status))
         let menuItem = NSMenuItem(title: build.wrapped.branch, action: #selector(openInBrowser(sender:)), keyEquivalent: "")
-        menuItem.attributedTitle = attributedTitle
+        menuItem.attributedTitle = statusAttributedString
         menuItem.target = self
         menuItem.representedObject = build.wrapped
 
