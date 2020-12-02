@@ -31,6 +31,7 @@
 		2C54564323E9DB5A00226FA2 /* IgnorePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */; };
 		2C54564723E9DB6300226FA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C54564523E9DB6300226FA2 /* Main.storyboard */; };
 		3B6F2FB52576FAE50072174B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F2FB42576FAE50072174B /* Colors.swift */; };
+		3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */; };
 		3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */; };
 		3BF07AF525742D0E00C7EE10 /* SubBuildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */; };
 /* End PBXBuildFile section */
@@ -75,6 +76,7 @@
 		2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnorePattern.swift; sourceTree = "<group>"; };
 		2C54564623E9DB6300226FA2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
 		3B6F2FB42576FAE50072174B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChristmasDecorationProvider.swift; sourceTree = "<group>"; };
 		3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildViewModel.swift; sourceTree = "<group>"; };
 		3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -199,6 +201,7 @@
 		2C54561D23E9DB5A00226FA2 /* BuildMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				3BC17F482577C5E600DEBAA7 /* EasterEggs */,
 				2C54561E23E9DB5A00226FA2 /* ViewModel */,
 				2C54562123E9DB5A00226FA2 /* View */,
 			);
@@ -269,6 +272,14 @@
 				3B6F2FB42576FAE50072174B /* Colors.swift */,
 			);
 			path = Style;
+			sourceTree = "<group>";
+		};
+		3BC17F482577C5E600DEBAA7 /* EasterEggs */ = {
+			isa = PBXGroup;
+			children = (
+				3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */,
+			);
+			path = EasterEggs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -386,6 +397,7 @@
 				2C54563A23E9DB5A00226FA2 /* BuildMonitorView.swift in Sources */,
 				2C54563E23E9DB5A00226FA2 /* StatusItemCoordinator.swift in Sources */,
 				2C54563F23E9DB5A00226FA2 /* ModelObserver.swift in Sources */,
+				3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */,
 				2C54564023E9DB5A00226FA2 /* BuildMonitorModel.swift in Sources */,
 				2C54564223E9DB5A00226FA2 /* AppDelegate.swift in Sources */,
 				2C54563C23E9DB5A00226FA2 /* StatusItemView.swift in Sources */,
