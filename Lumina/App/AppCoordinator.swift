@@ -121,7 +121,7 @@ extension AppCoordinator {
         flakeEmitterCell.scaleRange = 0.3
         flakeEmitterCell.emissionRange = .pi
         flakeEmitterCell.lifetime = 20.0
-        flakeEmitterCell.birthRate = 40
+        flakeEmitterCell.birthRate = 20
         flakeEmitterCell.velocity = -30
         flakeEmitterCell.velocityRange = -20
         flakeEmitterCell.yAcceleration = 30
