@@ -62,7 +62,7 @@ public struct BitriseBuild: Codable {
 
         if settings.groupByBuildNumber {
             if let commitMessage = commitMessage?.split(separator: "\n").first {
-                return "\(triggeredWorkflow) - \(commitMessage)"
+                return "\(commitMessage)"
             }
         }
 
