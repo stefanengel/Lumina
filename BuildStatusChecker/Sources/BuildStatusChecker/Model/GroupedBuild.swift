@@ -60,5 +60,6 @@ public class GroupedBuild: BuildProtocol {
 
     public func append(build: BuildRepresentation) {
         builds.append(build)
+        self.builds = builds.sorted{ $0 < $1 }
     }
 }
