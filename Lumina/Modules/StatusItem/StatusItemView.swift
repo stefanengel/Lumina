@@ -58,27 +58,25 @@ class StatusItemView: NSObject {
 // MARK: - Mapping builds to status items
 extension StatusItemView {
     func statusItem(for build: BuildRepresentation) -> NSMenuItem {
-        var string = build.wrapped.branch
-        let attributedTitle = NSAttributedString(string: string, attributes: viewModel.attributes(for: build.wrapped.status))
-
         let statusAttributedString = NSMutableAttributedString()
-        statusAttributedString.append(attributedTitle)
+        statusAttributedString.append(NSAttributedString(string: "●", attributes: viewModel.attributes(for: build.wrapped.status)))
+        statusAttributedString.append(NSAttributedString(string: " \(build.wrapped.branch)"))
 
         if build.subBuilds.isEmpty {
             if let info = build.wrapped.info {
-                string.append(" - \(info)")
+                statusAttributedString.append(NSMutableAttributedString(string: " - \(info)"))
             }
         }
         else {
             for build in build.subBuilds {
                 if let workflow = build.groupItemDescription {
-                    let attributedWorkflow = NSAttributedString(string: " [\(workflow)]", attributes: viewModel.attributes(for: build.wrapped.status))
-                    statusAttributedString.append(attributedWorkflow)
+                    let workflowAttributedString = NSMutableAttributedString()
+                    workflowAttributedString.append(NSAttributedString(string: " ["))
+                    workflowAttributedString.append(NSAttributedString(string: "●", attributes: viewModel.attributes(for: build.wrapped.status)))
+                    workflowAttributedString.append(NSAttributedString(string: " \(workflow)]"))
+                    statusAttributedString.append(workflowAttributedString)
                 }
             }
-
-            let workflows = build.subBuilds.compactMap{ $0.groupItemDescription }
-            workflows.forEach{ string.append(" [\($0)]") }
         }
 
         let menuItem = NSMenuItem(title: build.wrapped.branch, action: #selector(openInBrowser(sender:)), keyEquivalent: "")
