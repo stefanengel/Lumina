@@ -107,10 +107,10 @@ extension AppCoordinator: NSWindowDelegate {
     }
 }
 
+// MARK: - Fancy snow effect
 extension AppCoordinator {
     func createFireWorks() {
         guard let mainView = buildMonitorWindow?.contentView else { return }
-        self.rootLayer.bounds = mainView.bounds
 
         let image = NSImage(named: "snow")
         let img:CGImage = (image?.cgImage(forProposedRect: nil, context: nil, hints: nil))!
@@ -139,16 +139,15 @@ extension AppCoordinator {
         snowEmitterLayer.backgroundColor = CGColor.clear
 
         let snowView = SnowView(frame: mainView.frame)
+        snowView.frame = mainView.bounds
         self.rootLayer.addSublayer(snowEmitterLayer)
         snowView.layer = rootLayer
         snowView.wantsLayer = true
         snowView.needsDisplay = true
+        snowView.autoresizingMask = [.width, .height]
 
         mainView.addSubview(snowView)
-//        self.rootLayer.addSublayer(snowEmitterLayer)
-//        mainView.layer?.addSublayer(rootLayer)
-//        mainView.wantsLayer = true
-//        mainView.needsDisplay = true
+        mainView.autoresizesSubviews = true
     }
 }
 
