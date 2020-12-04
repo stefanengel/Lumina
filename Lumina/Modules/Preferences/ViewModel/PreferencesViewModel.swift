@@ -19,7 +19,7 @@ class PreferencesViewModel: ObservableObject {
     @Published var groupByBuildNumber: Bool = false
     @Published var disableSeasonalDecorations: Bool = false
 
-    private let settings: SettingsStoreProtocol = SettingsStore()
+    private var settings: SettingsStoreProtocol = SettingsStore()
     private let bitrise: BitriseStore = BitriseStore()
 
     init() {
@@ -29,6 +29,7 @@ class PreferencesViewModel: ObservableObject {
         featureBranchPrefix = settings.read(setting: .featureBranchPrefix)
         releaseBranchPrefix = settings.read(setting: .releaseBranchPrefix)
         hotfixBranchPrefix = settings.read(setting: .hotfixBranchPrefix)
+        disableSeasonalDecorations = settings.disableSeasonalDecorations
 
         ignoreList = Set(settings.readBranchIgnoreList().map{ IgnorePattern(pattern: $0) })
         workflowList = Set(bitrise.readWorkflowList())
@@ -44,6 +45,7 @@ class PreferencesViewModel: ObservableObject {
 
     func saveSettings() {
         settings.store(updateInterval: updateIntervalInSeconds)
+        settings.disableSeasonalDecorations = disableSeasonalDecorations
         settings.store(value: masterBranchName, for: .masterBranchName)
         settings.store(value: developBranchName, for: .developBranchName)
         settings.store(value: featureBranchPrefix, for: .featureBranchPrefix)
