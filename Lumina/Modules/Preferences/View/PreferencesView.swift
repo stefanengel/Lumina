@@ -48,6 +48,11 @@ struct PreferencesView: View {
 //                .fixedSize(horizontal: false, vertical: true)
 
                 VStack(alignment: HorizontalAlignment.leading) {
+                    Toggle(isOn: $viewModel.disableSeasonalDecorations) {
+                        Text("Disable seasonal decorations")
+                    }
+                    .padding(.vertical)
+
                     HStack {
                         VStack {
                             Text("Update interval:")
