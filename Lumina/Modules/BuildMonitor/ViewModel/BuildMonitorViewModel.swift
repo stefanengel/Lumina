@@ -29,11 +29,15 @@ class BuildMonitorViewModel: ObservableObject {
     }
 
     private func updateFilteredBuilds() {
-        if search.isEmpty {
-            filteredBuilds = allBuilds
-        }
-        else {
-            filteredBuilds = allBuilds.filter{ $0.branch.contains(search) }
+        DispatchQueue.main.async {
+            withAnimation {
+                if self.search.isEmpty {
+                    self.filteredBuilds = self.allBuilds
+                }
+                else {
+                    self.filteredBuilds = self.allBuilds.filter{ $0.branch.contains(self.search) }
+                }
+            }
         }
     }
 
