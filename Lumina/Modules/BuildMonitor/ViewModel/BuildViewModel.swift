@@ -5,7 +5,6 @@ class BuildViewModel: ObservableObject {
     let build: BuildRepresentation
     let title: String
     let triggeredAt: String
-    let backgroundColor: Color
     let url: String
     let subBuilds: [BuildRepresentation]
     var decoratedTitle: String {
@@ -46,6 +45,16 @@ class BuildViewModel: ObservableObject {
         return result
     }
 
+    var backgroundColor: Color {
+        switch build.status {
+            case .success: return Colors.emerald
+            case .failed(_): return Colors.alizarin
+            case .running: return Colors.belizeHole
+            case .aborted(_): return Colors.carrot
+            default: return Colors.hoki
+        }
+    }
+
     init(from build: BuildRepresentation) {
         self.build = build
         title = build.wrapped.branch
@@ -56,16 +65,8 @@ class BuildViewModel: ObservableObject {
         dateFormatter.locale = Locale.current
         triggeredAt = dateFormatter.string(from: build.triggeredAt)
 
-        switch build.status {
-            case .success: backgroundColor = Colors.emerald
-            case .failed(let error):
-                backgroundColor = Colors.alizarin
-            case .running:
-                backgroundColor = Colors.belizeHole
-                isRunning = true
-            case .aborted(let reason):
-                backgroundColor = Colors.carrot
-            default: backgroundColor = Colors.hoki
+        if case .running = build.status {
+            isRunning = true
         }
 
         url = build.url
