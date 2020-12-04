@@ -17,6 +17,7 @@ class PreferencesViewModel: ObservableObject {
     @Published var bitriseAuthToken: String = ""
     @Published var bitriseAppSlug: String = ""
     @Published var groupByBuildNumber: Bool = false
+    @Published var disableSeasonalDecorations: Bool = false
 
     private let settings: SettingsStoreProtocol = SettingsStore()
     private let bitrise: BitriseStore = BitriseStore()
@@ -47,6 +48,7 @@ class PreferencesViewModel: ObservableObject {
         settings.store(value: developBranchName, for: .developBranchName)
         settings.store(value: featureBranchPrefix, for: .featureBranchPrefix)
         settings.store(value: releaseBranchPrefix, for: .releaseBranchPrefix)
+        settings.store(value: hotfixBranchPrefix, for: .hotfixBranchPrefix)
         settings.store(value: hotfixBranchPrefix, for: .hotfixBranchPrefix)
 
         settings.store(branchIgnoreList: ignoreList.map { $0.pattern })

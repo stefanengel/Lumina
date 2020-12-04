@@ -5,6 +5,7 @@ public class SettingsStore: SettingsStoreProtocol {
 
     private let updateIntervalKey = "updateInterval"
     private let branchIgnoreListKey = "branchIgnoreList"
+    private let disableSeasonalDecorationsKey = "disableSeasonalDecorations"
 
     public init() {}
 
@@ -36,5 +37,14 @@ public class SettingsStore: SettingsStoreProtocol {
 
     public func store(updateInterval: Int) {
         defaults.set(updateInterval, forKey: updateIntervalKey)
+    }
+
+    public var disableSeasonalDecorations: Bool {
+        get {
+            defaults.bool(forKey: disableSeasonalDecorationsKey)
+        }
+        set {
+            defaults.set(newValue, forKey: disableSeasonalDecorationsKey)
+        }
     }
 }

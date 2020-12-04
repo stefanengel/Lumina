@@ -6,4 +6,6 @@ public protocol SettingsStoreProtocol {
 
     func readUpdateInterval() -> Int
     func store(updateInterval: Int)
+
+    var disableSeasonalDecorations: Bool { get set }
 }
