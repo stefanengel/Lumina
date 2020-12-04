@@ -41,7 +41,7 @@ extension AppCoordinator {
             buildMonitorWindow?.isReleasedWhenClosed = false
             buildMonitorWindow?.makeKeyAndOrderFront(nil)
 
-            createFireWorks()
+            applyEasterEggs()
 
             buildMonitorModel.startUpdating()
         } else {
@@ -107,9 +107,18 @@ extension AppCoordinator: NSWindowDelegate {
     }
 }
 
+// MARK: - Easter eggs
+extension AppCoordinator {
+    func applyEasterEggs() {
+        if ChristmasDecorationProvider.showChristmasDecorations {
+            createSnowEffect()
+        }
+    }
+}
+
 // MARK: - Fancy snow effect
 extension AppCoordinator {
-    func createFireWorks() {
+    func createSnowEffect() {
         guard let mainView = buildMonitorWindow?.contentView else { return }
 
         let image = NSImage(named: "snow")
