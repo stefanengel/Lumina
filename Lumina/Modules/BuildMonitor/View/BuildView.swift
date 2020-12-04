@@ -25,11 +25,10 @@ struct BuildView: View {
                 Text("\(viewModel.triggeredAt)")
                 .font(.system(size: 12))
                 VStack {
-                    if viewModel.subtitle != nil {
-                        Text("\(viewModel.subtitle!)")
+                    Text("\(viewModel.subTitle)")
+                        .multilineTextAlignment(.center)
                         .font(.system(size: 12))
-                            .padding(.top, 5)
-                    }
+                        .padding(.top, 5)
                     if viewModel.hasSubBuilds {
                         HStack {
                             ForEach(viewModel.subBuilds, id: \.self) { subBuild in

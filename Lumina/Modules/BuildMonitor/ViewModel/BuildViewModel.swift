@@ -2,9 +2,9 @@ import SwiftUI
 import BuildStatusChecker
 
 class BuildViewModel: ObservableObject {
+    let build: BuildRepresentation
     let title: String
     let triggeredAt: String
-    var subtitle: String?
     let backgroundColor: Color
     let url: String
     let subBuilds: [BuildRepresentation]
@@ -22,7 +22,32 @@ class BuildViewModel: ObservableObject {
         !subBuilds.isEmpty
     }
 
+    var subTitle: String {
+        var result = ""
+
+        switch build.status {
+            case .failed(let error):
+                if let error = error {
+                    result.append("\(error)\n")
+                }
+            case .aborted(let reason):
+                if let reason = reason {
+                    result.append("\(reason)\n")
+                }
+            default: break
+        }
+
+        if let info = build.info {
+            result.append("\(info)\n")
+        }
+
+        result.append("#\(build.buildNumber)")
+
+        return result
+    }
+
     init(from build: BuildRepresentation) {
+        self.build = build
         title = build.wrapped.branch
 
         let dateFormatter = DateFormatter()
@@ -35,27 +60,12 @@ class BuildViewModel: ObservableObject {
             case .success: backgroundColor = Colors.emerald
             case .failed(let error):
                 backgroundColor = Colors.alizarin
-                if let error = error {
-                    subtitle = "\(error)\n"
-                }
             case .running:
                 backgroundColor = Colors.belizeHole
                 isRunning = true
             case .aborted(let reason):
                 backgroundColor = Colors.carrot
-                if let reason = reason {
-                    subtitle = "\(reason)\n"
-                }
             default: backgroundColor = Colors.hoki
-        }
-
-        if let info = build.info {
-            if var subtitle = subtitle {
-                subtitle.append(info)
-            }
-            else {
-                subtitle = info
-            }
         }
 
         url = build.url
