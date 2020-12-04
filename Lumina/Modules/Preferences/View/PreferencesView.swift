@@ -90,6 +90,7 @@ struct PreferencesView: View {
                             IgnorePatternRow(ignorePattern: substring, selectedIgnorePattern: self.$selectedIgnorePattern)
                             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                         }
+                        .frame(minHeight: 200)
                     }
                 }
                 .padding(.horizontal)
@@ -168,6 +169,7 @@ struct PreferencesView: View {
                         Text(workflow)
                         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                     }
+                    .frame(minHeight: 200)
                 }
 
                 Button(action: {
@@ -181,6 +183,7 @@ struct PreferencesView: View {
             .tabItem({ Text("Provider") })
             .tag(0)
         }
+        .frame(minHeight: 600)
         .padding(.top)
     }
 
