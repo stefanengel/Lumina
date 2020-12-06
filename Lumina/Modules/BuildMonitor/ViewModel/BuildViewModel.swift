@@ -1,17 +1,63 @@
-import Cocoa
 import SwiftUI
 import BuildStatusChecker
 
-struct BuildViewModel {
-    var title: String
-    var triggeredAt: String
-    var subtitle: String?
-    var backgroundColor: Color
-    var url: String
-    var isRunning: Bool = false
+class BuildViewModel: ObservableObject {
+    let build: BuildRepresentation
+    let title: String
+    let triggeredAt: String
+    let url: String
+    let subBuilds: [BuildRepresentation]
+    var decoratedTitle: String {
+        if ChristmasDecorationProvider.showChristmasDecorations {
+            return ChristmasDecorationProvider.decorate(text: title)
+        }
 
-    init(from build: Build) {
-        title = build.branch
+        return title
+    }
+
+    @Published var isRunning: Bool = false
+
+    var hasSubBuilds: Bool {
+        !subBuilds.isEmpty
+    }
+
+    var subTitle: String {
+        var result = ""
+
+        switch build.status {
+            case .failed(let error):
+                if let error = error {
+                    result.append("\(error)\n")
+                }
+            case .aborted(let reason):
+                if let reason = reason {
+                    result.append("\(reason)\n")
+                }
+            default: break
+        }
+
+        if let info = build.info {
+            result.append("\(info)\n")
+        }
+
+        result.append("#\(build.buildNumber)")
+
+        return result
+    }
+
+    var backgroundColor: Color {
+        switch build.status {
+            case .success: return Colors.emerald
+            case .failed(_): return Colors.alizarin
+            case .running: return Colors.belizeHole
+            case .aborted(_): return Colors.carrot
+            default: return Colors.hoki
+        }
+    }
+
+    init(from build: BuildRepresentation) {
+        self.build = build
+        title = build.wrapped.branch
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
@@ -19,29 +65,12 @@ struct BuildViewModel {
         dateFormatter.locale = Locale.current
         triggeredAt = dateFormatter.string(from: build.triggeredAt)
 
-        switch build.status {
-            case .success: backgroundColor = .green
-            case .failed(let error):
-                backgroundColor = .red
-                subtitle = error
-            case .running:
-                backgroundColor = .blue
-                isRunning = true
-            case .aborted(let reason):
-                backgroundColor = .orange
-                subtitle = reason
-            default: backgroundColor = .gray
+        if case .running = build.status {
+            isRunning = true
         }
 
         url = build.url
-    }
-
-    init(title: String, triggeredAt: String, subtitle: String? = nil, backgroundColor: Color, url: String) {
-        self.title = title
-        self.triggeredAt = triggeredAt
-        self.subtitle = subtitle
-        self.backgroundColor = backgroundColor
-        self.url = url
+        subBuilds = build.subBuilds
     }
 
     func openInBrowser() {

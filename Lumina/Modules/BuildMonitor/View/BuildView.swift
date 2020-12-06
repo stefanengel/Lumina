@@ -1,4 +1,5 @@
 import SwiftUI
+import BuildStatusChecker
 
 struct BuildView: View {
     private var viewModel: BuildViewModel
@@ -19,14 +20,22 @@ struct BuildView: View {
         HStack {
             Spacer()
             VStack {
-                Text("\(viewModel.title)")
+                Text("\(viewModel.decoratedTitle)")
                 .font(.system(size: 20))
                 Text("\(viewModel.triggeredAt)")
                 .font(.system(size: 12))
                 VStack {
-                    if viewModel.subtitle != nil {
-                        Text("\(viewModel.subtitle!)")
+                    Text("\(viewModel.subTitle)")
+                        .multilineTextAlignment(.center)
                         .font(.system(size: 12))
+                        .padding(.top, 5)
+                    if viewModel.hasSubBuilds {
+                        HStack {
+                            ForEach(viewModel.subBuilds, id: \.self) { subBuild in
+                                SubBuildView(viewModel: SubBuildViewModel(from: subBuild))
+                            }
+                        }
+                        .padding(.top, 10)
                     }
                 }
             }
@@ -41,7 +50,7 @@ struct BuildView: View {
             self.viewModel.openInBrowser()
         }
         .onAppear() {
-            if self.viewModel.isRunning {
+            if self.viewModel.isRunning && !self.viewModel.hasSubBuilds {
                 withAnimation(self.repeatingAnimation) { self.opacity = 0.5 }
             }
         }
@@ -50,6 +59,13 @@ struct BuildView: View {
 
 struct BuildView_Previews: PreviewProvider {
     static var previews: some View {
-        BuildView(viewModel: BuildViewModel(title: "Test Build", triggeredAt: "Triggered at", subtitle: "This is a subtitle", backgroundColor: .green, url: ""))
+        let runningBuild = Build(buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", info: "Some info text", commitHash: "abc")
+        let succeededBuild = Build(buildNumber: 12345, status: .success, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
+
+        return Group {
+            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: runningBuild)))
+            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: succeededBuild)))
+            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: GroupedBuild(builds: [BuildRepresentation(wrapped: runningBuild), BuildRepresentation(wrapped: succeededBuild)]))))
+        }
     }
 }

@@ -2,21 +2,40 @@ import Foundation
 
 public typealias Branch = String
 
-public struct Build {
+public struct Build: BuildProtocol {
+    public var buildNumber: Int
+    public var parentBuildNumber: Int?
     public let status: BuildStatus
     public let branch: Branch
     public let triggeredAt: Date
     public let startedAt: Date?
     public let url: String
+    // General info where special properties can be stored that are not easy to generalize for all providers
+    // For example, bitrise builds will store the triggered_workflow here
+    public let info: String?
+    public let commitHash: String
+
+    public let groupId: String?
+    public let groupItemDescription: String?
 
     private let settings: SettingsStoreProtocol = SettingsStore()
 
-    public init(status: BuildStatus, branch: Branch, triggeredAt: Date, startedAt: Date? = nil, url: String) {
+    public var id: String {
+        "\(branch)_\(info ?? "")"
+    }
+
+    public init(buildNumber: Int, parentBuildNumber: Int? = nil, status: BuildStatus, branch: Branch, triggeredAt: Date, startedAt: Date? = nil, url: String, info: String? = nil, commitHash: String, groupId: String? = nil, groupItemDescription: String? = nil) {
+        self.buildNumber = buildNumber
+        self.parentBuildNumber = parentBuildNumber
         self.status = status
         self.branch = branch
         self.triggeredAt = triggeredAt
         self.startedAt = startedAt
         self.url = url
+        self.info = info
+        self.commitHash = commitHash
+        self.groupId = groupId
+        self.groupItemDescription = groupItemDescription
     }
 }
 
@@ -26,6 +45,9 @@ extension Build: Hashable {
         hasher.combine(status)
         hasher.combine(branch)
         hasher.combine(triggeredAt)
+        hasher.combine(startedAt)
+        hasher.combine(url)
+        hasher.combine(info)
     }
 }
 
@@ -37,28 +59,17 @@ extension Build: Equatable {
             && lhs.triggeredAt == rhs.triggeredAt
             && lhs.startedAt == rhs.startedAt
             && lhs.url == rhs.url
+            && lhs.info == rhs.info
     }
 }
 
-// MARK: - GitFlow specifics
-extension Build {
-    public var isDevelopBranch: Bool {
-        return branch == settings.read(setting: .developBranchName)
-    }
+// MARK: Comparable
+extension Build: Comparable {
+    public static func <(lhs: Build, rhs: Build) -> Bool {
+        if lhs.branch != rhs.branch {
+            return lhs.branch < rhs.branch
+        }
 
-    public var isMasterBranch: Bool {
-        return branch == settings.read(setting: .masterBranchName)
-    }
-
-    public var isReleaseBranch: Bool {
-        return branch.starts(with: settings.read(setting: .releaseBranchPrefix))
-    }
-
-    public var isHotfixBranch: Bool {
-        return branch.starts(with: settings.read(setting: .hotfixBranchPrefix))
-    }
-
-    public var isFeatureBranch: Bool {
-        return branch.starts(with: settings.read(setting: .featureBranchPrefix))
+        return lhs.triggeredAt < rhs.triggeredAt
     }
 }

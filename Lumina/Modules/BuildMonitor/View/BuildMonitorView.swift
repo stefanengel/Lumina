@@ -9,33 +9,28 @@ struct BuildMonitorView: View {
     }
 
     var body: some View {
-        ScrollView(.vertical) {
-            VStack(alignment: HorizontalAlignment.center, spacing: 20) {
-                Spacer()
+        VStack(spacing: 0) {
+            TextField("🔍 Filter for branches containing", text: $viewModel.search)
+                .padding(.bottom)
+            ScrollView(.vertical) {
+                VStack(alignment: HorizontalAlignment.center, spacing: 20) {
+                    if viewModel.isLoading {
+                        ProgressIndicatorView()
+                    }
 
-                if viewModel.isLoading {
-                    ProgressIndicatorView()
+                    viewModel.errorMessage.map { ErrorView(message: $0) }
+
+                    ForEach(viewModel.filteredBuilds, id: \.self) { build in
+                        BuildView(viewModel: BuildViewModel(from: build))
+                    }
+
+                    Spacer()
                 }
-
-                viewModel.errorMessage.map { ErrorView(message: $0) }
-
-                ForEach(builds, id: \.self) { build in
-                    BuildView(viewModel: BuildViewModel(from: build))
-                }
-
-                Spacer()
+                .padding(.leading, 15)
+                .padding(.trailing, 15)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .padding(.leading, 15)
-            .padding(.trailing, 15)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-    }
-    
-    private var builds: [Build] {
-        var builds = [viewModel.development, viewModel.master, viewModel.release, viewModel.hotfix]
-        builds.append(contentsOf: viewModel.feature)
-        return builds
-            .compactMap { $0 }
     }
 }
 
@@ -43,17 +38,17 @@ struct BuildMonitorView: View {
 struct BuildMonitorView_Previews: PreviewProvider {
     static var previews: some View {
         BuildMonitorView(viewModel: BuildMonitorViewModel(
-            development: Build(status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io"),
-            master: Build(status: .success, branch: "master", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io"),
+            development: [BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
+            master: [BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .success, branch: "master", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
             release:
-                Build(status: .success, branch: "release/0.5.0", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io"),
+                [BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .success, branch: "release/0.5.0", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
             hotfix:
-                Build(status: .success, branch: "hotfix/0.5.1", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io"),
+                [BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .success, branch: "hotfix/0.5.1", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
             feature: [
-                Build(status: .running, branch: "feature/TICKET-1234", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io"),
-                Build(status: .failed(error: nil), branch: "feature/TICKET-5678", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io"),
-                Build(status: .success, branch: "feature/TICKET-12", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io"),
-                Build(status: .running, branch: "feature/TICKET-34", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io")
+                BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .running, branch: "feature/TICKET-1234", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
+                BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .failed(error: nil), branch: "feature/TICKET-5678", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
+                BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .success, branch: "feature/TICKET-12", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
+                BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .running, branch: "feature/TICKET-34", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io)", commitHash: "abc"))
             ]
         ))
     }

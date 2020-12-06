@@ -2,13 +2,20 @@ import BuildStatusChecker
 import SwiftUI
 
 class BuildMonitorViewModel: ObservableObject {
-    @Published var development: Build?
-    @Published var master: Build?
-    @Published var release: Build?
-    @Published var hotfix: Build?
-    @Published var feature: [Build] = []
+    @Published var development: [BuildRepresentation] = []
+    @Published var master: [BuildRepresentation] = []
+    @Published var release: [BuildRepresentation] = []
+    @Published var hotfix: [BuildRepresentation] = []
+    @Published var feature: [BuildRepresentation] = []
     @Published var errorMessage: String?
     @Published var isLoading: Bool = true
+
+    @Published var search: String = "" {
+        didSet {
+            updateFilteredBuilds()
+        }
+    }
+    @Published var filteredBuilds: [BuildRepresentation] = []
 
     private let model: BuildMonitorModel?
 
@@ -21,8 +28,21 @@ class BuildMonitorViewModel: ObservableObject {
         model?.unregister(observer: self)
     }
 
+    private func updateFilteredBuilds() {
+        DispatchQueue.main.async {
+            withAnimation {
+                if self.search.isEmpty {
+                    self.filteredBuilds = self.allBuilds
+                }
+                else {
+                    self.filteredBuilds = self.allBuilds.filter{ $0.branch.contains(self.search) }
+                }
+            }
+        }
+    }
+
     // Used for preview
-    init(development: Build, master: Build, release: Build, hotfix: Build, feature: [Build]) {
+    init(development: [BuildRepresentation], master: [BuildRepresentation], release: [BuildRepresentation], hotfix: [BuildRepresentation], feature: [BuildRepresentation]) {
         self.development = development
         self.master = master
         self.release = release
@@ -66,11 +86,28 @@ extension BuildMonitorViewModel: ModelObserver {
 
     func update(builds: Builds) {
         DispatchQueue.main.async {
-            self.development = builds.development
-            self.master = builds.master
-            self.release = builds.latestRelease
-            self.hotfix = builds.latestHotfix
+            self.development = builds.sortedDevelopBuilds
+            self.master = builds.sortedMasterBuilds
+            self.release = builds.sortedLatestReleaseBuilds
+            self.hotfix = builds.sortedLatestHotfixBuilds
             self.feature = builds.sortedFeatureBuilds
+
+            self.updateFilteredBuilds()
         }
+    }
+}
+
+// MARK: - Putting together the filtered build list
+extension BuildMonitorViewModel {
+    private var allBuilds: [BuildRepresentation] {
+        var allBuilds = [BuildRepresentation]()
+
+        allBuilds.append(contentsOf: development)
+        allBuilds.append(contentsOf: master)
+        allBuilds.append(contentsOf: release)
+        allBuilds.append(contentsOf: hotfix)
+        allBuilds.append(contentsOf: feature)
+
+        return allBuilds
     }
 }
