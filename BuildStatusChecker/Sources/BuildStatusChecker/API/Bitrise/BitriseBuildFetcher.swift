@@ -58,10 +58,30 @@ extension BitriseBuildFetcher: BuildFetcher {
 
             os_log("Received %{PUBLIC}d builds", log: OSLog.buildFetcher, type: .debug, bitriseBuilds.data.count)
 
-            for bitriseBuild in bitriseBuilds.data {
-                builds.add(build: bitriseBuild.asBuild)
+            if config.groupByBuildNumber {
+                var buildGroups = [String: GroupedBuild]()
+                for bitriseBuild in bitriseBuilds.data {
+                    // grouping commitHash is not enough since rolling builds will have the same hash, we have to group by build number
+                    if let existingGroup = buildGroups[bitriseBuild.groupId] {
+                        existingGroup.append(build: bitriseBuild.asBuildRepresentation)
+                    }
+                    else {
+                        let newGroup = GroupedBuild(builds: [bitriseBuild.asBuildRepresentation])
+                        buildGroups[bitriseBuild.groupId] = newGroup
+                    }
+                }
+
+                for (_, group) in buildGroups {
+                    builds.add(build: BuildRepresentation(wrapped: group))
+                }
             }
-             completion(.success(builds))
+            else {
+                for bitriseBuild in bitriseBuilds.data {
+                    builds.add(build: bitriseBuild.asBuildRepresentation)
+                }
+            }
+
+            completion(.success(builds))
         })
     }
 }

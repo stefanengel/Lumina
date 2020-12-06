@@ -30,6 +30,10 @@
 		2C54564223E9DB5A00226FA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C54562F23E9DB5A00226FA2 /* AppDelegate.swift */; };
 		2C54564323E9DB5A00226FA2 /* IgnorePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */; };
 		2C54564723E9DB6300226FA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C54564523E9DB6300226FA2 /* Main.storyboard */; };
+		3B6F2FB52576FAE50072174B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F2FB42576FAE50072174B /* Colors.swift */; };
+		3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */; };
+		3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */; };
+		3BF07AF525742D0E00C7EE10 /* SubBuildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +75,10 @@
 		2C54562F23E9DB5A00226FA2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnorePattern.swift; sourceTree = "<group>"; };
 		2C54564623E9DB6300226FA2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
+		3B6F2FB42576FAE50072174B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChristmasDecorationProvider.swift; sourceTree = "<group>"; };
+		3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildViewModel.swift; sourceTree = "<group>"; };
+		3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,13 +124,13 @@
 		2C5455ED23E9D9BF00226FA2 /* Lumina */ = {
 			isa = PBXGroup;
 			children = (
+				3B6F2FB32576FAD20072174B /* Style */,
 				2C54564423E9DB6300226FA2 /* Base.lproj */,
 				2C54562D23E9DB5A00226FA2 /* App */,
 				2C54562F23E9DB5A00226FA2 /* AppDelegate.swift */,
 				2C54561523E9DB5A00226FA2 /* Assets.xcassets */,
 				2C54562A23E9DB5A00226FA2 /* Model */,
 				2C54561623E9DB5A00226FA2 /* Modules */,
-				2C54563023E9DB5A00226FA2 /* ViewModel */,
 				2C5455FA23E9D9C100226FA2 /* Info.plist */,
 				2C5455FB23E9D9C100226FA2 /* Lumina.entitlements */,
 				2C5455F423E9D9C100226FA2 /* Preview Content */,
@@ -193,6 +201,7 @@
 		2C54561D23E9DB5A00226FA2 /* BuildMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				3BC17F482577C5E600DEBAA7 /* EasterEggs */,
 				2C54561E23E9DB5A00226FA2 /* ViewModel */,
 				2C54562123E9DB5A00226FA2 /* View */,
 			);
@@ -204,6 +213,7 @@
 			children = (
 				2C54561F23E9DB5A00226FA2 /* BuildMonitorViewModel.swift */,
 				2C54562023E9DB5A00226FA2 /* BuildViewModel.swift */,
+				3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -215,6 +225,7 @@
 				2C54562323E9DB5A00226FA2 /* ProgressIndicatorView.swift */,
 				2C54562423E9DB5A00226FA2 /* BuildMonitorView.swift */,
 				2C54562523E9DB5A00226FA2 /* ErrorView.swift */,
+				3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -234,6 +245,7 @@
 			children = (
 				2C54562B23E9DB5A00226FA2 /* ModelObserver.swift */,
 				2C54562C23E9DB5A00226FA2 /* BuildMonitorModel.swift */,
+				2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -246,20 +258,28 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		2C54563023E9DB5A00226FA2 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		2C54564423E9DB6300226FA2 /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
 				2C54564523E9DB6300226FA2 /* Main.storyboard */,
 			);
 			path = Base.lproj;
+			sourceTree = "<group>";
+		};
+		3B6F2FB32576FAD20072174B /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				3B6F2FB42576FAE50072174B /* Colors.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
+		3BC17F482577C5E600DEBAA7 /* EasterEggs */ = {
+			isa = PBXGroup;
+			children = (
+				3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */,
+			);
+			path = EasterEggs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -369,6 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C54563523E9DB5A00226FA2 /* IgnorePatternRow.swift in Sources */,
+				3B6F2FB52576FAE50072174B /* Colors.swift in Sources */,
 				2C54563823E9DB5A00226FA2 /* BuildView.swift in Sources */,
 				2C54563323E9DB5A00226FA2 /* PreferencesViewModel.swift in Sources */,
 				2C54564323E9DB5A00226FA2 /* IgnorePattern.swift in Sources */,
@@ -376,14 +397,17 @@
 				2C54563A23E9DB5A00226FA2 /* BuildMonitorView.swift in Sources */,
 				2C54563E23E9DB5A00226FA2 /* StatusItemCoordinator.swift in Sources */,
 				2C54563F23E9DB5A00226FA2 /* ModelObserver.swift in Sources */,
+				3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */,
 				2C54564023E9DB5A00226FA2 /* BuildMonitorModel.swift in Sources */,
 				2C54564223E9DB5A00226FA2 /* AppDelegate.swift in Sources */,
 				2C54563C23E9DB5A00226FA2 /* StatusItemView.swift in Sources */,
 				2C54563923E9DB5A00226FA2 /* ProgressIndicatorView.swift in Sources */,
 				2C54563D23E9DB5A00226FA2 /* StatusItemViewModel.swift in Sources */,
+				3BF07AF525742D0E00C7EE10 /* SubBuildView.swift in Sources */,
 				2C54563423E9DB5A00226FA2 /* PreferencesView.swift in Sources */,
 				2C54564123E9DB5A00226FA2 /* AppCoordinator.swift in Sources */,
 				2C54563B23E9DB5A00226FA2 /* ErrorView.swift in Sources */,
+				3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */,
 				2C54563723E9DB5A00226FA2 /* BuildViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -540,7 +564,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lumina/Preview Content\"";
-				DEVELOPMENT_TEAM = FWM745VH37;
+				DEVELOPMENT_TEAM = XVBT48DGY3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lumina/Info.plist;
@@ -549,7 +573,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.9.1;
+				MARKETING_VERSION = 0.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = biz.stefanengel.Lumina;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -563,10 +587,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Lumina/Lumina.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lumina/Preview Content\"";
-				DEVELOPMENT_TEAM = FWM745VH37;
+				DEVELOPMENT_TEAM = XVBT48DGY3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lumina/Info.plist;
@@ -575,7 +600,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.9.1;
+				MARKETING_VERSION = 0.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = biz.stefanengel.Lumina;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

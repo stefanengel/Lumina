@@ -25,8 +25,10 @@ class StatusItemView: NSObject {
         statusItem.menu = NSMenu()
 
         let branches = [viewModel.master, viewModel.development, viewModel.release, viewModel.hotfix]
-        for case let branch? in branches {
-             statusItem.menu?.addItem(statusItem(for: branch))
+        for branchBuilds in branches {
+            for build in branchBuilds {
+                statusItem.menu?.addItem(statusItem(for: build))
+            }
         }
 
         statusItem.menu?.addItem(NSMenuItem.separator())
@@ -47,7 +49,7 @@ class StatusItemView: NSObject {
     }
 
     @objc func openInBrowser(sender: Any) {
-        if let item = sender as? NSMenuItem, let build = viewModel.build(for: item.title) {
+        if let item = sender as? NSMenuItem, let build = item.representedObject as? Build {
             viewModel.openInBrowser(build: build)
         }
     }
@@ -55,11 +57,32 @@ class StatusItemView: NSObject {
 
 // MARK: - Mapping builds to status items
 extension StatusItemView {
-    func statusItem(for build: Build) -> NSMenuItem {
-        let attributedTitle = NSAttributedString(string: build.branch, attributes: viewModel.attributes(for: build.status))
-        let menuItem = NSMenuItem(title: build.branch, action: #selector(openInBrowser(sender:)), keyEquivalent: "")
-        menuItem.attributedTitle = attributedTitle
+    func statusItem(for build: BuildRepresentation) -> NSMenuItem {
+        let statusAttributedString = NSMutableAttributedString()
+        statusAttributedString.append(NSAttributedString(string: "●", attributes: viewModel.attributes(for: build.wrapped.status)))
+        statusAttributedString.append(NSAttributedString(string: " \(build.wrapped.branch)"))
+
+        if build.subBuilds.isEmpty {
+            if let info = build.wrapped.info {
+                statusAttributedString.append(NSMutableAttributedString(string: " - \(info)"))
+            }
+        }
+        else {
+            for build in build.subBuilds {
+                if let workflow = build.groupItemDescription {
+                    let workflowAttributedString = NSMutableAttributedString()
+                    workflowAttributedString.append(NSAttributedString(string: " ["))
+                    workflowAttributedString.append(NSAttributedString(string: "●", attributes: viewModel.attributes(for: build.wrapped.status)))
+                    workflowAttributedString.append(NSAttributedString(string: " \(workflow)]"))
+                    statusAttributedString.append(workflowAttributedString)
+                }
+            }
+        }
+
+        let menuItem = NSMenuItem(title: build.wrapped.branch, action: #selector(openInBrowser(sender:)), keyEquivalent: "")
+        menuItem.attributedTitle = statusAttributedString
         menuItem.target = self
+        menuItem.representedObject = build.wrapped
 
         return menuItem
     }

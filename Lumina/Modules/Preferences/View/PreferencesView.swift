@@ -3,6 +3,7 @@ import SwiftUI
 struct PreferencesView: View {
     @ObservedObject private var viewModel: PreferencesViewModel
     @State var selectedIgnorePattern: IgnorePattern? = nil
+    @State var selectedWorkflow: String? = nil
 
     @State var sliderValue = 60.0
     var minSliderValue = 60.0
@@ -28,22 +29,30 @@ struct PreferencesView: View {
                             .frame(maxHeight: .infinity)
                         Text("Hotfix branch prefix:")
                             .frame(maxHeight: .infinity)
-                        Text("Hide feature branches including:")
-                            .frame(maxHeight: .infinity)
                     }
                     VStack(spacing: 10.0) {
                         TextField("master", text: $viewModel.masterBranchName)
+                            .frame(maxHeight: .infinity)
                         TextField("develop", text: $viewModel.developBranchName)
+                            .frame(maxHeight: .infinity)
                         TextField("feature/", text: $viewModel.featureBranchPrefix)
+                            .frame(maxHeight: .infinity)
                         TextField("release/", text: $viewModel.releaseBranchPrefix)
+                            .frame(maxHeight: .infinity)
                         TextField("hotfix/", text: $viewModel.hotfixBranchPrefix)
+                            .frame(maxHeight: .infinity)
                     }
                     .padding(.leading)
                 }
                 .padding(.horizontal)
-                .fixedSize(horizontal: false, vertical: true)
+//                .fixedSize(horizontal: false, vertical: true)
 
                 VStack(alignment: HorizontalAlignment.leading) {
+                    Toggle(isOn: $viewModel.disableSeasonalDecorations) {
+                        Text("Disable seasonal decorations")
+                    }
+                    .padding(.vertical)
+
                     HStack {
                         VStack {
                             Text("Update interval:")
@@ -54,7 +63,9 @@ struct PreferencesView: View {
                         }
                     }
                     .padding(.bottom, 10.0)
-                    .fixedSize(horizontal: false, vertical: true)
+//                    .fixedSize(horizontal: false, vertical: true)
+
+                    // Ignore branches
                     HStack {
                         Text("Ignore branches containing:")
                     }
@@ -84,6 +95,7 @@ struct PreferencesView: View {
                             IgnorePatternRow(ignorePattern: substring, selectedIgnorePattern: self.$selectedIgnorePattern)
                             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                         }
+                        .frame(minHeight: 200)
                     }
                 }
                 .padding(.horizontal)
@@ -114,15 +126,56 @@ struct PreferencesView: View {
                     }
                     VStack(spacing: 10.0) {
                         TextField("Bitrise base URL", text: $viewModel.bitriseBaseUrl)
+                            .frame(maxHeight: .infinity)
                         TextField("Bitrise auth token", text: $viewModel.bitriseAuthToken)
+                            .frame(maxHeight: .infinity)
                         TextField("Bitrise app slug", text: $viewModel.bitriseAppSlug)
+                            .frame(maxHeight: .infinity)
                     }
                     .padding(.leading)
                 }
                 .padding(.horizontal)
-                .fixedSize(horizontal: false, vertical: true)
+                .padding(.bottom, 10.0)
+//                .fixedSize(horizontal: false, vertical: true)
 
-                Spacer()
+                Toggle(isOn: $viewModel.groupByBuildNumber) {
+                    Text("Group triggered builds by parent build number")
+                }
+                .padding(.vertical)
+
+                // Workflows
+                HStack {
+                    Text("Workflows to consider:")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                    TextField("Branches running with this workflow will be considered", text: $viewModel.newWorkflowString)
+                    Button(action: {
+                        self.viewModel.workflowList.insert( self.viewModel.newWorkflowString)
+                        self.viewModel.newWorkflowString = ""
+                        debugPrint("Selected: \(self.selectedWorkflow ?? "none")")
+                    }) {
+                        Text("Add")
+                    }
+                    .disabled(viewModel.newWorkflowString == "")
+                    Button(action: {
+                        if let selected = self.selectedWorkflow {
+                            self.viewModel.workflowList.remove(selected)
+                            self.selectedWorkflow = nil
+                        }
+                    }) {
+                        Text("Delete selected")
+                    }
+                    .disabled(selectedWorkflow == nil)
+                }
+                HStack {
+                    List(Array(viewModel.workflowList), id: \.self, selection:
+                    $selectedWorkflow) { workflow in
+                        Text(workflow)
+                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    }
+                    .frame(minHeight: 200)
+                }
 
                 Button(action: {
                     self.viewModel.saveSettings()
@@ -135,6 +188,8 @@ struct PreferencesView: View {
             .tabItem({ Text("Provider") })
             .tag(0)
         }
+        .frame(minHeight: 600)
+        .padding(.top)
     }
 
     struct PreferencesView_Previews: PreviewProvider {

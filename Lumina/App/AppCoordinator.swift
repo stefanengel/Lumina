@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import CoreGraphics
 import BuildStatusChecker
 
 class AppCoordinator: NSObject {
@@ -7,6 +8,9 @@ class AppCoordinator: NSObject {
     private var preferencesWindow: NSWindow?
 
     private var buildMonitorModel: BuildMonitorModel
+
+    private var rootLayer: CALayer = CALayer()
+    private var emitterLayer: CAEmitterLayer = CAEmitterLayer()
 
     init(model: BuildMonitorModel) {
         self.buildMonitorModel = model
@@ -37,6 +41,8 @@ extension AppCoordinator {
             buildMonitorWindow?.isReleasedWhenClosed = false
             buildMonitorWindow?.makeKeyAndOrderFront(nil)
 
+            applyEasterEggs()
+
             buildMonitorModel.startUpdating()
         } else {
             NSApp.activate(ignoringOtherApps: true)
@@ -59,10 +65,11 @@ extension AppCoordinator {
             let contentView = PreferencesView(viewModel: PreferencesViewModel())
 
             let preferencesWindow = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 600, height: 500),
-                styleMask: [.titled, .closable, .resizable],
+                contentRect: NSRect(x: 0, y: 0, width: 600, height: 300),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                 backing: .buffered, defer: false)
             preferencesWindow.title = "Preferences"
+            buildMonitorWindow?.setFrameAutosaveName("Preferences Window")
             preferencesWindow.center()
             preferencesWindow.contentView = NSHostingView(rootView: contentView)
             preferencesWindow.isReleasedWhenClosed = false
@@ -98,4 +105,61 @@ extension AppCoordinator: NSWindowDelegate {
     func windowWillClose(_ notification: Notification) {
         preferencesWindow = nil
     }
+}
+
+// MARK: - Easter eggs
+extension AppCoordinator {
+    func applyEasterEggs() {
+        if ChristmasDecorationProvider.showChristmasDecorations {
+            createSnowEffect()
+        }
+    }
+}
+
+// MARK: - Fancy snow effect
+extension AppCoordinator {
+    func createSnowEffect() {
+        guard let mainView = buildMonitorWindow?.contentView else { return }
+
+        let image = NSImage(named: "snow")
+        let img:CGImage = (image?.cgImage(forProposedRect: nil, context: nil, hints: nil))!
+
+        let flakeEmitterCell = CAEmitterCell()
+        flakeEmitterCell.contents = img
+        flakeEmitterCell.scale = 0.06
+        flakeEmitterCell.scaleRange = 0.3
+        flakeEmitterCell.emissionRange = .pi
+        flakeEmitterCell.lifetime = 20.0
+        flakeEmitterCell.birthRate = 10
+        flakeEmitterCell.velocity = -30
+        flakeEmitterCell.velocityRange = -20
+        flakeEmitterCell.yAcceleration = 30
+        flakeEmitterCell.xAcceleration = 5
+        flakeEmitterCell.spin = -0.5
+        flakeEmitterCell.spinRange = 1.0
+
+        let snowEmitterLayer = CAEmitterLayer()
+        snowEmitterLayer.emitterPosition = CGPoint(x: mainView.bounds.width / 2.0, y: -50)
+        snowEmitterLayer.emitterSize = CGSize(width: mainView.bounds.width, height: 0)
+        snowEmitterLayer.emitterShape = CAEmitterLayerEmitterShape.line
+        snowEmitterLayer.beginTime = CACurrentMediaTime()
+        snowEmitterLayer.timeOffset = 10
+        snowEmitterLayer.emitterCells = [flakeEmitterCell]
+        snowEmitterLayer.backgroundColor = CGColor.clear
+
+        let snowView = SnowView(frame: mainView.frame)
+        snowView.frame = mainView.bounds
+        self.rootLayer.addSublayer(snowEmitterLayer)
+        snowView.layer = rootLayer
+        snowView.wantsLayer = true
+        snowView.needsDisplay = true
+        snowView.autoresizingMask = [.width, .height]
+
+        mainView.addSubview(snowView)
+        mainView.autoresizesSubviews = true
+    }
+}
+
+class SnowView: NSView {
+    override var isFlipped: Bool { true }
 }
