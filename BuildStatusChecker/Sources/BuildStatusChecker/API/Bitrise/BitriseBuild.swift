@@ -45,7 +45,7 @@ public struct BitriseBuild: Codable {
     let slug: String
     let triggeredWorkflow: String
     let triggeredBy: String?
-    let commitHash: String
+    let commitHash: String?
     let commitMessage: String?
     let originalBuildParams: OriginalBuildParams?
 
@@ -92,6 +92,6 @@ extension BitriseBuild {
         }
 
         let url = "https://app.bitrise.io/build/\(slug)#?tab=log"
-        return BuildRepresentation(wrapped: Build(buildNumber: buildNumber, parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber, status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: info, commitHash: commitHash, groupId: groupId, groupItemDescription: groupItemDescription))
+        return BuildRepresentation(wrapped: Build(buildNumber: buildNumber, parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber, status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: info, commitHash: commitHash ?? "Unknown commit hash", groupId: groupId, groupItemDescription: groupItemDescription))
     }
 }
