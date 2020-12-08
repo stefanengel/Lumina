@@ -46,6 +46,13 @@ struct BuildView: View {
         .background(viewModel.backgroundColor)
         .cornerRadius(15)
         .opacity(opacity)
+        .contextMenu(menuItems: {
+            Button(action: self.copyBuildNumber) {
+                // replace with Label once macOS 11.0 is the min. deployment target
+                // Label("Copy Build Number", systemImage: "number")
+                Text("Copy Build Number")
+            }
+        })
         .onTapGesture {
             self.viewModel.openInBrowser()
         }
@@ -54,6 +61,12 @@ struct BuildView: View {
                 withAnimation(self.repeatingAnimation) { self.opacity = 0.5 }
             }
         }
+    }
+    
+    private func copyBuildNumber() {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString("#\(viewModel.build.buildNumber)", forType: .string)
     }
 }
 
