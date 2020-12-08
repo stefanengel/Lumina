@@ -9,6 +9,8 @@ struct SearchField: NSViewRepresentable {
         _text = text
         self.placeholder = placeholder
     }
+    
+    private let refTag = 1000
 
     func makeNSView(context: Context) -> NSVisualEffectView {
         let wrapperView = NSVisualEffectView()
@@ -19,6 +21,7 @@ struct SearchField: NSViewRepresentable {
         searchField.bezelStyle = .roundedBezel
         searchField.placeholderString = placeholder
         searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.tag = refTag
         wrapperView.addSubview(searchField)
         NSLayoutConstraint.activate([
             searchField.topAnchor.constraint(equalTo: wrapperView.topAnchor),
@@ -30,10 +33,7 @@ struct SearchField: NSViewRepresentable {
     }
 
     func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        let searchField = nsView.subviews.first(where: {
-            $0 as? NSSearchField != nil
-        })
-        (searchField as? NSSearchField)?.stringValue = text
+        (nsView.viewWithTag(refTag) as? NSSearchField)?.stringValue = text
     }
 
     func makeCoordinator() -> Coordinator {
