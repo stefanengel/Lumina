@@ -3,6 +3,8 @@
 Lumina is a macOS app for monitoring the status of your builds on the Bitrise platform. 
 Your branches should follow the gitflow pattern but the specific names can be configured.
 
+It has full support for christmas decorations during december.
+
 ![Lumina](LuminaDemo.gif)
 
 ## Functionality
