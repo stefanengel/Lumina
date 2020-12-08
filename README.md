@@ -31,6 +31,6 @@ The auth token can be obtained by logging into Bitrise, where you can create one
 
 The app slug can be obtained from the url when you log into bitrise and click on the app that you want to monitor: https://app.bitrise.io/app/HERE_IS_YOUR_APPS_BUILD_SLUG#/builds.
 
-If you enable "Group triggered builds by parent build number", Lumina will scan each builds environment variables for a SOURCE_BITRISE_BUILD_NUMBER. If it finds one, the build will be grouped with other builds that have the same SOURCE_BITRISE_BUILD_NUMBER and with the source build that hat the corresponding build number. The grouped builds will appear by the name of the workflow that they are running.
+If you enable "Group triggered builds by parent build number", Lumina will scan each builds environment variables for a ```SOURCE_BITRISE_BUILD_NUMBER```. If it finds one, the build will be grouped with other builds that have the same ```SOURCE_BITRISE_BUILD_NUMBER``` and with the source build that hat the corresponding build number. The grouped builds will appear by the name of the workflow that they are running.
 
-You can configure the workflows that you are interested in. If the list is empty, only builds running on the primary workflow will be considered.
+You can configure the workflows that you are interested in. If the list is empty, only builds running on the ```primary``` workflow will be considered.
