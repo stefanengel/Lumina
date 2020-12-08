@@ -22,6 +22,8 @@ class PreferencesViewModel: ObservableObject {
     private var settings: SettingsStoreProtocol = SettingsStore()
     private let bitrise: BitriseStore = BitriseStore()
 
+    let defaultBitriseBaseUrl = "https://api.bitrise.io/v0.1/apps"
+
     init() {
         updateIntervalInSeconds = settings.readUpdateInterval()
         masterBranchName = settings.read(setting: .masterBranchName)
@@ -38,6 +40,10 @@ class PreferencesViewModel: ObservableObject {
         bitriseAuthToken = bitrise.read(setting: .bitriseAuthToken)
         bitriseAppSlug = bitrise.read(setting: .bitriseAppSlug)
         groupByBuildNumber = bitrise.groupByBuildNumber
+
+        if bitriseBaseUrl.isEmpty {
+            bitriseBaseUrl = defaultBitriseBaseUrl
+        }
     }
 
     func saveProvider(bitriseBaseUrl: String, bitriseAuthToken: String, bitriseAppSlug: String) {
