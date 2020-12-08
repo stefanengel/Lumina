@@ -54,7 +54,11 @@ public struct BitriseBuild: Codable {
     }
 
     var groupId: String {
-        "\(commitHash)_\(parentBuildNumber ?? buildNumber)"
+        if let commitHash = commitHash {
+            return "\(commitHash)_\(parentBuildNumber ?? buildNumber)"
+        } else {
+            return "\(parentBuildNumber ?? buildNumber)"
+        }
     }
 
     var info: String {
