@@ -82,7 +82,6 @@ extension BitriseAPI {
 
         let publisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
         .map {
-            let text = String(data: $0.data, encoding: .utf8)
             if let dict = try? JSONSerialization.jsonObject(with: $0.data, options: []) as? [String: Any] {
                 debugPrint(dict)
             }
