@@ -10,8 +10,8 @@ struct BuildMonitorView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            TextField("🔍 Filter for branches containing", text: $viewModel.search)
-                .padding(.bottom)
+            SearchField(text: $viewModel.search, placeholder: "Filter for branches containing")
+                .padding()
             ScrollView(.vertical) {
                 VStack(alignment: HorizontalAlignment.center, spacing: 20) {
                     if viewModel.isLoading {

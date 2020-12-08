@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B3F4A41257FD3B80094C16A /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3F4A40257FD3B80094C16A /* SearchField.swift */; };
 		2C5455F623E9D9C100226FA2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C5455F523E9D9C100226FA2 /* Preview Assets.xcassets */; };
 		2C54560523E9D9C100226FA2 /* LuminaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C54560423E9D9C100226FA2 /* LuminaTests.swift */; };
 		2C54561223E9DABA00226FA2 /* BuildStatusChecker in Frameworks */ = {isa = PBXBuildFile; productRef = 2C54561123E9DABA00226FA2 /* BuildStatusChecker */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B3F4A40257FD3B80094C16A /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		2C5455EB23E9D9BF00226FA2 /* Lumina.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lumina.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C5455F523E9D9C100226FA2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2C5455FA23E9D9C100226FA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				2C54562423E9DB5A00226FA2 /* BuildMonitorView.swift */,
 				2C54562523E9DB5A00226FA2 /* ErrorView.swift */,
 				3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */,
+				0B3F4A40257FD3B80094C16A /* SearchField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -330,7 +333,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1120;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Stefan Engel Software Development";
 				TargetAttributes = {
 					2C5455EA23E9D9BF00226FA2 = {
@@ -392,6 +395,7 @@
 				3B6F2FB52576FAE50072174B /* Colors.swift in Sources */,
 				2C54563823E9DB5A00226FA2 /* BuildView.swift in Sources */,
 				2C54563323E9DB5A00226FA2 /* PreferencesViewModel.swift in Sources */,
+				0B3F4A41257FD3B80094C16A /* SearchField.swift in Sources */,
 				2C54564323E9DB5A00226FA2 /* IgnorePattern.swift in Sources */,
 				2C54563623E9DB5A00226FA2 /* BuildMonitorViewModel.swift in Sources */,
 				2C54563A23E9DB5A00226FA2 /* BuildMonitorView.swift in Sources */,
@@ -468,6 +472,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -528,6 +533,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -561,6 +567,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Lumina/Lumina.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lumina/Preview Content\"";
