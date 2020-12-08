@@ -86,6 +86,8 @@ extension BuildMonitorViewModel: ModelObserver {
 
     func update(builds: Builds) {
         DispatchQueue.main.async {
+            self.errorMessage = nil
+            
             self.development = builds.sortedDevelopBuilds
             self.master = builds.sortedMasterBuilds
             self.release = builds.sortedLatestReleaseBuilds
