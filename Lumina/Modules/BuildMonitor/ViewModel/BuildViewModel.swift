@@ -77,4 +77,10 @@ class BuildViewModel: ObservableObject {
         let buildUrl = URL(string: url)!
         NSWorkspace.shared.open(buildUrl)
     }
+
+    func copyBuildNumber() {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString("#\(build.buildNumber)", forType: .string)
+    }
 }
