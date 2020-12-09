@@ -101,7 +101,7 @@ extension StatusItemViewModel: ModelObserver {
     func stoppedLoading() {
     }
 
-    func updateFailed(error: BuildFetcherError) {
+    func updateFailed(error: BuildAPIClientError) {
     }
 
     func update(builds: Builds) {

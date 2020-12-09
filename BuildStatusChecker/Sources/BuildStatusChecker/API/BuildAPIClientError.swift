@@ -1,4 +1,4 @@
-public enum BuildFetcherError: Error {
+public enum BuildAPIClientError: Error {
     case noNetworkConnection
     case requestFailed(message: String)
     case incompleteProviderConfiguration

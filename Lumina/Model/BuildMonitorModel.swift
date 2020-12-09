@@ -3,7 +3,7 @@ import BuildStatusChecker
 import Combine
 
 class BuildMonitorModel {
-    private var buildFetcher = BuildFetcherFactory.createBuildFetcher()
+    private var buildFetcher = BuildAPIClientFactory.createBuildAPI()
     private var timerToken: AnyCancellable?
     private var observers: [ModelObserver] = []
 }
@@ -45,7 +45,7 @@ extension BuildMonitorModel {
         }
     }
 
-    func notifyUpdateFailed(error: BuildFetcherError) {
+    func notifyUpdateFailed(error: BuildAPIClientError) {
         for observer in observers {
             observer.updateFailed(error: error)
         }

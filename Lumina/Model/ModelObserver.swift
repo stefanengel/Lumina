@@ -3,6 +3,6 @@ import BuildStatusChecker
 protocol ModelObserver: AnyObject {
     func startedLoading()
     func stoppedLoading()
-    func updateFailed(error: BuildFetcherError)
+    func updateFailed(error: BuildAPIClientError)
     func update(builds: Builds)
 }

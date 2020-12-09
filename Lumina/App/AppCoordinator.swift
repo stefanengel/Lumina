@@ -89,7 +89,7 @@ extension AppCoordinator: ModelObserver {
     func stoppedLoading() {
     }
 
-    func updateFailed(error: BuildFetcherError) {
+    func updateFailed(error: BuildAPIClientError) {
         switch error {
             case .incompleteProviderConfiguration: openPreferences()
             default: break
