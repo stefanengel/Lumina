@@ -55,7 +55,7 @@ class BuildMonitorViewModel: ObservableObject {
 
 // MARK: - Converting errors into messages
 extension BuildMonitorViewModel {
-    func errorMessage(from error: BuildFetcherError) -> String {
+    func errorMessage(from error: BuildAPIClientError) -> String {
         switch error {
         case .incompleteProviderConfiguration: return "Incomplete configuration"
         case .noNetworkConnection: return "No network connection"
@@ -78,7 +78,7 @@ extension BuildMonitorViewModel: ModelObserver {
         }
     }
 
-    func updateFailed(error: BuildFetcherError) {
+    func updateFailed(error: BuildAPIClientError) {
         DispatchQueue.main.async {
             self.errorMessage = self.errorMessage(from: error)
         }

@@ -2,7 +2,7 @@ import Foundation
 import Combine
 import os.log
 
-public class BitriseBuildFetcher {
+public class BitriseAPIClient {
     let settings: SettingsStoreProtocol = SettingsStore()
 
     public init() {
@@ -12,12 +12,12 @@ public class BitriseBuildFetcher {
 }
 
 // MARK: - BuildFetcher
-extension BitriseBuildFetcher: BuildFetcher {
-    public func getRecentBuilds(completion: @escaping (Result<Builds, BuildFetcherError>) -> Void) {
+extension BitriseAPIClient: BuildAPIClient {
+    public func getRecentBuilds(completion: @escaping (Result<Builds, BuildAPIClientError>) -> Void) {
         let config = BitriseConfiguration()
 
         guard config.isComplete else {
-            completion(.failure(BuildFetcherError.incompleteProviderConfiguration))
+            completion(.failure(BuildAPIClientError.incompleteProviderConfiguration))
             return
         }
 
@@ -40,7 +40,7 @@ extension BitriseBuildFetcher: BuildFetcher {
         .flatMap { builds -> AnyPublisher<BitriseBuilds, Error> in
             return self.complementBuildInformationIfMissing(for: self.settings.read(setting: .masterBranchName), existingBranches: existingBranches!, builds: builds, config: config)
         }
-        .mapError() { error -> BuildFetcherError in
+        .mapError() { error -> BuildAPIClientError in
             if let urlError = error as? URLError, urlError.code.rawValue == -1009 {
                 return .noNetworkConnection
             }
@@ -87,7 +87,7 @@ extension BitriseBuildFetcher: BuildFetcher {
 }
 
 // MARK: - Helpers for branches that have a prefix
-extension BitriseBuildFetcher {
+extension BitriseAPIClient {
     private func complementInformationForBranch(withPrefix prefix: String, existingBranches: BitriseBranches, builds: BitriseBuilds, config: BitriseConfiguration) -> AnyPublisher<BitriseBuilds, Error> {
         if let latestPrefixedBranch = existingBranches.findLatestBranch(withPrefix: prefix) {
             os_log("Latest branch prefixed with %{PUBLIC}@ found: %{PUBLIC}@", log: OSLog.buildFetcher, type: .debug, prefix, latestPrefixedBranch)
@@ -104,7 +104,7 @@ extension BitriseBuildFetcher {
 }
 
 // MARK: - Complementing incomplete build information
-extension BitriseBuildFetcher {
+extension BitriseAPIClient {
     private func complementBuildInformationIfMissing(for branch: Branch, existingBranches: BitriseBranches, builds: BitriseBuilds, config: BitriseConfiguration) -> AnyPublisher<BitriseBuilds, Error> {
         if !builds.contains(branch: branch) {
             os_log("Branch named %{PUBLIC}@ not found in builds, requesting extra information...", log: OSLog.buildFetcher, type: .debug, branch)
@@ -120,7 +120,7 @@ extension BitriseBuildFetcher {
 }
 
 // MARK: - Explicitly loading latest build
-extension BitriseBuildFetcher {
+extension BitriseAPIClient {
     private func complementLatestBuild(for branch: Branch, existingBuilds builds: BitriseBuilds, config: BitriseConfiguration) -> AnyPublisher<BitriseBuilds, Error> {
         return BitriseAPI.builds(config: config, forBranch: branch, limit: 1)
         .flatMap { additionalBuilds -> Future<BitriseBuilds, Error> in
