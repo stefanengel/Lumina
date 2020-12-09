@@ -52,6 +52,16 @@ struct BuildView: View {
                 // Label("Copy Build Number", systemImage: "number")
                 Text("Copy Build Number")
             }
+            if viewModel.isRunning {
+                Button(action: self.viewModel.cancelBuild) {
+                    Text("Cancel Build")
+                }
+            }
+            else {
+                Button(action: self.viewModel.triggerBuild) {
+                    Text("Trigger Build")
+                }
+            }
         })
         .onTapGesture {
             self.viewModel.openInBrowser()

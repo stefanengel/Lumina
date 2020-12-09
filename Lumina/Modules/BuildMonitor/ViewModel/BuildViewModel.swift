@@ -83,4 +83,12 @@ class BuildViewModel: ObservableObject {
         pasteboard.clearContents()
         pasteboard.setString("#\(build.buildNumber)", forType: .string)
     }
+
+    func triggerBuild() {
+
+    }
+
+    func cancelBuild() {
+        
+    }
 }
