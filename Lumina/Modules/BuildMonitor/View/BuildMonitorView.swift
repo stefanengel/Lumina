@@ -38,17 +38,17 @@ struct BuildMonitorView: View {
 struct BuildMonitorView_Previews: PreviewProvider {
     static var previews: some View {
         BuildMonitorView(viewModel: BuildMonitorViewModel(
-            development: [BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
-            master: [BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .success, branch: "master", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
+            development: [BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
+            master: [BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .success, branch: "master", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
             release:
-                [BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .success, branch: "release/0.5.0", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
+                [BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .success, branch: "release/0.5.0", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
             hotfix:
-                [BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .success, branch: "hotfix/0.5.1", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
+                [BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .success, branch: "hotfix/0.5.1", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))],
             feature: [
-                BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .running, branch: "feature/TICKET-1234", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
-                BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .failed(error: nil), branch: "feature/TICKET-5678", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
-                BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .success, branch: "feature/TICKET-12", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
-                BuildRepresentation(wrapped: Build(buildNumber: 12345, status: .running, branch: "feature/TICKET-34", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io)", commitHash: "abc"))
+                BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .running, branch: "feature/TICKET-1234", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
+                BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .failed(error: nil), branch: "feature/TICKET-5678", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
+                BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .success, branch: "feature/TICKET-12", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")),
+                BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .running, branch: "feature/TICKET-34", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io)", commitHash: "abc"))
             ]
         ))
     }
