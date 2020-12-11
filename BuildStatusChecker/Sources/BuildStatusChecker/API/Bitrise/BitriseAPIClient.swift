@@ -13,6 +13,25 @@ public class BitriseAPIClient {
 
 // MARK: - BuildFetcher
 extension BitriseAPIClient: BuildAPIClient {
+    public func triggerBuild(buildId: String) {
+        let config = BitriseConfiguration()
+    }
+
+    public func cancelBuild(buildId: String) {
+        let config = BitriseConfiguration()
+
+        cancellable = BitriseAPI.cancelBuild(config: config, buildSlug: buildId, reason: "Aborted via Lumina")
+            .sink(receiveCompletion: { compl in
+                switch compl {
+                    case .finished: os_log("cancelBuild finished", log: OSLog.buildFetcher, type: .debug)
+                    case .failure(let error):
+                        os_log("cancelBuild finished with error: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, error.localizedDescription)
+                }
+            }, receiveValue: {
+
+            })
+    }
+
     public func getRecentBuilds(completion: @escaping (Result<Builds, BuildAPIClientError>) -> Void) {
         let config = BitriseConfiguration()
 

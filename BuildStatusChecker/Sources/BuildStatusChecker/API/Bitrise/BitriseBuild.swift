@@ -96,6 +96,6 @@ extension BitriseBuild {
         }
 
         let url = "https://app.bitrise.io/build/\(slug)#?tab=log"
-        return BuildRepresentation(wrapped: Build(buildNumber: buildNumber, parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber, status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: info, commitHash: commitHash ?? "Unknown commit hash", groupId: groupId, groupItemDescription: groupItemDescription))
+        return BuildRepresentation(wrapped: Build(id: slug, buildNumber: buildNumber, parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber, status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: info, commitHash: commitHash ?? "Unknown commit hash", groupId: groupId, groupItemDescription: groupItemDescription))
     }
 }

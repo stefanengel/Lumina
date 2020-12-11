@@ -1,6 +1,8 @@
 import Foundation
 import Combine
 
+typealias Workflow = String
+
 class BitriseAPI {
 }
 
@@ -93,5 +95,79 @@ extension BitriseAPI {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+}
 
+// MARK: - Trigger builds
+extension BitriseAPI {
+    static func triggerBuild(config: BitriseConfiguration, branch: Branch, workflow: Workflow) -> AnyPublisher<Void, Error> {
+        // POST to /apps/{app-slug}/builds
+        var baseURL = URL(string: config.baseUrl)!
+        baseURL.appendPathComponent(config.appSlug)
+        baseURL.appendPathComponent("builds")
+
+        let queryItems = [
+            URLQueryItem(name: "workflow_id", value: workflow),
+            URLQueryItem(name: "branch", value: branch),
+        ]
+
+        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!
+        components.queryItems = queryItems
+
+        let url = components.url!
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue(config.authToken, forHTTPHeaderField: "Authorization")
+        urlRequest.httpMethod = "POST"
+
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .iso8601
+
+        let publisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
+        .tryMap() { element -> Void in
+            guard let httpResponse = element.response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                throw URLError(.badServerResponse)
+            }
+        }
+
+        return publisher
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+
+    static func cancelBuild(config: BitriseConfiguration, buildSlug: String, reason: String) -> AnyPublisher<Void, Error> {
+        // POST to /apps/{app-slug}/builds/{build-slug}/abort
+        var baseURL = URL(string: config.baseUrl)!
+        baseURL.appendPathComponent(config.appSlug)
+        baseURL.appendPathComponent("builds")
+        baseURL.appendPathComponent(buildSlug)
+        baseURL.appendPathComponent("abort")
+
+        let queryItems = [
+            URLQueryItem(name: "abort_reason", value: reason),
+        ]
+
+        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!
+        components.queryItems = queryItems
+
+        let url = components.url!
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue(config.authToken, forHTTPHeaderField: "Authorization")
+        urlRequest.httpMethod = "POST"
+
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .iso8601
+
+        let publisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
+        .tryMap() { element -> Void in
+            guard let httpResponse = element.response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                throw URLError(.badServerResponse)
+            }
+        }
+        return publisher
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
 }

@@ -15,6 +15,8 @@ class BuildViewModel: ObservableObject {
         return title
     }
 
+    private var buildAPI = BuildAPIClientFactory.createBuildAPI()
+
     @Published var isRunning: Bool = false
 
     var hasSubBuilds: Bool {
@@ -89,6 +91,6 @@ class BuildViewModel: ObservableObject {
     }
 
     func cancelBuild() {
-        
+        buildAPI.cancelBuild(buildId: build.id)
     }
 }

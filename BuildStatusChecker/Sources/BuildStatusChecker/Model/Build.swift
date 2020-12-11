@@ -3,6 +3,7 @@ import Foundation
 public typealias Branch = String
 
 public struct Build: BuildProtocol {
+    public let id: String
     public var buildNumber: Int
     public var parentBuildNumber: Int?
     public let status: BuildStatus
@@ -20,11 +21,8 @@ public struct Build: BuildProtocol {
 
     private let settings: SettingsStoreProtocol = SettingsStore()
 
-    public var id: String {
-        "\(branch)_\(info ?? "")"
-    }
-
-    public init(buildNumber: Int, parentBuildNumber: Int? = nil, status: BuildStatus, branch: Branch, triggeredAt: Date, startedAt: Date? = nil, url: String, info: String? = nil, commitHash: String, groupId: String? = nil, groupItemDescription: String? = nil) {
+    public init(id: String, buildNumber: Int, parentBuildNumber: Int? = nil, status: BuildStatus, branch: Branch, triggeredAt: Date, startedAt: Date? = nil, url: String, info: String? = nil, commitHash: String, groupId: String? = nil, groupItemDescription: String? = nil) {
+        self.id = id
         self.buildNumber = buildNumber
         self.parentBuildNumber = parentBuildNumber
         self.status = status
