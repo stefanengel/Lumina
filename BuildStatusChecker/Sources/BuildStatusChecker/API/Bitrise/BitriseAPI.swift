@@ -6,6 +6,17 @@ typealias Workflow = String
 class BitriseAPI {
 }
 
+private struct BuildAbortParams: Codable {
+    let abortReason: String
+    let abortWithSuccess, skipNotifications: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case abortReason = "abort_reason"
+        case abortWithSuccess = "abort_with_success"
+        case skipNotifications = "skip_notifications"
+    }
+}
+
 // MARK: - Fetching branches
 extension BitriseAPI {
     static func branches(config: BitriseConfiguration) -> AnyPublisher<BitriseBranches, Error> {
@@ -143,18 +154,12 @@ extension BitriseAPI {
         baseURL.appendPathComponent(buildSlug)
         baseURL.appendPathComponent("abort")
 
-        let queryItems = [
-            URLQueryItem(name: "abort_reason", value: reason),
-        ]
-
-        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!
-        components.queryItems = queryItems
-
-        let url = components.url!
-
-        var urlRequest = URLRequest(url: url)
+        var urlRequest = URLRequest(url: baseURL)
         urlRequest.setValue(config.authToken, forHTTPHeaderField: "Authorization")
         urlRequest.httpMethod = "POST"
+        let params = BuildAbortParams(abortReason: reason, abortWithSuccess: false, skipNotifications: false)
+        let body = try! JSONEncoder().encode(params)
+        urlRequest.httpBody = body
 
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase

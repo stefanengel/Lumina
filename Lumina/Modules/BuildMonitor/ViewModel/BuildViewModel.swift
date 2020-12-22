@@ -87,10 +87,11 @@ class BuildViewModel: ObservableObject {
     }
 
     func triggerBuild() {
-
+        // TODO: if group, trigger just the first one (but which one should be the first one? The one without parent build number! => needs extra flag?)
     }
 
     func cancelBuild() {
+        // TODO: if group, cancel them all
         buildAPI.cancelBuild(buildId: build.id)
     }
 }
