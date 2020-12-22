@@ -91,7 +91,15 @@ class BuildViewModel: ObservableObject {
     }
 
     func cancelBuild() {
-        // TODO: if group, cancel them all
-        buildAPI.cancelBuild(buildId: build.id)
+        if !build.subBuilds.isEmpty {
+            for subBuild in build.subBuilds {
+                if subBuild.status == .running {
+                    buildAPI.cancelBuild(buildId: subBuild.id)
+                }
+            }
+        }
+        else {
+            buildAPI.cancelBuild(buildId: build.id)
+        }
     }
 }
