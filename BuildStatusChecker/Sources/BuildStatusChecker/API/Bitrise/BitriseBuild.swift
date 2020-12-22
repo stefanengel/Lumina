@@ -83,7 +83,7 @@ extension BitriseBuild {
         var groupItemDescription: String?
 
         if bitriseStore.groupByBuildNumber {
-            groupId = commitHash
+            groupId = self.groupId
             groupItemDescription = triggeredWorkflow
         }
 

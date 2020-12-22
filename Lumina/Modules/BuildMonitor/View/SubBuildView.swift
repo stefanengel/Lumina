@@ -23,6 +23,18 @@ struct SubBuildView: View {
             RoundedRectangle(cornerRadius: 15)
                 .stroke(Color.white, lineWidth: 2)
         )
+        .contextMenu(menuItems: {
+            if viewModel.isRunning {
+                Button(action: self.viewModel.cancelBuild) {
+                    Text("Cancel Subbuild")
+                }
+            }
+            else {
+                Button(action: self.viewModel.triggerBuild) {
+                    Text("Trigger Subbuild")
+                }
+            }
+        })
         .onTapGesture {
             self.viewModel.openInBrowser()
         }

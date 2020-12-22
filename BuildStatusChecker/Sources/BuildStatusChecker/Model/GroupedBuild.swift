@@ -10,7 +10,7 @@ public class GroupedBuild: BuildProtocol {
     }
 
     public var id: String {
-        branch
+        builds.first!.id // This should crash if there is no build in a group!
     }
 
     public var status: BuildStatus {
