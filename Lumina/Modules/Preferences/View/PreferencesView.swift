@@ -74,7 +74,6 @@ struct PreferencesView: View {
                         Button(action: {
                             self.viewModel.ignoreList.insert(IgnorePattern(pattern: self.viewModel.newIgnoreSubstring))
                             self.viewModel.newIgnoreSubstring = ""
-                            debugPrint("Selected: \(self.selectedIgnorePattern?.pattern ?? "none")")
                         }) {
                             Text("Add")
                         }
@@ -153,7 +152,6 @@ struct PreferencesView: View {
                     Button(action: {
                         self.viewModel.workflowList.insert( self.viewModel.newWorkflowString)
                         self.viewModel.newWorkflowString = ""
-                        debugPrint("Selected: \(self.selectedWorkflow ?? "none")")
                     }) {
                         Text("Add")
                     }

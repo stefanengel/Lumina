@@ -6,17 +6,6 @@ typealias Workflow = String
 class BitriseAPI {
 }
 
-private struct BuildAbortParams: Codable {
-    let abortReason: String
-    let abortWithSuccess, skipNotifications: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case abortReason = "abort_reason"
-        case abortWithSuccess = "abort_with_success"
-        case skipNotifications = "skip_notifications"
-    }
-}
-
 // MARK: - Fetching branches
 extension BitriseAPI {
     static func branches(config: BitriseConfiguration) -> AnyPublisher<BitriseBranches, Error> {
@@ -95,12 +84,12 @@ extension BitriseAPI {
 
         let publisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
         .map {
-            if let dict = try? JSONSerialization.jsonObject(with: $0.data, options: []) as? [String: Any] {
-                debugPrint(dict)
-            }
-            return $0.data
+            $0.data
         }
         .decode(type: BitriseBuilds.self, decoder: jsonDecoder)
+        .mapError { e in
+            e
+        }
 
         return publisher
             .receive(on: DispatchQueue.main)
@@ -110,25 +99,20 @@ extension BitriseAPI {
 
 // MARK: - Trigger builds
 extension BitriseAPI {
-    static func triggerBuild(config: BitriseConfiguration, branch: Branch, workflow: Workflow) -> AnyPublisher<Void, Error> {
+    static func triggerBuild(config: BitriseConfiguration, buildParams: GenericBuildParams) -> AnyPublisher<Void, Error> {
         // POST to /apps/{app-slug}/builds
         var baseURL = URL(string: config.baseUrl)!
         baseURL.appendPathComponent(config.appSlug)
         baseURL.appendPathComponent("builds")
 
-        let queryItems = [
-            URLQueryItem(name: "workflow_id", value: workflow),
-            URLQueryItem(name: "branch", value: branch),
-        ]
-
-        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!
-        components.queryItems = queryItems
-
-        let url = components.url!
-
-        var urlRequest = URLRequest(url: url)
+        var urlRequest = URLRequest(url: baseURL)
         urlRequest.setValue(config.authToken, forHTTPHeaderField: "Authorization")
         urlRequest.httpMethod = "POST"
+
+        let bitriseBuildParams = buildParams
+
+        let body = try! JSONEncoder().encode(buildParams.asCodable())
+        urlRequest.httpBody = body
 
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -171,6 +155,7 @@ extension BitriseAPI {
                 throw URLError(.badServerResponse)
             }
         }
+        
         return publisher
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
