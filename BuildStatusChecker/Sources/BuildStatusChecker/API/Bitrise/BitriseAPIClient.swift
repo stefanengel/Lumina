@@ -13,8 +13,19 @@ public class BitriseAPIClient {
 
 // MARK: - BuildFetcher
 extension BitriseAPIClient: BuildAPIClient {
-    public func triggerBuild(buildId: String) {
+    public func triggerBuild(buildParams: GenericBuildParams) {
         let config = BitriseConfiguration()
+
+        cancellable = BitriseAPI.triggerBuild(config: config, buildParams: buildParams)
+            .sink(receiveCompletion: { compl in
+                switch compl {
+                    case .finished: os_log("triggerBuild finished", log: OSLog.buildFetcher, type: .debug)
+                    case .failure(let error):
+                        os_log("triggerBuild finished with error: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, error.localizedDescription)
+                }
+            }, receiveValue: {
+
+            })
     }
 
     public func cancelBuild(buildId: String) {

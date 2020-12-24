@@ -49,6 +49,10 @@ public class GroupedBuild: BuildProtocol {
         builds.first?.groupItemDescription
     }
 
+    public var originalBuildParameters: Codable? {
+        builds.first?.originalBuildParameters
+    }
+
     public var builds: [BuildRepresentation]
 
     public init(builds: [BuildRepresentation]) {

@@ -58,6 +58,10 @@ extension BuildRepresentation: BuildProtocol {
         wrapped.groupItemDescription
     }
 
+    public var originalBuildParameters: Codable? {
+        wrapped.originalBuildParameters
+    }
+
     public var isGroupedBuild: Bool {
         wrapped is GroupedBuild
     }
