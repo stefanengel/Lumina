@@ -1,3 +1,5 @@
+import Foundation
+
 public struct BuildParams: Codable {
     let branch: String?
     let branchDest: String?
@@ -9,12 +11,12 @@ public struct BuildParams: Codable {
     let commitPaths: [CommitPath]?
     let diffUrl: String?
     // Environments is the only property that needs to be converted
-    // when there BuildParams shoulkd be used to retrigger a build
+    // when there BuildParams should be used to retrigger a build
     // https://devcenter.bitrise.io/api/build-trigger/#specifying-environment-variables
-    let environments: [[String: String]]?
+    let environments: [EnvironmentVariable]?
     let pullRequestAuthor: String?
     let pullRequestHeadBranch: String?
-    let pullRequestId: Int?
+    let pullRequestId: String?
     let pullRequestMergeBranch: String?
     let pullRequestRepositoryUrl: String?
     let skipGitStatusReport: Bool?
@@ -31,9 +33,9 @@ public struct BuildParams: Codable {
         //  "value": "24572",
         //  "key": "SOURCE_BITRISE_BUILD_NUMBER"
         // }],
-        for dict in environments {
-            if dict.values.contains(sourceBitriseBuildNumberKey), let numberString = dict["value"] {
-                return Int(numberString)
+        for variable in environments {
+            if variable.key == sourceBitriseBuildNumberKey {
+                return Int(variable.value)
             }
         }
 
@@ -43,7 +45,7 @@ public struct BuildParams: Codable {
 
 // MARK: - GenericBuildParams
 extension BuildParams: GenericBuildParams {
-    public func asCodable() -> Codable {
-        self
+    public var asJSONEncodedHTTPBody: Data {
+        try! JSONEncoder().encode(self)
     }
 }

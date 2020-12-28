@@ -18,11 +18,11 @@ public struct Build: BuildProtocol {
 
     public let groupId: String?
     public let groupItemDescription: String?
-    public let originalBuildParameters: Codable?
+    public let originalBuildParameters: BuildParams?
 
     private let settings: SettingsStoreProtocol = SettingsStore()
 
-    public init(id: String, buildNumber: Int, parentBuildNumber: Int? = nil, status: BuildStatus, branch: Branch, triggeredAt: Date, startedAt: Date? = nil, url: String, info: String? = nil, commitHash: String, groupId: String? = nil, groupItemDescription: String? = nil, originalBuildParameters: Codable? = nil) {
+    public init(id: String, buildNumber: Int, parentBuildNumber: Int? = nil, status: BuildStatus, branch: Branch, triggeredAt: Date, startedAt: Date? = nil, url: String, info: String? = nil, commitHash: String, groupId: String? = nil, groupItemDescription: String? = nil, originalBuildParameters: BuildParams? = nil) {
         self.id = id
         self.buildNumber = buildNumber
         self.parentBuildNumber = parentBuildNumber
