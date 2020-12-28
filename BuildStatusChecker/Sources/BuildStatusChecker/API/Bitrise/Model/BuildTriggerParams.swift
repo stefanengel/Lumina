@@ -1,6 +1,7 @@
 import Foundation
 
-public struct BuildParams: Codable {
+// These are the build params that bitrise needs to trigger a build. The are mostly identitcal to OriginalBuildParams but `environments` has a different structure.
+public struct BuildTriggerParams: Codable {
     let branch: String?
     let branchDest: String?
     let branchDestRepoOwner: String?
@@ -13,7 +14,7 @@ public struct BuildParams: Codable {
     // Environments is the only property that needs to be converted
     // when there BuildParams should be used to retrigger a build
     // https://devcenter.bitrise.io/api/build-trigger/#specifying-environment-variables
-    let environments: [EnvironmentVariable]?
+    let environments: [BuildTriggerEnvironmentVariable]?
     let pullRequestAuthor: String?
     let pullRequestHeadBranch: String?
     let pullRequestId: String?
@@ -22,27 +23,4 @@ public struct BuildParams: Codable {
     let skipGitStatusReport: Bool?
     let tag: String?
     let workflowId: String?
-
-    public var sourceBitriseBuildNumber: Int? {
-        guard let environments = environments else { return nil }
-
-        // "environments": [{
-        //  "value": "24572",
-        //  "key": "SOURCE_BITRISE_BUILD_NUMBER"
-        // }],
-        for variable in environments {
-            if variable.key == EnvironmentVariable.sourceBitriseBuildNumberKey {
-                return Int(variable.value)
-            }
-        }
-
-        return nil
-    }
-}
-
-// MARK: - GenericBuildParams
-extension BuildParams: GenericBuildParams {
-    public var asJSONEncodedHTTPBody: Data {
-        try! JSONEncoder().encode(self)
-    }
 }

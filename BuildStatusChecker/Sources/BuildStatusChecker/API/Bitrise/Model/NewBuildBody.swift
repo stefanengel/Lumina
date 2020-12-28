@@ -1,4 +1,4 @@
 struct NewBuildBody: Codable {
     let hookInfo: HookInfo = HookInfo()
-    let buildParams: BuildParams
+    let buildParams: OriginalBuildParams
 }
