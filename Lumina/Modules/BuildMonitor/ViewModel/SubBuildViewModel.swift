@@ -37,8 +37,4 @@ class SubBuildViewModel: ObservableObject {
     func cancelBuild() {
         buildAPI.cancelBuild(buildId: build.id)
     }
-
-    func triggerBuild() {
-        // TODO: do we really want to retrigger a subbuild?
-    }
 }
