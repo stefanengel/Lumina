@@ -110,8 +110,8 @@ extension BitriseAPI {
         var urlRequest = URLRequest(url: baseURL)
         urlRequest.setValue(config.authToken, forHTTPHeaderField: "Authorization")
         urlRequest.httpMethod = "POST"
-
-        let bitriseBuildParams = buildParams
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         urlRequest.httpBody = buildParams.asJSONEncodedHTTPBody
 
