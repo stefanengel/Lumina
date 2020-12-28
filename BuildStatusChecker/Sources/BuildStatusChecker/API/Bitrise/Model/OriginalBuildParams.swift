@@ -78,6 +78,9 @@ extension OriginalBuildParams {
 // MARK: - GenericBuildParams
 extension OriginalBuildParams: GenericBuildParams {
     public var asJSONEncodedHTTPBody: Data {
-        try! JSONEncoder().encode(asBuildTriggerParams)
+        let body = BuildTriggerBody(buildParams: asBuildTriggerParams)
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        return try! encoder.encode(body)
     }
 }
