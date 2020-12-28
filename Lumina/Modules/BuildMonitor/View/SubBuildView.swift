@@ -29,11 +29,6 @@ struct SubBuildView: View {
                     Text("Cancel Subbuild")
                 }
             }
-            else {
-                Button(action: self.viewModel.triggerBuild) {
-                    Text("Trigger Subbuild")
-                }
-            }
         })
         .onTapGesture {
             self.viewModel.openInBrowser()
