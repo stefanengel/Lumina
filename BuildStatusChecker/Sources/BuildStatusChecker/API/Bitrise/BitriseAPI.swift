@@ -111,8 +111,7 @@ extension BitriseAPI {
 
         let bitriseBuildParams = buildParams
 
-        let body = try! JSONEncoder().encode(buildParams.asCodable())
-        urlRequest.httpBody = body
+        urlRequest.httpBody = buildParams.asJSONEncodedHTTPBody
 
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase

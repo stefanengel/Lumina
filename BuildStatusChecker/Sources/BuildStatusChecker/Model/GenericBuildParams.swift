@@ -1,3 +1,5 @@
+import Foundation
+
 public protocol GenericBuildParams {
-    func asCodable() -> Codable
+    var asJSONEncodedHTTPBody: Data { get }
 }
