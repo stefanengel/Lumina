@@ -58,7 +58,7 @@ extension OriginalBuildParams {
             branchRepoOwner: branchRepoOwner,
             buildRequestSlug: buildRequestSlug,
             commitHash: commitHash,
-            commitMessage: commitMessage,
+            commitMessage: commitMessage == nil ? "Triggered manually via Lumina" : commitMessage,
             commitPaths: commitPaths,
             diffUrl: diffUrl,
             environments: buildTriggerEnvironments,
