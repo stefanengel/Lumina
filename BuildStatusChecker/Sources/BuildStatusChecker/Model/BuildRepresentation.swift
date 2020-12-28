@@ -58,7 +58,7 @@ extension BuildRepresentation: BuildProtocol {
         wrapped.groupItemDescription
     }
 
-    public var originalBuildParameters: BuildParams? {
+    public var originalBuildParameters: OriginalBuildParams? {
         wrapped.originalBuildParameters
     }
 

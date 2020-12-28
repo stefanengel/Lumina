@@ -49,7 +49,7 @@ public class GroupedBuild: BuildProtocol {
         builds.first?.groupItemDescription
     }
 
-    public var originalBuildParameters: BuildParams? {
+    public var originalBuildParameters: OriginalBuildParams? {
         builds.first?.originalBuildParameters
     }
 

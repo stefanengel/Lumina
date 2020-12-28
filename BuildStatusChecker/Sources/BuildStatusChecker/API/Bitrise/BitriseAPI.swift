@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import os.log
 
 typealias Workflow = String
 
@@ -87,8 +88,9 @@ extension BitriseAPI {
             $0.data
         }
         .decode(type: BitriseBuilds.self, decoder: jsonDecoder)
-        .mapError { e in
-            e
+        .mapError { e -> Error in
+            os_log("Unable to decode builds: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, e.localizedDescription)
+            return e
         }
 
         return publisher

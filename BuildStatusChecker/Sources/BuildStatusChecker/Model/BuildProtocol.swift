@@ -17,5 +17,5 @@ public protocol BuildProtocol {
     var groupId: String? { get }
     var groupItemDescription: String? { get }
     // The original build parameters can be used to retrigger a build
-    var originalBuildParameters: BuildParams? { get }
+    var originalBuildParameters: OriginalBuildParams? { get }
 }
