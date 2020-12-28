@@ -26,15 +26,12 @@ public struct BuildParams: Codable {
     public var sourceBitriseBuildNumber: Int? {
         guard let environments = environments else { return nil }
 
-        let sourceBitriseBuildNumberKey = "SOURCE_BITRISE_BUILD_NUMBER"
-
-        #warning("This is horrible, but the JSON structure is crappy")
         // "environments": [{
         //  "value": "24572",
         //  "key": "SOURCE_BITRISE_BUILD_NUMBER"
         // }],
         for variable in environments {
-            if variable.key == sourceBitriseBuildNumberKey {
+            if variable.key == EnvironmentVariable.sourceBitriseBuildNumberKey {
                 return Int(variable.value)
             }
         }
