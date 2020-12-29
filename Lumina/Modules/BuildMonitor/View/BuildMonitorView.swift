@@ -21,7 +21,7 @@ struct BuildMonitorView: View {
                     viewModel.errorMessage.map { ErrorView(message: $0) }
 
                     ForEach(viewModel.filteredBuilds, id: \.self) { build in
-                        BuildView(viewModel: BuildViewModel(from: build))
+                        BuildView(viewModel: BuildViewModel(model: viewModel.model, build: build))
                     }
 
                     Spacer()

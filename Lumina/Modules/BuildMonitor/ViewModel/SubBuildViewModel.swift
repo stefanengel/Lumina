@@ -6,12 +6,14 @@ class SubBuildViewModel: ObservableObject {
     let title: String
     let url: String
 
+    private let model: BuildMonitorModel
     private var buildAPI = BuildAPIClientFactory.createBuildAPI()
 
     @Published var backgroundColor: Color
     @Published var isRunning: Bool = false
 
-    init(from build: BuildRepresentation) {
+    init(model: BuildMonitorModel, build: BuildRepresentation) {
+        self.model = model
         self.build = build
         title = build.groupItemDescription ?? build.branch
         url = build.url
@@ -36,5 +38,6 @@ class SubBuildViewModel: ObservableObject {
 
     func cancelBuild() {
         buildAPI.cancelBuild(buildId: build.id)
+        model.requestUpdate()
     }
 }

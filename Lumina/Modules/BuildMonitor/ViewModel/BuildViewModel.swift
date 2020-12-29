@@ -15,6 +15,7 @@ class BuildViewModel: ObservableObject {
         return title
     }
 
+    let model: BuildMonitorModel
     private var buildAPI = BuildAPIClientFactory.createBuildAPI()
 
     @Published var isRunning: Bool = false
@@ -57,7 +58,8 @@ class BuildViewModel: ObservableObject {
         }
     }
 
-    init(from build: BuildRepresentation) {
+    init(model: BuildMonitorModel, build: BuildRepresentation) {
+        self.model = model
         self.build = build
         title = build.wrapped.branch
 
@@ -90,6 +92,7 @@ class BuildViewModel: ObservableObject {
         // TODO: if group, trigger just the first one (but which one should be the first one? The one without parent build number! => needs extra flag?)
         guard let buildParams = build.originalBuildParameters else { return }
         buildAPI.triggerBuild(buildParams: buildParams)
+        model.requestUpdate()
     }
 
     func cancelBuild() {
@@ -99,9 +102,11 @@ class BuildViewModel: ObservableObject {
                     buildAPI.cancelBuild(buildId: subBuild.id)
                 }
             }
+            model.requestUpdate()
         }
         else {
             buildAPI.cancelBuild(buildId: build.id)
+            model.requestUpdate()
         }
     }
 }

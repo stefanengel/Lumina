@@ -32,7 +32,7 @@ struct BuildView: View {
                     if viewModel.hasSubBuilds {
                         HStack {
                             ForEach(viewModel.subBuilds, id: \.self) { subBuild in
-                                SubBuildView(viewModel: SubBuildViewModel(from: subBuild))
+                                SubBuildView(viewModel: SubBuildViewModel(model: viewModel.model, build: subBuild))
                             }
                         }
                         .padding(.top, 10)
@@ -80,9 +80,9 @@ struct BuildView_Previews: PreviewProvider {
         let succeededBuild = Build(id: "asdfghjk", buildNumber: 12345, status: .success, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
 
         return Group {
-            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: runningBuild)))
-            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: succeededBuild)))
-            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: GroupedBuild(builds: [BuildRepresentation(wrapped: runningBuild), BuildRepresentation(wrapped: succeededBuild)]))))
+            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(), build: BuildRepresentation(wrapped: runningBuild)))
+            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(), build: BuildRepresentation(wrapped: succeededBuild)))
+            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(), build: BuildRepresentation(wrapped: GroupedBuild(builds: [BuildRepresentation(wrapped: runningBuild), BuildRepresentation(wrapped: succeededBuild)]))))
         }
     }
 }
