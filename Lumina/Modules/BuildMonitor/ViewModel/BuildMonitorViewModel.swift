@@ -17,7 +17,7 @@ class BuildMonitorViewModel: ObservableObject {
     }
     @Published var filteredBuilds: [BuildRepresentation] = []
 
-    private let model: BuildMonitorModel?
+    let model: BuildMonitorModel
 
     init(model: BuildMonitorModel) {
         self.model = model
@@ -25,7 +25,7 @@ class BuildMonitorViewModel: ObservableObject {
     }
 
     deinit {
-        model?.unregister(observer: self)
+        model.unregister(observer: self)
     }
 
     private func updateFilteredBuilds() {
@@ -48,7 +48,7 @@ class BuildMonitorViewModel: ObservableObject {
         self.release = release
         self.hotfix = hotfix
         self.feature = feature
-        model = nil
+        model = BuildMonitorModel()
     }
 }
 
