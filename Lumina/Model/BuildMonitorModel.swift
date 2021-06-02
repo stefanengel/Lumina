@@ -75,5 +75,17 @@ extension BuildMonitorModel {
 
             self.notifyStoppedLoading()
         }
+
+        // test
+        buildFetcher.getBuildQueueInfo { result in
+            switch result {
+                case .success(let info):
+                    debugPrint(info.totalSlots)
+                    debugPrint(info.runningBuilds)
+                    debugPrint(info.queuedBuilds)
+                case .failure(let error):
+                    break
+            }
+        }
     }
 }

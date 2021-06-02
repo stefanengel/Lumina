@@ -114,6 +114,55 @@ extension BitriseAPIClient: BuildAPIClient {
             completion(.success(builds))
         })
     }
+
+    public func getBuildQueueInfo(completion: @escaping (Result<BuildQueueInfo, BuildAPIClientError>) -> Void) {
+        let config = BitriseConfiguration()
+
+        guard config.isComplete, !config.orgSlug.isEmpty else {
+            completion(.failure(BuildAPIClientError.incompleteProviderConfiguration))
+            return
+        }
+
+        var organization: Organization?
+        var buildsOnHold = 0
+        var buildsRunning = 0
+
+        cancellable = BitriseAPI.organization(config: config)
+        .flatMap { orga -> AnyPublisher<Int, Error> in
+            organization = orga
+            return BitriseAPI.numberOfbuilds(config: config, onHold: false)
+        }
+        .flatMap { runningBuildCount -> AnyPublisher<Int, Error> in
+            buildsRunning = runningBuildCount
+            return BitriseAPI.numberOfbuilds(config: config, onHold: true)
+        }
+        .flatMap { onHoldBuildCount -> AnyPublisher<BuildQueueInfo, Error> in
+            buildsOnHold = onHoldBuildCount
+            guard let concurrencyCount = organization?.concurrencyCount else {
+                #warning("Is this how to fail explicitly?")
+                return Fail(error: BuildAPIClientError.organizationNotFound).eraseToAnyPublisher()
+            }
+            return Just(BuildQueueInfo(totalSlots: concurrencyCount, runningBuilds: buildsRunning, queuedBuilds: buildsOnHold))
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        .mapError() { error -> BuildAPIClientError in
+            if let urlError = error as? URLError, urlError.code.rawValue == -1009 {
+                return .noNetworkConnection
+            }
+            return .requestFailed(message: error.localizedDescription)
+        }
+        .sink(receiveCompletion: { compl in
+            switch compl {
+                case .finished: os_log("getBuildQueueInfo finished", log: OSLog.buildFetcher, type: .debug)
+                case .failure(let error):
+                    os_log("getBuildQueueInfo finished with error: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, error.localizedDescription)
+                    completion(.failure(error))
+            }
+        }, receiveValue: { (buildQueueInfo) in
+            completion(.success(buildQueueInfo))
+        })
+    }
 }
 
 // MARK: - Helpers for branches that have a prefix

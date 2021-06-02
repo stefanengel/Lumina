@@ -97,6 +97,47 @@ extension BitriseAPI {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+
+    static func numberOfbuilds(config: BitriseConfiguration, onHold: Bool) -> AnyPublisher<Int, Error> {
+        var base = URL(string: config.baseUrl)!
+        base.appendPathComponent(config.appSlug)
+        base.appendPathComponent("builds")
+
+        let queryItems = [
+            URLQueryItem(name: "owner_slug", value: config.orgSlug),
+            URLQueryItem(name: "is_on_hold", value: onHold ? "true" : "false"),
+            URLQueryItem(name: "status", value: "0"),
+        ]
+
+        var components = URLComponents(url: base, resolvingAgainstBaseURL: false)!
+        components.queryItems = queryItems
+
+        let url = components.url!
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue(config.authToken, forHTTPHeaderField: "Authorization")
+
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .iso8601
+
+        let publisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
+        .map {
+            $0.data
+        }
+        .decode(type: BitriseBuilds.self, decoder: jsonDecoder)
+        .map {
+            $0.data.count
+        }
+        .mapError { e -> Error in
+            os_log("Unable to decode builds: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, e.localizedDescription)
+            return e
+        }
+
+        return publisher
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Trigger builds
@@ -157,6 +198,39 @@ extension BitriseAPI {
             }
         }
         
+        return publisher
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+}
+
+// MARK: - Get info about organization
+extension BitriseAPI {
+    static func organization(config: BitriseConfiguration) -> AnyPublisher<Organization, Error> {
+        #warning("Sort out where the base url comes from! The current one already includes the component /apps/ which is why we cannot use it here")
+        var url = URL(string: "https://api.bitrise.io/v0.1/organizations")!
+        url.appendPathComponent(config.orgSlug)
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue(config.authToken, forHTTPHeaderField: "Authorization")
+
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .iso8601
+
+        let publisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
+        .map {
+            $0.data // this is the data representation of the response
+        }
+        .decode(type: OrganizationResponse.self, decoder: jsonDecoder)
+        .map {
+            $0.data // this is the property called "data" within the response
+        }
+        .mapError { e -> Error in
+            os_log("Unable to decode organization: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, e.localizedDescription)
+            return e
+        }
+
         return publisher
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

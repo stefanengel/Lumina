@@ -10,6 +10,9 @@ class BitriseConfiguration {
     public lazy var appSlug: String = {
         return bitrise.read(setting: .bitriseAppSlug)
     }()
+    public lazy var orgSlug: String = {
+        return bitrise.read(setting: .bitriseOrgSlug)
+    }()
 
     public var workflowList: [String] {
         bitrise.readWorkflowList()

@@ -89,7 +89,7 @@ struct PreferencesView: View {
                         .disabled(selectedIgnorePattern == nil)
                     }
                     HStack {
-                        List(Array(viewModel.ignoreList)  , id: \.pattern, selection:
+                        List(Array(viewModel.ignoreList), id: \.pattern, selection:
                         $selectedIgnorePattern) { substring in
                             IgnorePatternRow(ignorePattern: substring, selectedIgnorePattern: self.$selectedIgnorePattern)
                             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -122,6 +122,8 @@ struct PreferencesView: View {
                             .frame(maxHeight: .infinity)
                         Text("Bitrise app slug:")
                             .frame(maxHeight: .infinity)
+                        Text("Bitrise org slug:")
+                            .frame(maxHeight: .infinity)
                     }
                     VStack(spacing: 10.0) {
                         TextField("Bitrise base URL", text: $viewModel.bitriseBaseUrl)
@@ -129,6 +131,8 @@ struct PreferencesView: View {
                         TextField("Bitrise auth token", text: $viewModel.bitriseAuthToken)
                             .frame(maxHeight: .infinity)
                         TextField("Bitrise app slug", text: $viewModel.bitriseAppSlug)
+                            .frame(maxHeight: .infinity)
+                        TextField("Bitrise org slug", text: $viewModel.bitriseOrgSlug)
                             .frame(maxHeight: .infinity)
                     }
                     .padding(.leading)
