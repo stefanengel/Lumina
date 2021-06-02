@@ -60,6 +60,7 @@ extension BuildMonitorViewModel {
         case .incompleteProviderConfiguration: return "Incomplete configuration"
         case .noNetworkConnection: return "No network connection"
         case .requestFailed(let message): return "Request failed: \(message)"
+        case .organizationNotFound: return "Organization not found!"
         }
     }
 }

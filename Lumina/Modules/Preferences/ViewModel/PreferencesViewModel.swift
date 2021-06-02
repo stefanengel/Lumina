@@ -16,6 +16,7 @@ class PreferencesViewModel: ObservableObject {
     @Published var bitriseBaseUrl: String = ""
     @Published var bitriseAuthToken: String = ""
     @Published var bitriseAppSlug: String = ""
+    @Published var bitriseOrgSlug: String = ""
     @Published var groupByBuildNumber: Bool = false
     @Published var disableSeasonalDecorations: Bool = false
 
@@ -39,6 +40,7 @@ class PreferencesViewModel: ObservableObject {
         bitriseBaseUrl = bitrise.read(setting: .bitriseBaseUrl)
         bitriseAuthToken = bitrise.read(setting: .bitriseAuthToken)
         bitriseAppSlug = bitrise.read(setting: .bitriseAppSlug)
+        bitriseOrgSlug = bitrise.read(setting: .bitriseOrgSlug)
         groupByBuildNumber = bitrise.groupByBuildNumber
 
         if bitriseBaseUrl.isEmpty {
@@ -46,7 +48,7 @@ class PreferencesViewModel: ObservableObject {
         }
     }
 
-    func saveProvider(bitriseBaseUrl: String, bitriseAuthToken: String, bitriseAppSlug: String) {
+    func saveProvider(bitriseBaseUrl: String, bitriseAuthToken: String, bitriseAppSlug: String, bitriseOrgSlug: String) {
     }
 
     func saveSettings() {
@@ -65,6 +67,7 @@ class PreferencesViewModel: ObservableObject {
         bitrise.store(setting: .bitriseBaseUrl, value: bitriseBaseUrl)
         bitrise.store(setting: .bitriseAuthToken, value: bitriseAuthToken)
         bitrise.store(setting: .bitriseAppSlug, value: bitriseAppSlug)
+        bitrise.store(setting: .bitriseOrgSlug, value: bitriseOrgSlug)
         bitrise.groupByBuildNumber = groupByBuildNumber
     }
 
