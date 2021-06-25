@@ -23,6 +23,7 @@ public struct BitriseBuild: Codable {
     let triggeredBy: String?
     let commitHash: String?
     let commitMessage: String?
+    let isOnHold: Bool
     let originalBuildParams: OriginalBuildParams?
 
     var parentBuildNumber: Int? {

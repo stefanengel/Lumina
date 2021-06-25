@@ -12,7 +12,8 @@ extension BitriseAPI {
     static func branches(config: BitriseConfiguration) -> AnyPublisher<BitriseBranches, Error> {
         let url = URL(string: "\(config.baseUrl)/\(config.appSlug)/branches")!
         var urlRequest = URLRequest(url: url)
-        urlRequest.setValue(config.authToken, forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        urlRequest.setValue(config.authToken.trimmingCharacters(in: NSCharacterSet.whitespaces), forHTTPHeaderField: "Authorization")
 
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -105,7 +106,6 @@ extension BitriseAPI {
 
         let queryItems = [
             URLQueryItem(name: "owner_slug", value: config.orgSlug),
-            URLQueryItem(name: "is_on_hold", value: onHold ? "true" : "false"),
             URLQueryItem(name: "status", value: "0"),
         ]
 
@@ -127,7 +127,7 @@ extension BitriseAPI {
         }
         .decode(type: BitriseBuilds.self, decoder: jsonDecoder)
         .map {
-            $0.data.count
+            $0.data.filter{ $0.isOnHold == onHold }.count
         }
         .mapError { e -> Error in
             os_log("Unable to decode builds: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, e.localizedDescription)
