@@ -2,7 +2,7 @@ import Foundation
 import KeychainSwift
 
 public class BitriseStore {
-    private let keychain = KeychainSwift()
+    private let keychain = KeychainSwift(keyPrefix: "luminaTestKey_")
     private let defaults = UserDefaults.standard
     private let workflowListKey = "workflowList"
     private let groupByBuildNumberKey = "groupByBuildNumber"

@@ -8,7 +8,7 @@ public class BitriseAPIClient {
     public init() {
     }
     
-    var cancellable: Cancellable?
+    var cancelSet: Set<AnyCancellable> = []
 }
 
 // MARK: - BuildFetcher
@@ -16,7 +16,7 @@ extension BitriseAPIClient: BuildAPIClient {
     public func triggerBuild(buildParams: GenericBuildParams) {
         let config = BitriseConfiguration()
 
-        cancellable = BitriseAPI.triggerBuild(config: config, buildParams: buildParams)
+        BitriseAPI.triggerBuild(config: config, buildParams: buildParams)
             .sink(receiveCompletion: { compl in
                 switch compl {
                     case .finished: os_log("triggerBuild finished", log: OSLog.buildFetcher, type: .debug)
@@ -26,12 +26,14 @@ extension BitriseAPIClient: BuildAPIClient {
             }, receiveValue: {
 
             })
+            .store(in: &cancelSet)
+
     }
 
     public func cancelBuild(buildId: String) {
         let config = BitriseConfiguration()
 
-        cancellable = BitriseAPI.cancelBuild(config: config, buildSlug: buildId, reason: "Aborted via Lumina")
+        BitriseAPI.cancelBuild(config: config, buildSlug: buildId, reason: "Aborted via Lumina")
             .sink(receiveCompletion: { compl in
                 switch compl {
                     case .finished: os_log("cancelBuild finished", log: OSLog.buildFetcher, type: .debug)
@@ -41,6 +43,7 @@ extension BitriseAPIClient: BuildAPIClient {
             }, receiveValue: {
 
             })
+            .store(in: &cancelSet)
     }
 
     public func getRecentBuilds(completion: @escaping (Result<Builds, BuildAPIClientError>) -> Void) {
@@ -53,7 +56,7 @@ extension BitriseAPIClient: BuildAPIClient {
 
         var existingBranches: BitriseBranches?
 
-        cancellable = BitriseAPI.branches(config: config)
+        BitriseAPI.branches(config: config)
         .flatMap { branches -> AnyPublisher<BitriseBuilds, Error> in
             existingBranches = branches
             return BitriseAPI.builds(config: config)
@@ -113,6 +116,7 @@ extension BitriseAPIClient: BuildAPIClient {
 
             completion(.success(builds))
         })
+        .store(in: &cancelSet)
     }
 
     public func getBuildQueueInfo(completion: @escaping (Result<BuildQueueInfo, BuildAPIClientError>) -> Void) {
@@ -127,7 +131,7 @@ extension BitriseAPIClient: BuildAPIClient {
         var buildsOnHold = 0
         var buildsRunning = 0
 
-        cancellable = BitriseAPI.organization(config: config)
+        BitriseAPI.organization(config: config)
         .flatMap { orga -> AnyPublisher<Int, Error> in
             organization = orga
             return BitriseAPI.numberOfbuilds(config: config, onHold: false)
@@ -139,7 +143,6 @@ extension BitriseAPIClient: BuildAPIClient {
         .flatMap { onHoldBuildCount -> AnyPublisher<BuildQueueInfo, Error> in
             buildsOnHold = onHoldBuildCount
             guard let concurrencyCount = organization?.concurrencyCount else {
-                #warning("Is this how to fail explicitly?")
                 return Fail(error: BuildAPIClientError.organizationNotFound).eraseToAnyPublisher()
             }
             return Just(BuildQueueInfo(totalSlots: concurrencyCount, runningBuilds: buildsRunning, queuedBuilds: buildsOnHold))
@@ -159,9 +162,11 @@ extension BitriseAPIClient: BuildAPIClient {
                     os_log("getBuildQueueInfo finished with error: %{PUBLIC}@", log: OSLog.buildFetcher, type: .error, error.localizedDescription)
                     completion(.failure(error))
             }
-        }, receiveValue: { (buildQueueInfo) in
+        }, receiveValue: { buildQueueInfo in
+            os_log("Queue: %{PUBLIC}@", log: OSLog.buildFetcher, type: .debug, buildQueueInfo.description)
             completion(.success(buildQueueInfo))
         })
+        .store(in: &cancelSet)
     }
 }
 
