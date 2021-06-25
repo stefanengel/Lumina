@@ -51,9 +51,9 @@ extension BuildMonitorModel {
         }
     }
 
-    func notifyUpdateSucceeded(builds: Builds) {
+    func notifyUpdateSucceeded(builds: Builds, buildQueueInfo: BuildQueueInfo) {
         for observer in observers {
-            observer.update(builds: builds)
+            observer.update(builds: builds, buildQueueInfo: buildQueueInfo)
         }
     }
 }
@@ -69,19 +69,17 @@ extension BuildMonitorModel {
         notifyStartedLoading()
         buildFetcher.getRecentBuilds() { result in
             switch result {
-                case .success(let builds): self.notifyUpdateSucceeded(builds: builds)
-                case .failure(let error): self.notifyUpdateFailed(error: error)
+            case .success(let builds):
+                self.buildFetcher.getBuildQueueInfo { buildQueueInfoResult in
+                    switch buildQueueInfoResult {
+                        case .success(let buildQueueInfo): self.notifyUpdateSucceeded(builds: builds, buildQueueInfo: buildQueueInfo)
+                        case .failure(let error): self.notifyUpdateFailed(error: error)
+                    }
+                }
+            case .failure(let error): self.notifyUpdateFailed(error: error)
             }
 
             self.notifyStoppedLoading()
-        }
-
-        buildFetcher.getBuildQueueInfo { result in
-            switch result {
-                case .success(let info): break
-                case .failure(let error):
-                    break
-            }
         }
     }
 }

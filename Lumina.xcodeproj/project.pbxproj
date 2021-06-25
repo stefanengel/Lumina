@@ -35,6 +35,8 @@
 		3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */; };
 		3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */; };
 		3BF07AF525742D0E00C7EE10 /* SubBuildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */; };
+		47CE22EA268629C0004257EF /* BuildQueueInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CE22E9268629C0004257EF /* BuildQueueInfoView.swift */; };
+		47CE22EC26862AF6004257EF /* BuildQueueInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CE22EB26862AF6004257EF /* BuildQueueInfoViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +83,8 @@
 		3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChristmasDecorationProvider.swift; sourceTree = "<group>"; };
 		3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildViewModel.swift; sourceTree = "<group>"; };
 		3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildView.swift; sourceTree = "<group>"; };
+		47CE22E9268629C0004257EF /* BuildQueueInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildQueueInfoView.swift; sourceTree = "<group>"; };
+		47CE22EB26862AF6004257EF /* BuildQueueInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildQueueInfoViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +220,7 @@
 				2C54561F23E9DB5A00226FA2 /* BuildMonitorViewModel.swift */,
 				2C54562023E9DB5A00226FA2 /* BuildViewModel.swift */,
 				3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */,
+				47CE22EB26862AF6004257EF /* BuildQueueInfoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -229,6 +234,7 @@
 				2C54562523E9DB5A00226FA2 /* ErrorView.swift */,
 				3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */,
 				0B3F4A40257FD3B80094C16A /* SearchField.swift */,
+				47CE22E9268629C0004257EF /* BuildQueueInfoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -406,11 +412,13 @@
 				2C54564223E9DB5A00226FA2 /* AppDelegate.swift in Sources */,
 				2C54563C23E9DB5A00226FA2 /* StatusItemView.swift in Sources */,
 				2C54563923E9DB5A00226FA2 /* ProgressIndicatorView.swift in Sources */,
+				47CE22EA268629C0004257EF /* BuildQueueInfoView.swift in Sources */,
 				2C54563D23E9DB5A00226FA2 /* StatusItemViewModel.swift in Sources */,
 				3BF07AF525742D0E00C7EE10 /* SubBuildView.swift in Sources */,
 				2C54563423E9DB5A00226FA2 /* PreferencesView.swift in Sources */,
 				2C54564123E9DB5A00226FA2 /* AppCoordinator.swift in Sources */,
 				2C54563B23E9DB5A00226FA2 /* ErrorView.swift in Sources */,
+				47CE22EC26862AF6004257EF /* BuildQueueInfoViewModel.swift in Sources */,
 				3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */,
 				2C54563723E9DB5A00226FA2 /* BuildViewModel.swift in Sources */,
 			);

@@ -96,7 +96,7 @@ extension AppCoordinator: ModelObserver {
         }
     }
 
-    func update(builds: Builds) {
+    func update(builds: Builds, buildQueueInfo: BuildQueueInfo) {
     }
 }
 

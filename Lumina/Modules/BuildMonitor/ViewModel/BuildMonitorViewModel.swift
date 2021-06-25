@@ -9,6 +9,7 @@ class BuildMonitorViewModel: ObservableObject {
     @Published var feature: [BuildRepresentation] = []
     @Published var errorMessage: String?
     @Published var isLoading: Bool = true
+    @Published var buildQueueInfo: BuildQueueInfo?
 
     @Published var search: String = "" {
         didSet {
@@ -85,7 +86,7 @@ extension BuildMonitorViewModel: ModelObserver {
         }
     }
 
-    func update(builds: Builds) {
+    func update(builds: Builds, buildQueueInfo: BuildQueueInfo) {
         DispatchQueue.main.async {
             self.errorMessage = nil
             
@@ -94,6 +95,8 @@ extension BuildMonitorViewModel: ModelObserver {
             self.release = builds.sortedLatestReleaseBuilds
             self.hotfix = builds.sortedLatestHotfixBuilds
             self.feature = builds.sortedFeatureBuilds
+
+            self.buildQueueInfo = buildQueueInfo
 
             self.updateFilteredBuilds()
         }

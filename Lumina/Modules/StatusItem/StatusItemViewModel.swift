@@ -104,7 +104,7 @@ extension StatusItemViewModel: ModelObserver {
     func updateFailed(error: BuildAPIClientError) {
     }
 
-    func update(builds: Builds) {
+    func update(builds: Builds, buildQueueInfo: BuildQueueInfo) {
         development = builds.sortedDevelopBuilds
         master = builds.sortedMasterBuilds
         release = builds.sortedLatestReleaseBuilds
