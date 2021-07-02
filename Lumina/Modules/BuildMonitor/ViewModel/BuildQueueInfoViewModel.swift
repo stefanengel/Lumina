@@ -8,19 +8,15 @@ class BuildQueueInfoViewModel: ObservableObject {
         self.buildQueueInfo = buildQueueInfo
     }
 
-    var totalSlots: String {
-        "Total build slots: \(buildQueueInfo.totalSlots)"
-    }
-
-    var running: String {
-        "Running: \(buildQueueInfo.runningBuilds)"
+    var totalSlots: Int {
+        buildQueueInfo.totalSlots
     }
 
     var onHold: String {
         "On hold: \(buildQueueInfo.queuedBuilds)"
     }
 
-    var backgroundColor: Color {
-        buildQueueInfo.queuedBuilds > 0 ? Colors.alizarin : Colors.emerald
+    func slotIsFree(slotIndex: Int) -> Bool {
+        slotIndex >= buildQueueInfo.runningBuilds
     }
 }

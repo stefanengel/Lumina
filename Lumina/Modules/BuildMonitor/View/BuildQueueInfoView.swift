@@ -6,16 +6,23 @@ struct BuildQueueInfoView: View {
 
     var body: some View {
         HStack {
-            Text(viewModel.totalSlots)
-                .foregroundColor(Color.white)
-            Text(viewModel.running)
-                .foregroundColor(Color.white)
-            Text(viewModel.onHold)
-                .foregroundColor(Color.white)
+            HStack(spacing: 8) {
+                ForEach(0...viewModel.totalSlots - 1, id: \.self) { index in
+                    if viewModel.slotIsFree(slotIndex: index) {
+                        Circle()
+                            .fill(Colors.emerald)
+                            .frame(width: 20, height: 20)
+                    }
+                    else {
+                        Circle()
+                            .fill(Colors.alizarin)
+                            .frame(width: 20, height: 20)
+                    }
+                }
+            }
         }
-        .frame(maxWidth: .infinity)
-        .padding(8)
-        .background(viewModel.backgroundColor)
+        .frame(maxWidth: .infinity, alignment: .leading)
+s        .padding(.top, 8)
     }
 }
 
