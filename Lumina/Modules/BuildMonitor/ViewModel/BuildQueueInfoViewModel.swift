@@ -19,4 +19,8 @@ class BuildQueueInfoViewModel: ObservableObject {
     var onHold: String {
         "On hold: \(buildQueueInfo.queuedBuilds)"
     }
+
+    var backgroundColor: Color {
+        buildQueueInfo.queuedBuilds > 0 ? Colors.alizarin : Colors.emerald
+    }
 }
