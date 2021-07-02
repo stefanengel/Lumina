@@ -12,10 +12,15 @@ struct BuildMonitorView: View {
         VStack(spacing: 0) {
             viewModel.buildQueueInfo.map { buildQueueInfo in
                 BuildQueueInfoView(viewModel: BuildQueueInfoViewModel(buildQueueInfo: buildQueueInfo))
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
             }
+
             SearchField(text: $viewModel.search, placeholder: "Filter for branches containing")
-                .padding()
+                .padding(.horizontal)
+                .padding(.bottom)
+                .padding(.top, 8)
+
             ScrollView(.vertical) {
                 VStack(alignment: HorizontalAlignment.center, spacing: 20) {
                     if viewModel.isLoading {
@@ -30,8 +35,7 @@ struct BuildMonitorView: View {
 
                     Spacer()
                 }
-                .padding(.leading, 15)
-                .padding(.trailing, 15)
+                .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
