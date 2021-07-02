@@ -7,9 +7,15 @@ struct BuildQueueInfoView: View {
     var body: some View {
         HStack {
             Text(viewModel.totalSlots)
+                .foregroundColor(Color.white)
             Text(viewModel.running)
+                .foregroundColor(Color.white)
             Text(viewModel.onHold)
+                .foregroundColor(Color.white)
         }
+        .frame(maxWidth: .infinity)
+        .padding(8)
+        .background(viewModel.backgroundColor)
     }
 }
 
