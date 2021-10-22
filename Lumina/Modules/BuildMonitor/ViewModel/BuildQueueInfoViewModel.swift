@@ -12,7 +12,7 @@ class BuildQueueInfoViewModel: ObservableObject {
         buildQueueInfo.totalSlots
     }
 
-    var onHold: String {
+    var onHoldText: String {
         "On hold: \(buildQueueInfo.queuedBuilds)"
     }
 
