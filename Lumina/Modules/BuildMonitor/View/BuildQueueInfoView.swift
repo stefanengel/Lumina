@@ -19,6 +19,7 @@ struct BuildQueueInfoView: View {
                             .frame(width: 20, height: 20)
                     }
                 }
+                Text(viewModel.onHoldText)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
