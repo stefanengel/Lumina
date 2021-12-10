@@ -3,7 +3,8 @@ import Combine
 import os.log
 
 public class BitriseAPIClient {
-    let settings: SettingsStoreProtocol = SettingsStore()
+    let settings = SettingsStore().settings
+    let config = BitriseStore().configuration
 
     public init() {
     }
@@ -14,8 +15,6 @@ public class BitriseAPIClient {
 // MARK: - BuildFetcher
 extension BitriseAPIClient: BuildAPIClient {
     public func triggerBuild(buildParams: GenericBuildParams) {
-        let config = BitriseConfiguration()
-
         BitriseAPI.triggerBuild(config: config, buildParams: buildParams)
             .sink(receiveCompletion: { compl in
                 switch compl {
@@ -31,8 +30,6 @@ extension BitriseAPIClient: BuildAPIClient {
     }
 
     public func cancelBuild(buildId: String) {
-        let config = BitriseConfiguration()
-
         BitriseAPI.cancelBuild(config: config, buildSlug: buildId, reason: "Aborted via Lumina")
             .sink(receiveCompletion: { compl in
                 switch compl {
@@ -47,8 +44,6 @@ extension BitriseAPIClient: BuildAPIClient {
     }
 
     public func getRecentBuilds(completion: @escaping (Result<Builds, BuildAPIClientError>) -> Void) {
-        let config = BitriseConfiguration()
-
         guard config.isComplete else {
             completion(.failure(BuildAPIClientError.incompleteProviderConfiguration))
             return
@@ -59,19 +54,19 @@ extension BitriseAPIClient: BuildAPIClient {
         BitriseAPI.branches(config: config)
         .flatMap { branches -> AnyPublisher<BitriseBuilds, Error> in
             existingBranches = branches
-            return BitriseAPI.builds(config: config)
+            return BitriseAPI.builds(settings: self.settings, config: self.config)
         }
         .flatMap { builds -> AnyPublisher<BitriseBuilds, Error> in
-            return self.complementInformationForBranch(withPrefix: self.settings.read(setting: .releaseBranchPrefix), existingBranches: existingBranches!, builds: builds, config: config)
+            return self.complementInformationForBranch(withPrefix: self.settings.releaseBranchPrefix, existingBranches: existingBranches!, builds: builds, config: self.config)
         }
         .flatMap { builds -> AnyPublisher<BitriseBuilds, Error> in
-            return self.complementInformationForBranch(withPrefix: self.settings.read(setting: .hotfixBranchPrefix), existingBranches: existingBranches!, builds: builds, config: config)
+            return self.complementInformationForBranch(withPrefix: self.settings.hotfixBranchPrefix, existingBranches: existingBranches!, builds: builds, config: self.config)
         }
         .flatMap { builds -> AnyPublisher<BitriseBuilds, Error> in
-            return self.complementBuildInformationIfMissing(for: self.settings.read(setting: .developBranchName), existingBranches: existingBranches!, builds: builds, config: config)
+            return self.complementBuildInformationIfMissing(for: self.settings.developBranchName, existingBranches: existingBranches!, builds: builds, config: self.config)
         }
         .flatMap { builds -> AnyPublisher<BitriseBuilds, Error> in
-            return self.complementBuildInformationIfMissing(for: self.settings.read(setting: .masterBranchName), existingBranches: existingBranches!, builds: builds, config: config)
+            return self.complementBuildInformationIfMissing(for: self.settings.masterBranchName, existingBranches: existingBranches!, builds: builds, config: self.config)
         }
         .mapError() { error -> BuildAPIClientError in
             if let urlError = error as? URLError, urlError.code.rawValue == -1009 {
@@ -91,15 +86,15 @@ extension BitriseAPIClient: BuildAPIClient {
 
             os_log("Received %{PUBLIC}d builds", log: OSLog.buildFetcher, type: .debug, bitriseBuilds.data.count)
 
-            if config.groupByBuildNumber {
+            if self.settings.groupByBuildNumber {
                 var buildGroups = [String: GroupedBuild]()
                 for bitriseBuild in bitriseBuilds.data {
                     // grouping commitHash is not enough since rolling builds will have the same hash, we have to group by build number
                     if let existingGroup = buildGroups[bitriseBuild.groupId] {
-                        existingGroup.append(build: bitriseBuild.asBuildRepresentation)
+                        existingGroup.append(build: bitriseBuild.asBuildRepresentation(groupByBuildNumber: self.settings.groupByBuildNumber))
                     }
                     else {
-                        let newGroup = GroupedBuild(builds: [bitriseBuild.asBuildRepresentation])
+                        let newGroup = GroupedBuild(builds: [bitriseBuild.asBuildRepresentation(groupByBuildNumber: self.settings.groupByBuildNumber)])
                         buildGroups[bitriseBuild.groupId] = newGroup
                     }
                 }
@@ -110,7 +105,7 @@ extension BitriseAPIClient: BuildAPIClient {
             }
             else {
                 for bitriseBuild in bitriseBuilds.data {
-                    builds.add(build: bitriseBuild.asBuildRepresentation)
+                    builds.add(build: bitriseBuild.asBuildRepresentation(groupByBuildNumber: self.settings.groupByBuildNumber))
                 }
             }
 
@@ -120,8 +115,6 @@ extension BitriseAPIClient: BuildAPIClient {
     }
 
     public func getBuildQueueInfo(completion: @escaping (Result<BuildQueueInfo, BuildAPIClientError>) -> Void) {
-        let config = BitriseConfiguration()
-
         guard config.isComplete, !config.orgSlug.isEmpty else {
             completion(.failure(BuildAPIClientError.incompleteProviderConfiguration))
             return
@@ -134,11 +127,11 @@ extension BitriseAPIClient: BuildAPIClient {
         BitriseAPI.organization(config: config)
         .flatMap { orga -> AnyPublisher<Int, Error> in
             organization = orga
-            return BitriseAPI.numberOfbuilds(config: config, onHold: false)
+            return BitriseAPI.numberOfbuilds(config: self.config, onHold: false)
         }
         .flatMap { runningBuildCount -> AnyPublisher<Int, Error> in
             buildsRunning = runningBuildCount
-            return BitriseAPI.numberOfbuilds(config: config, onHold: true)
+            return BitriseAPI.numberOfbuilds(config: self.config, onHold: true)
         }
         .flatMap { onHoldBuildCount -> AnyPublisher<BuildQueueInfo, Error> in
             buildsOnHold = onHoldBuildCount
@@ -206,7 +199,7 @@ extension BitriseAPIClient {
 // MARK: - Explicitly loading latest build
 extension BitriseAPIClient {
     private func complementLatestBuild(for branch: Branch, existingBuilds builds: BitriseBuilds, config: BitriseConfiguration) -> AnyPublisher<BitriseBuilds, Error> {
-        return BitriseAPI.builds(config: config, forBranch: branch, limit: 1)
+        return BitriseAPI.builds(settings: self.settings, config: config, forBranch: branch, limit: 1)
         .flatMap { additionalBuilds -> Future<BitriseBuilds, Error> in
             var complementedBuilds = BitriseBuilds()
             complementedBuilds.data.append(contentsOf: builds.data)

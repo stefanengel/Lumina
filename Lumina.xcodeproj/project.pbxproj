@@ -31,6 +31,7 @@
 		2C54564223E9DB5A00226FA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C54562F23E9DB5A00226FA2 /* AppDelegate.swift */; };
 		2C54564323E9DB5A00226FA2 /* IgnorePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */; };
 		2C54564723E9DB6300226FA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C54564523E9DB6300226FA2 /* Main.storyboard */; };
+		3B2EC7BC275A75E200101411 /* BitriseStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC7BB275A75E200101411 /* BitriseStoreFactory.swift */; };
 		3B6F2FB52576FAE50072174B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F2FB42576FAE50072174B /* Colors.swift */; };
 		3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */; };
 		3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */; };
@@ -79,6 +80,7 @@
 		2C54562F23E9DB5A00226FA2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnorePattern.swift; sourceTree = "<group>"; };
 		2C54564623E9DB6300226FA2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
+		3B2EC7BB275A75E200101411 /* BitriseStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitriseStoreFactory.swift; sourceTree = "<group>"; };
 		3B6F2FB42576FAE50072174B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChristmasDecorationProvider.swift; sourceTree = "<group>"; };
 		3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildViewModel.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 		2C54561723E9DB5A00226FA2 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
+				3B2EC7BA275A75C300101411 /* BitriseStore */,
 				2C54561823E9DB5A00226FA2 /* ViewModel */,
 				2C54561A23E9DB5A00226FA2 /* View */,
 			);
@@ -273,6 +276,14 @@
 				2C54564523E9DB6300226FA2 /* Main.storyboard */,
 			);
 			path = Base.lproj;
+			sourceTree = "<group>";
+		};
+		3B2EC7BA275A75C300101411 /* BitriseStore */ = {
+			isa = PBXGroup;
+			children = (
+				3B2EC7BB275A75E200101411 /* BitriseStoreFactory.swift */,
+			);
+			path = BitriseStore;
 			sourceTree = "<group>";
 		};
 		3B6F2FB32576FAD20072174B /* Style */ = {
@@ -409,6 +420,7 @@
 				2C54563F23E9DB5A00226FA2 /* ModelObserver.swift in Sources */,
 				3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */,
 				2C54564023E9DB5A00226FA2 /* BuildMonitorModel.swift in Sources */,
+				3B2EC7BC275A75E200101411 /* BitriseStoreFactory.swift in Sources */,
 				2C54564223E9DB5A00226FA2 /* AppDelegate.swift in Sources */,
 				2C54563C23E9DB5A00226FA2 /* StatusItemView.swift in Sources */,
 				2C54563923E9DB5A00226FA2 /* ProgressIndicatorView.swift in Sources */,
@@ -579,7 +591,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lumina/Preview Content\"";
-				DEVELOPMENT_TEAM = FWM745VH37;
+				DEVELOPMENT_TEAM = T2SM9BRD4D;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lumina/Info.plist;
@@ -606,7 +618,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lumina/Preview Content\"";
-				DEVELOPMENT_TEAM = FWM745VH37;
+				DEVELOPMENT_TEAM = T2SM9BRD4D;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lumina/Info.plist;
@@ -629,7 +641,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = FWM745VH37;
+				DEVELOPMENT_TEAM = XVBT48DGY3;
 				INFOPLIST_FILE = LuminaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -651,7 +663,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = FWM745VH37;
+				DEVELOPMENT_TEAM = XVBT48DGY3;
 				INFOPLIST_FILE = LuminaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

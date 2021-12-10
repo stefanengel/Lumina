@@ -2,7 +2,7 @@ import Foundation
 
 public struct BuildRepresentation {
     public let wrapped: BuildProtocol
-    private let settings: SettingsStoreProtocol = SettingsStore()
+    private let settings = SettingsStore().settings
 
     public init(wrapped: BuildProtocol) {
         self.wrapped = wrapped
@@ -108,22 +108,22 @@ extension BuildRepresentation: Comparable {
 // MARK: - GitFlow specifics
 extension BuildRepresentation {
     public var isDevelopBranch: Bool {
-        return wrapped.branch == settings.read(setting: .developBranchName)
+        return wrapped.branch == settings.developBranchName
     }
 
     public var isMasterBranch: Bool {
-        return wrapped.branch == settings.read(setting: .masterBranchName)
+        return wrapped.branch == settings.masterBranchName
     }
 
     public var isReleaseBranch: Bool {
-        return wrapped.branch.starts(with: settings.read(setting: .releaseBranchPrefix))
+        return wrapped.branch.starts(with: settings.releaseBranchPrefix)
     }
 
     public var isHotfixBranch: Bool {
-        return wrapped.branch.starts(with: settings.read(setting: .hotfixBranchPrefix))
+        return wrapped.branch.starts(with: settings.hotfixBranchPrefix)
     }
 
     public var isFeatureBranch: Bool {
-        return wrapped.branch.starts(with: settings.read(setting: .featureBranchPrefix))
+        return wrapped.branch.starts(with: settings.featureBranchPrefix)
     }
 }

@@ -38,10 +38,8 @@ public struct BitriseBuild: Codable {
         }
     }
 
-    var info: String {
-        let settings = BitriseStore()
-
-        if settings.groupByBuildNumber {
+    func info(groupByBuildNumber: Bool) -> String {
+        if groupByBuildNumber {
             if let commitMessage = commitMessage?.split(separator: "\n").first {
                 return "\(commitMessage)"
             }
@@ -53,13 +51,11 @@ public struct BitriseBuild: Codable {
 
 // MARK: - Conversion
 extension BitriseBuild {
-    public var asBuildRepresentation: BuildRepresentation {
-        let bitriseStore = BitriseStore()
-
+    public func asBuildRepresentation(groupByBuildNumber: Bool) -> BuildRepresentation {
         var groupId: String?
         var groupItemDescription: String?
 
-        if bitriseStore.groupByBuildNumber {
+        if groupByBuildNumber {
             groupId = self.groupId
             groupItemDescription = triggeredWorkflow
         }
@@ -74,6 +70,22 @@ extension BitriseBuild {
 
         let url = "https://app.bitrise.io/build/\(slug)#?tab=log"
 
-        return BuildRepresentation(wrapped: Build(id: slug, buildNumber: buildNumber, parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber, status: buildStatus, branch: branch, triggeredAt: triggeredAt, startedAt: startedOnWorkerAt, url: url, info: info, commitHash: commitHash ?? "Unknown commit hash", groupId: groupId, groupItemDescription: groupItemDescription, originalBuildParameters: originalBuildParams))
+        return BuildRepresentation(
+            wrapped: Build(
+                id: slug,
+                buildNumber: buildNumber,
+                parentBuildNumber: originalBuildParams?.sourceBitriseBuildNumber,
+                status: buildStatus,
+                branch: branch,
+                triggeredAt: triggeredAt,
+                startedAt: startedOnWorkerAt,
+                url: url,
+                info: info(groupByBuildNumber: groupByBuildNumber),
+                commitHash: commitHash ?? "Unknown commit hash",
+                groupId: groupId,
+                groupItemDescription: groupItemDescription,
+                originalBuildParameters: originalBuildParams
+            )
+        )
     }
 }
