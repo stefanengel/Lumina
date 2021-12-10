@@ -23,7 +23,7 @@ struct BuildQueueInfoView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-s        .padding(.top, 8)
+        .padding(.top, 8)
     }
 }
 

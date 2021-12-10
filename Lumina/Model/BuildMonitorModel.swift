@@ -13,7 +13,7 @@ extension BuildMonitorModel {
     func startUpdating() {
         fetchBuilds()
 
-        let interval = TimeInterval(SettingsStore().readUpdateInterval())
+        let interval = TimeInterval(SettingsStore().settings.updateIntervalInSeconds)
         let timer = Timer.publish(every: interval, on: .main, in: .common).autoconnect()
         self.timerToken = timer.sink(receiveValue: {[weak self] _ in
             self?.fetchBuilds()

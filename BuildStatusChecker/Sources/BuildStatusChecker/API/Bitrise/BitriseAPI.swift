@@ -33,10 +33,10 @@ extension BitriseAPI {
 
 // MARK: - Fetching builds
 extension BitriseAPI {
-    static func builds(config: BitriseConfiguration, forBranch branch: String? = nil, limit: Int = 50) -> AnyPublisher<BitriseBuilds, Error> {
+    static func builds(settings: Settings, config: BitriseConfiguration, forBranch branch: String? = nil, limit: Int = 50) -> AnyPublisher<BitriseBuilds, Error> {
         var publishers = [AnyPublisher<BitriseBuilds, Error>]()
 
-        let workflows = config.workflowList.isEmpty ? ["primary"] : config.workflowList
+        let workflows = settings.workflowList.isEmpty ? ["primary"] : settings.workflowList
 
         for workflow in workflows {
             publishers.append(builds(config: config, forWorkflow: workflow, forBranch: branch, limit: limit))
