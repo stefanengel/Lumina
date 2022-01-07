@@ -80,9 +80,11 @@ struct BuildView_Previews: PreviewProvider {
         let succeededBuild = Build(id: "asdfghjk", buildNumber: 12345, status: .success, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
 
         return Group {
-            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(), build: BuildRepresentation(wrapped: runningBuild)))
-            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(), build: BuildRepresentation(wrapped: succeededBuild)))
-            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(), build: BuildRepresentation(wrapped: GroupedBuild(builds: [BuildRepresentation(wrapped: runningBuild), BuildRepresentation(wrapped: succeededBuild)]))))
+            BuildView(
+                viewModel: BuildViewModel(
+                    model: BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create()), build: BuildRepresentation(wrapped: runningBuild, settings: SettingsMock.settings), buildAPI: BuildAPIClientMock.create()))
+            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create()), build: BuildRepresentation(wrapped: succeededBuild, settings: SettingsMock.settings), buildAPI: BuildAPIClientMock.create()))
+            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create()), build: BuildRepresentation(wrapped: GroupedBuild(builds: [BuildRepresentation(wrapped: runningBuild, settings: SettingsMock.settings), BuildRepresentation(wrapped: succeededBuild, settings: SettingsMock.settings)]), settings: SettingsMock.settings), buildAPI: BuildAPIClientMock.create()))
         }
     }
 }
