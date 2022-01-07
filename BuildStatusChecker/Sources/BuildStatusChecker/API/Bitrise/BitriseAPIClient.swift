@@ -137,10 +137,10 @@ extension BitriseAPIClient: BuildAPIClient {
         }
         .flatMap { onHoldBuildCount -> AnyPublisher<BuildQueueInfo, Error> in
             buildsOnHold = onHoldBuildCount
-            guard let concurrencyCount = organization?.concurrencyCount else {
+            guard let organization = organization else {
                 return Fail(error: BuildAPIClientError.organizationNotFound).eraseToAnyPublisher()
             }
-            return Just(BuildQueueInfo(totalSlots: concurrencyCount, runningBuilds: buildsRunning, queuedBuilds: buildsOnHold))
+            return Just(BuildQueueInfo(totalSlots: organization.concurrencyCount, runningBuilds: buildsRunning, queuedBuilds: buildsOnHold))
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }

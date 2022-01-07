@@ -1,5 +1,5 @@
 struct Organization: Codable {
     let name: String
     let slug: String
-    let concurrencyCount: Int
+    let concurrencyCount: Int?
 }
