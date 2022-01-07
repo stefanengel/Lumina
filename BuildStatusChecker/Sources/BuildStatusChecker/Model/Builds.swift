@@ -6,7 +6,13 @@ public class Builds {
     public var latestRelease: [String: BuildRepresentation] = [:]
     public var latestHotfix: [String: BuildRepresentation] = [:]
     public var feature: [String: BuildRepresentation] = [:]
-    public var filter: BuildFilter = BuildFilter()
+    public let settings: Settings
+
+    public lazy var filter: BuildFilter = BuildFilter(settings: settings)
+
+    public init(settings: Settings) {
+        self.settings = settings
+    }
 
     public func add(build: BuildRepresentation) {
         if build.isDevelopBranch {

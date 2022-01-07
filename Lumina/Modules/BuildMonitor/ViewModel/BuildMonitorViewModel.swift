@@ -19,9 +19,11 @@ class BuildMonitorViewModel: ObservableObject {
     @Published var filteredBuilds: [BuildRepresentation] = []
 
     let model: BuildMonitorModel
+    let buildAPIClient: BuildAPIClient
 
-    init(model: BuildMonitorModel) {
+    init(model: BuildMonitorModel, buildAPIClient: BuildAPIClient) {
         self.model = model
+        self.buildAPIClient = buildAPIClient
         model.register(observer: self)
     }
 
@@ -43,13 +45,15 @@ class BuildMonitorViewModel: ObservableObject {
     }
 
     // Used for preview
+    #warning("Why is this in production code?")
     init(development: [BuildRepresentation], master: [BuildRepresentation], release: [BuildRepresentation], hotfix: [BuildRepresentation], feature: [BuildRepresentation]) {
         self.development = development
         self.master = master
         self.release = release
         self.hotfix = hotfix
         self.feature = feature
-        model = BuildMonitorModel()
+        model = BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create())
+        buildAPIClient = BuildAPIClientMock.create()
     }
 }
 

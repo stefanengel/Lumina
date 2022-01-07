@@ -12,8 +12,11 @@ class AppCoordinator: NSObject {
     private var rootLayer: CALayer = CALayer()
     private var emitterLayer: CAEmitterLayer = CAEmitterLayer()
 
-    init(model: BuildMonitorModel) {
+    private let buildAPIClient: BuildAPIClient
+
+    init(model: BuildMonitorModel, buildAPIClient: BuildAPIClient) {
         self.buildMonitorModel = model
+        self.buildAPIClient = buildAPIClient
         super.init()
 
         model.register(observer: self)
@@ -28,7 +31,7 @@ class AppCoordinator: NSObject {
 extension AppCoordinator {
     func start() {
         if buildMonitorWindow == nil {
-            let contentView = BuildMonitorView(viewModel: BuildMonitorViewModel(model: buildMonitorModel))
+            let contentView = BuildMonitorView(viewModel: BuildMonitorViewModel(model: buildMonitorModel, buildAPIClient: buildAPIClient))
 
             buildMonitorWindow = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 480, height: 600),

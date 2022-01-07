@@ -3,10 +3,12 @@ import Combine
 import os.log
 
 public class BitriseAPIClient {
-    let settings = SettingsStore().settings
-    let config = BitriseStore().configuration
+    let settings: Settings
+    let config: BitriseConfiguration
 
-    public init() {
+    public init(settings: Settings, config: BitriseConfiguration) {
+        self.settings = settings
+        self.config = config
     }
     
     var cancelSet: Set<AnyCancellable> = []
@@ -82,7 +84,7 @@ extension BitriseAPIClient: BuildAPIClient {
                     completion(.failure(error))
             }
         }, receiveValue: { (bitriseBuilds) in
-            let builds = Builds()
+            let builds = Builds(settings: self.settings)
 
             os_log("Received %{PUBLIC}d builds", log: OSLog.buildFetcher, type: .debug, bitriseBuilds.data.count)
 
@@ -91,21 +93,21 @@ extension BitriseAPIClient: BuildAPIClient {
                 for bitriseBuild in bitriseBuilds.data {
                     // grouping commitHash is not enough since rolling builds will have the same hash, we have to group by build number
                     if let existingGroup = buildGroups[bitriseBuild.groupId] {
-                        existingGroup.append(build: bitriseBuild.asBuildRepresentation(groupByBuildNumber: self.settings.groupByBuildNumber))
+                        existingGroup.append(build: bitriseBuild.asBuildRepresentation(settings: self.settings))
                     }
                     else {
-                        let newGroup = GroupedBuild(builds: [bitriseBuild.asBuildRepresentation(groupByBuildNumber: self.settings.groupByBuildNumber)])
+                        let newGroup = GroupedBuild(builds: [bitriseBuild.asBuildRepresentation(settings: self.settings)])
                         buildGroups[bitriseBuild.groupId] = newGroup
                     }
                 }
 
                 for (_, group) in buildGroups {
-                    builds.add(build: BuildRepresentation(wrapped: group))
+                    builds.add(build: BuildRepresentation(wrapped: group, settings: self.settings))
                 }
             }
             else {
                 for bitriseBuild in bitriseBuilds.data {
-                    builds.add(build: bitriseBuild.asBuildRepresentation(groupByBuildNumber: self.settings.groupByBuildNumber))
+                    builds.add(build: bitriseBuild.asBuildRepresentation(settings: self.settings))
                 }
             }
 

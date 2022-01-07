@@ -2,10 +2,11 @@ import Foundation
 
 public struct BuildRepresentation {
     public let wrapped: BuildProtocol
-    private let settings = SettingsStore().settings
+    private let settings: Settings
 
-    public init(wrapped: BuildProtocol) {
+    public init(wrapped: BuildProtocol, settings: Settings) {
         self.wrapped = wrapped
+        self.settings = settings
     }
 }
 

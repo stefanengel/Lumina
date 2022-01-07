@@ -51,11 +51,11 @@ public struct BitriseBuild: Codable {
 
 // MARK: - Conversion
 extension BitriseBuild {
-    public func asBuildRepresentation(groupByBuildNumber: Bool) -> BuildRepresentation {
+    public func asBuildRepresentation(settings: Settings) -> BuildRepresentation {
         var groupId: String?
         var groupItemDescription: String?
 
-        if groupByBuildNumber {
+        if settings.groupByBuildNumber {
             groupId = self.groupId
             groupItemDescription = triggeredWorkflow
         }
@@ -80,12 +80,12 @@ extension BitriseBuild {
                 triggeredAt: triggeredAt,
                 startedAt: startedOnWorkerAt,
                 url: url,
-                info: info(groupByBuildNumber: groupByBuildNumber),
+                info: info(groupByBuildNumber: settings.groupByBuildNumber),
                 commitHash: commitHash ?? "Unknown commit hash",
                 groupId: groupId,
                 groupItemDescription: groupItemDescription,
                 originalBuildParameters: originalBuildParams
-            )
+            ), settings: settings
         )
     }
 }

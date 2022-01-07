@@ -33,6 +33,9 @@
 		2C54564723E9DB6300226FA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C54564523E9DB6300226FA2 /* Main.storyboard */; };
 		3B2EC7BC275A75E200101411 /* BitriseStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC7BB275A75E200101411 /* BitriseStoreFactory.swift */; };
 		3B6F2FB52576FAE50072174B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F2FB42576FAE50072174B /* Colors.swift */; };
+		3BA8667027660467005FC854 /* BuildAPIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA8666F27660467005FC854 /* BuildAPIClientMock.swift */; };
+		3BA86672276604F6005FC854 /* SettingsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA86671276604F6005FC854 /* SettingsMock.swift */; };
+		3BA866742766057A005FC854 /* ConfigurationMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA866732766057A005FC854 /* ConfigurationMock.swift */; };
 		3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */; };
 		3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */; };
 		3BF07AF525742D0E00C7EE10 /* SubBuildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */; };
@@ -82,6 +85,9 @@
 		2C54564623E9DB6300226FA2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
 		3B2EC7BB275A75E200101411 /* BitriseStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitriseStoreFactory.swift; sourceTree = "<group>"; };
 		3B6F2FB42576FAE50072174B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		3BA8666F27660467005FC854 /* BuildAPIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildAPIClientMock.swift; sourceTree = "<group>"; };
+		3BA86671276604F6005FC854 /* SettingsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMock.swift; sourceTree = "<group>"; };
+		3BA866732766057A005FC854 /* ConfigurationMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationMock.swift; sourceTree = "<group>"; };
 		3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChristmasDecorationProvider.swift; sourceTree = "<group>"; };
 		3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildViewModel.swift; sourceTree = "<group>"; };
 		3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildView.swift; sourceTree = "<group>"; };
@@ -255,6 +261,7 @@
 		2C54562A23E9DB5A00226FA2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3BA8666E27660454005FC854 /* Mocks */,
 				2C54562B23E9DB5A00226FA2 /* ModelObserver.swift */,
 				2C54562C23E9DB5A00226FA2 /* BuildMonitorModel.swift */,
 				2C54563123E9DB5A00226FA2 /* IgnorePattern.swift */,
@@ -292,6 +299,16 @@
 				3B6F2FB42576FAE50072174B /* Colors.swift */,
 			);
 			path = Style;
+			sourceTree = "<group>";
+		};
+		3BA8666E27660454005FC854 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				3BA8666F27660467005FC854 /* BuildAPIClientMock.swift */,
+				3BA86671276604F6005FC854 /* SettingsMock.swift */,
+				3BA866732766057A005FC854 /* ConfigurationMock.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		3BC17F482577C5E600DEBAA7 /* EasterEggs */ = {
@@ -412,6 +429,7 @@
 				3B6F2FB52576FAE50072174B /* Colors.swift in Sources */,
 				2C54563823E9DB5A00226FA2 /* BuildView.swift in Sources */,
 				2C54563323E9DB5A00226FA2 /* PreferencesViewModel.swift in Sources */,
+				3BA866742766057A005FC854 /* ConfigurationMock.swift in Sources */,
 				0B3F4A41257FD3B80094C16A /* SearchField.swift in Sources */,
 				2C54564323E9DB5A00226FA2 /* IgnorePattern.swift in Sources */,
 				2C54563623E9DB5A00226FA2 /* BuildMonitorViewModel.swift in Sources */,
@@ -430,8 +448,10 @@
 				2C54563423E9DB5A00226FA2 /* PreferencesView.swift in Sources */,
 				2C54564123E9DB5A00226FA2 /* AppCoordinator.swift in Sources */,
 				2C54563B23E9DB5A00226FA2 /* ErrorView.swift in Sources */,
+				3BA8667027660467005FC854 /* BuildAPIClientMock.swift in Sources */,
 				47CE22EC26862AF6004257EF /* BuildQueueInfoViewModel.swift in Sources */,
 				3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */,
+				3BA86672276604F6005FC854 /* SettingsMock.swift in Sources */,
 				2C54563723E9DB5A00226FA2 /* BuildViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
