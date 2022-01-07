@@ -32,7 +32,7 @@ struct BuildView: View {
                     if viewModel.hasSubBuilds {
                         HStack {
                             ForEach(viewModel.subBuilds, id: \.self) { subBuild in
-                                SubBuildView(viewModel: SubBuildViewModel(model: viewModel.model, build: subBuild))
+                                SubBuildView(viewModel: SubBuildViewModel(model: viewModel.model, build: subBuild, buildAPIClient: viewModel.buildAPI))
                             }
                         }
                         .padding(.top, 10)

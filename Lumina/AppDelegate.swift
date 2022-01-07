@@ -8,12 +8,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItemCoordinator: StatusItemCoordinator?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let model = BuildMonitorModel()
+        let client = BuildAPIClientFactory.createBuildAPI(
+            settings: SettingsStore().settings,
+            config: BitriseStore().configuration
+        )
+        let model = BuildMonitorModel(buildAPIClient: client)
 
         statusItemCoordinator = StatusItemCoordinator()
         statusItemCoordinator?.start(model: model)
 
-        appCoordinator = AppCoordinator(model: model)
+        appCoordinator = AppCoordinator(model: model, buildAPIClient: client)
         appCoordinator?.start()
     }
 

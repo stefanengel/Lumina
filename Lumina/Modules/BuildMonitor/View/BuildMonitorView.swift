@@ -2,11 +2,8 @@ import SwiftUI
 import BuildStatusChecker
 
 struct BuildMonitorView: View {
+    #warning("UselStateObject")
     @ObservedObject var viewModel: BuildMonitorViewModel
-
-    init(viewModel: BuildMonitorViewModel) {
-        self.viewModel = viewModel
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -30,7 +27,7 @@ struct BuildMonitorView: View {
                     viewModel.errorMessage.map { ErrorView(message: $0) }
 
                     ForEach(viewModel.filteredBuilds, id: \.self) { build in
-                        BuildView(viewModel: BuildViewModel(model: viewModel.model, build: build))
+                        BuildView(viewModel: BuildViewModel(model: viewModel.model, build: build, buildAPI: viewModel.buildAPIClient))
                     }
 
                     Spacer()

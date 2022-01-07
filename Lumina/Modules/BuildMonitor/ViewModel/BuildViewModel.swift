@@ -16,7 +16,7 @@ class BuildViewModel: ObservableObject {
     }
 
     let model: BuildMonitorModel
-    private var buildAPI = BuildAPIClientFactory.createBuildAPI()
+    let buildAPI: BuildAPIClient
 
     @Published var isRunning: Bool = false
 
@@ -58,9 +58,10 @@ class BuildViewModel: ObservableObject {
         }
     }
 
-    init(model: BuildMonitorModel, build: BuildRepresentation) {
+    init(model: BuildMonitorModel, build: BuildRepresentation, buildAPI: BuildAPIClient) {
         self.model = model
         self.build = build
+        self.buildAPI = buildAPI
         title = build.wrapped.branch
 
         let dateFormatter = DateFormatter()

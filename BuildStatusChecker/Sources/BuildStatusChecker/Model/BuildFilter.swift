@@ -1,9 +1,8 @@
 public struct BuildFilter {
     let hideFeatureBranchesContaining: [String]
-    let settings = SettingsStore()
 
-    public init() {
-        hideFeatureBranchesContaining = settings.readBranchIgnoreList()
+    public init(settings: Settings) {
+        hideFeatureBranchesContaining = settings.branchIgnoreList
     }
 
     public func shouldHide(build: BuildRepresentation) -> Bool {

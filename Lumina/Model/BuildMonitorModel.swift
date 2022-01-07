@@ -3,9 +3,13 @@ import BuildStatusChecker
 import Combine
 
 class BuildMonitorModel {
-    private var buildFetcher = BuildAPIClientFactory.createBuildAPI()
+    private var buildAPIClient: BuildAPIClient
     private var timerToken: AnyCancellable?
     private var observers: [ModelObserver] = []
+
+    init(buildAPIClient: BuildAPIClient) {
+        self.buildAPIClient = buildAPIClient
+    }
 }
 
 // MARK: - Start update mechanism
@@ -67,10 +71,10 @@ extension BuildMonitorModel {
 
     @objc private func fetchBuilds() {
         notifyStartedLoading()
-        buildFetcher.getRecentBuilds() { result in
+        buildAPIClient.getRecentBuilds() { result in
             switch result {
             case .success(let builds):
-                self.buildFetcher.getBuildQueueInfo { buildQueueInfoResult in
+                self.buildAPIClient.getBuildQueueInfo { buildQueueInfoResult in
                     switch buildQueueInfoResult {
                         case .success(let buildQueueInfo): self.notifyUpdateSucceeded(builds: builds, buildQueueInfo: buildQueueInfo)
                         case .failure(let error): self.notifyUpdateFailed(error: error)

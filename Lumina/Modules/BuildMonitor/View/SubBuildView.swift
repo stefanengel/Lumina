@@ -43,6 +43,22 @@ struct SubBuildView: View {
 
 struct SubBuildView_Previews: PreviewProvider {
     static var previews: some View {
-        SubBuildView(viewModel: SubBuildViewModel(model: BuildMonitorModel(), build: BuildRepresentation(wrapped: Build(id: "asdfghjk", buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc"))))
+        SubBuildView(
+            viewModel: SubBuildViewModel(
+                model: BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create()),
+                build: BuildRepresentation(
+                    wrapped: Build(
+                        id: "asdfghjk",
+                        buildNumber: 12345,
+                        status: .running,
+                        branch: "develop",
+                        triggeredAt: Date(),
+                        startedAt: nil,
+                        url: "https://www.bitrise.io",
+                        commitHash: "abc"
+                    ), settings: SettingsMock.settings
+                ), buildAPIClient: BuildAPIClientMock.create()
+            )
+        )
     }
 }
