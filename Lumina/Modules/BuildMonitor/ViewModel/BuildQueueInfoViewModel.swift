@@ -9,11 +9,19 @@ class BuildQueueInfoViewModel: ObservableObject {
     }
 
     var totalSlots: Int {
-        buildQueueInfo.totalSlots
+        buildQueueInfo.totalSlots ?? 0
     }
 
     var onHoldText: String {
         "On hold: \(buildQueueInfo.queuedBuilds)"
+    }
+
+    var numberOfTotalSlotsUnknownText: String {
+        "Number of concurrencies is unknown, currently running: \(buildQueueInfo.runningBuilds), on hold: \(buildQueueInfo.queuedBuilds)"
+    }
+
+    var numberOfTotalSlotsKnown: Bool {
+        buildQueueInfo.totalSlots != nil
     }
 
     func slotIsFree(slotIndex: Int) -> Bool {
