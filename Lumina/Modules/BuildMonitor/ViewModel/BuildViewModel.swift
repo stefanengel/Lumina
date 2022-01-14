@@ -15,6 +15,9 @@ class BuildViewModel: ObservableObject {
         return title
     }
 
+    let model: BuildMonitorModel
+    let buildAPI: BuildAPIClient
+
     @Published var isRunning: Bool = false
 
     var hasSubBuilds: Bool {
@@ -55,8 +58,10 @@ class BuildViewModel: ObservableObject {
         }
     }
 
-    init(from build: BuildRepresentation) {
+    init(model: BuildMonitorModel, build: BuildRepresentation, buildAPI: BuildAPIClient) {
+        self.model = model
         self.build = build
+        self.buildAPI = buildAPI
         title = build.wrapped.branch
 
         let dateFormatter = DateFormatter()
@@ -76,5 +81,33 @@ class BuildViewModel: ObservableObject {
     func openInBrowser() {
         let buildUrl = URL(string: url)!
         NSWorkspace.shared.open(buildUrl)
+    }
+
+    func copyBuildNumber() {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString("#\(build.buildNumber)", forType: .string)
+    }
+
+    func triggerBuild() {
+        // TODO: if group, trigger just the first one (but which one should be the first one? The one without parent build number! => needs extra flag?)
+        guard let buildParams = build.originalBuildParameters else { return }
+        buildAPI.triggerBuild(buildParams: buildParams)
+        model.requestUpdate()
+    }
+
+    func cancelBuild() {
+        if !build.subBuilds.isEmpty {
+            for subBuild in build.subBuilds {
+                if subBuild.status == .running {
+                    buildAPI.cancelBuild(buildId: subBuild.id)
+                }
+            }
+            model.requestUpdate()
+        }
+        else {
+            buildAPI.cancelBuild(buildId: build.id)
+            model.requestUpdate()
+        }
     }
 }

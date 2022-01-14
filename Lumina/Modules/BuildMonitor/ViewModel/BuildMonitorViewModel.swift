@@ -9,6 +9,7 @@ class BuildMonitorViewModel: ObservableObject {
     @Published var feature: [BuildRepresentation] = []
     @Published var errorMessage: String?
     @Published var isLoading: Bool = true
+    @Published var buildQueueInfo: BuildQueueInfo?
 
     @Published var search: String = "" {
         didSet {
@@ -17,15 +18,17 @@ class BuildMonitorViewModel: ObservableObject {
     }
     @Published var filteredBuilds: [BuildRepresentation] = []
 
-    private let model: BuildMonitorModel?
+    let model: BuildMonitorModel
+    let buildAPIClient: BuildAPIClient
 
-    init(model: BuildMonitorModel) {
+    init(model: BuildMonitorModel, buildAPIClient: BuildAPIClient) {
         self.model = model
+        self.buildAPIClient = buildAPIClient
         model.register(observer: self)
     }
 
     deinit {
-        model?.unregister(observer: self)
+        model.unregister(observer: self)
     }
 
     private func updateFilteredBuilds() {
@@ -42,24 +45,27 @@ class BuildMonitorViewModel: ObservableObject {
     }
 
     // Used for preview
+    #warning("Why is this in production code?")
     init(development: [BuildRepresentation], master: [BuildRepresentation], release: [BuildRepresentation], hotfix: [BuildRepresentation], feature: [BuildRepresentation]) {
         self.development = development
         self.master = master
         self.release = release
         self.hotfix = hotfix
         self.feature = feature
-        model = nil
+        model = BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create())
+        buildAPIClient = BuildAPIClientMock.create()
     }
 }
 
 
 // MARK: - Converting errors into messages
 extension BuildMonitorViewModel {
-    func errorMessage(from error: BuildFetcherError) -> String {
+    func errorMessage(from error: BuildAPIClientError) -> String {
         switch error {
         case .incompleteProviderConfiguration: return "Incomplete configuration"
         case .noNetworkConnection: return "No network connection"
         case .requestFailed(let message): return "Request failed: \(message)"
+        case .organizationNotFound: return "Organization not found!"
         }
     }
 }
@@ -78,13 +84,13 @@ extension BuildMonitorViewModel: ModelObserver {
         }
     }
 
-    func updateFailed(error: BuildFetcherError) {
+    func updateFailed(error: BuildAPIClientError) {
         DispatchQueue.main.async {
             self.errorMessage = self.errorMessage(from: error)
         }
     }
 
-    func update(builds: Builds) {
+    func update(builds: Builds, buildQueueInfo: BuildQueueInfo) {
         DispatchQueue.main.async {
             self.errorMessage = nil
             
@@ -93,6 +99,8 @@ extension BuildMonitorViewModel: ModelObserver {
             self.release = builds.sortedLatestReleaseBuilds
             self.hotfix = builds.sortedLatestHotfixBuilds
             self.feature = builds.sortedFeatureBuilds
+
+            self.buildQueueInfo = buildQueueInfo
 
             self.updateFilteredBuilds()
         }

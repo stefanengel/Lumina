@@ -6,52 +6,58 @@ public class Builds {
     public var latestRelease: [String: BuildRepresentation] = [:]
     public var latestHotfix: [String: BuildRepresentation] = [:]
     public var feature: [String: BuildRepresentation] = [:]
-    public var filter: BuildFilter = BuildFilter()
+    public let settings: Settings
+
+    public lazy var filter: BuildFilter = BuildFilter(settings: settings)
+
+    public init(settings: Settings) {
+        self.settings = settings
+    }
 
     public func add(build: BuildRepresentation) {
         if build.isDevelopBranch {
-            if let existingDevelopBuild = development[build.id], existingDevelopBuild.wrapped.triggeredAt > build.wrapped.triggeredAt {
+            if let existingDevelopBuild = development[groupId(for: build)], existingDevelopBuild.wrapped.triggeredAt > build.wrapped.triggeredAt {
                 return
             }
 
             if !filter.shouldHide(build: build) {
-                development[build.id] = build
+                development[groupId(for: build)] = build
             }
         }
         else if build.isMasterBranch {
-            if let existingMasterBuild = master[build.id], existingMasterBuild.triggeredAt > build.triggeredAt {
+            if let existingMasterBuild = master[groupId(for: build)], existingMasterBuild.triggeredAt > build.triggeredAt {
                 return
             }
 
             if !filter.shouldHide(build: build) {
-                master[build.id] = build
+                master[groupId(for: build)] = build
             }
         }
         else if build.isReleaseBranch {
-            if let existingReleaseBuild = latestRelease[build.id], existingReleaseBuild.triggeredAt > build.triggeredAt {
+            if let existingReleaseBuild = latestRelease[groupId(for: build)], existingReleaseBuild.triggeredAt > build.triggeredAt {
                 return
             }
 
             if !filter.shouldHide(build: build) {
-                latestRelease[build.id] = build
+                latestRelease[groupId(for: build)] = build
             }
         }
         else if build.isHotfixBranch {
-            if let existingHotfixBuild = latestHotfix[build.id], existingHotfixBuild.triggeredAt > build.triggeredAt {
+            if let existingHotfixBuild = latestHotfix[groupId(for: build)], existingHotfixBuild.triggeredAt > build.triggeredAt {
                 return
             }
 
             if !filter.shouldHide(build: build) {
-                latestHotfix[build.id] = build
+                latestHotfix[groupId(for: build)] = build
             }
         }
         else if build.isFeatureBranch {
-            if let existingFeatureBuild = feature[build.id], existingFeatureBuild.triggeredAt > build.triggeredAt {
+            if let existingFeatureBuild = feature[groupId(for: build)], existingFeatureBuild.triggeredAt > build.triggeredAt {
                 return
             }
 
             if !filter.shouldHide(build: build) {
-                feature[build.id] = build
+                feature[groupId(for: build)] = build
             }
         }
         else {
@@ -85,9 +91,19 @@ extension Builds {
             .map{ $0.value }
             .sorted{ $0 < $1 }
     }
+
     public var sortedFeatureBuilds: [BuildRepresentation] {
         return feature
             .map{ $0.value }
             .sorted{ $0 < $1 }
+    }
+}
+
+// MARK: - Grouping
+extension Builds {
+    // For the build monitor we want to group everything that runs on the same branch and only show the
+    // latest build (group) for that one
+    func groupId(for build: BuildRepresentation) -> String {
+        build.branch
     }
 }

@@ -6,14 +6,21 @@ import BuildStatusChecker
 class AppDelegate: NSObject, NSApplicationDelegate {
     var appCoordinator: AppCoordinator?
     var statusItemCoordinator: StatusItemCoordinator?
+    var runsInPreviewMode: Bool {
+        ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+    }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let model = BuildMonitorModel()
+        let client = BuildAPIClientFactory.createBuildAPI(
+            settings: runsInPreviewMode ? SettingsMock.settings : SettingsStore().settings,
+            config: runsInPreviewMode ? ConfigurationMock.configuration : BitriseStore().configuration
+        )
+        let model = BuildMonitorModel(buildAPIClient: client)
 
         statusItemCoordinator = StatusItemCoordinator()
         statusItemCoordinator?.start(model: model)
 
-        appCoordinator = AppCoordinator(model: model)
+        appCoordinator = AppCoordinator(model: model, buildAPIClient: client)
         appCoordinator?.start()
     }
 
