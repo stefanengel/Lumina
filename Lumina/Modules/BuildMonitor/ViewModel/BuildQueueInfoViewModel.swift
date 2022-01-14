@@ -7,17 +7,38 @@ class BuildQueueInfoViewModel: ObservableObject {
     init(buildQueueInfo: BuildQueueInfo) {
         self.buildQueueInfo = buildQueueInfo
     }
-
-    var totalSlots: Int {
+    
+    var totalAmount: Int {
         buildQueueInfo.totalSlots ?? 0
+    }
+
+    var usedAmount: Int {
+        buildQueueInfo.runningBuilds
+    }
+
+    var runningText: String {
+        "Running: \(buildQueueInfo.runningBuilds)"
     }
 
     var onHoldText: String {
         "On hold: \(buildQueueInfo.queuedBuilds)"
     }
+    
+    var canDisplayUsageBar: Bool {
+        return buildQueueInfo.totalSlots != nil
+    }
 
-    var numberOfTotalSlotsUnknownText: String {
-        "Number of concurrencies is unknown, currently running: \(buildQueueInfo.runningBuilds), on hold: \(buildQueueInfo.queuedBuilds)"
+    var totalNumberOfConcurrenciesText: String {
+        let totalSlots: String
+            
+        if let amount = buildQueueInfo.totalSlots {
+            totalSlots = "\(amount)"
+        }
+        else {
+            totalSlots = "Unknown"
+        }
+        
+        return "Total number of concurrencies: \(totalSlots)"
     }
 
     var numberOfTotalSlotsKnown: Bool {

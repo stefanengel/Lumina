@@ -39,6 +39,7 @@
 		3BC17F4A2577C5E600DEBAA7 /* ChristmasDecorationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */; };
 		3BF07AF125742C1100C7EE10 /* SubBuildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */; };
 		3BF07AF525742D0E00C7EE10 /* SubBuildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */; };
+		47B88DD12791D428002D5DC6 /* UsageBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B88DD02791D428002D5DC6 /* UsageBarView.swift */; };
 		47CE22EA268629C0004257EF /* BuildQueueInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CE22E9268629C0004257EF /* BuildQueueInfoView.swift */; };
 		47CE22EC26862AF6004257EF /* BuildQueueInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CE22EB26862AF6004257EF /* BuildQueueInfoViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -91,6 +92,7 @@
 		3BC17F492577C5E600DEBAA7 /* ChristmasDecorationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChristmasDecorationProvider.swift; sourceTree = "<group>"; };
 		3BF07AF025742C1100C7EE10 /* SubBuildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildViewModel.swift; sourceTree = "<group>"; };
 		3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBuildView.swift; sourceTree = "<group>"; };
+		47B88DD02791D428002D5DC6 /* UsageBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageBarView.swift; sourceTree = "<group>"; };
 		47CE22E9268629C0004257EF /* BuildQueueInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildQueueInfoView.swift; sourceTree = "<group>"; };
 		47CE22EB26862AF6004257EF /* BuildQueueInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildQueueInfoViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -244,6 +246,7 @@
 				3BF07AF425742D0E00C7EE10 /* SubBuildView.swift */,
 				0B3F4A40257FD3B80094C16A /* SearchField.swift */,
 				47CE22E9268629C0004257EF /* BuildQueueInfoView.swift */,
+				47B88DD02791D428002D5DC6 /* UsageBarView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				2C54563523E9DB5A00226FA2 /* IgnorePatternRow.swift in Sources */,
 				3B6F2FB52576FAE50072174B /* Colors.swift in Sources */,
 				2C54563823E9DB5A00226FA2 /* BuildView.swift in Sources */,
+				47B88DD12791D428002D5DC6 /* UsageBarView.swift in Sources */,
 				2C54563323E9DB5A00226FA2 /* PreferencesViewModel.swift in Sources */,
 				3BA866742766057A005FC854 /* ConfigurationMock.swift in Sources */,
 				0B3F4A41257FD3B80094C16A /* SearchField.swift in Sources */,

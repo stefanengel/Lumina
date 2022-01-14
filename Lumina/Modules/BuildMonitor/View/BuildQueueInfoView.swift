@@ -5,27 +5,24 @@ struct BuildQueueInfoView: View {
     var viewModel: BuildQueueInfoViewModel
 
     var body: some View {
-        HStack {
-            HStack(spacing: 8) {
-                if viewModel.numberOfTotalSlotsKnown {
-                    ForEach(0...viewModel.totalSlots - 1, id: \.self) { index in
-                        if viewModel.slotIsFree(slotIndex: index) {
-                            Circle()
-                                .fill(Colors.emerald)
-                                .frame(width: 20, height: 20)
-                        }
-                        else {
-                            Circle()
-                                .fill(Colors.alizarin)
-                                .frame(width: 20, height: 20)
-                        }
-                    }
-                    Text(viewModel.onHoldText)
-                }
-                else {
-                    Text(viewModel.numberOfTotalSlotsUnknownText)
-                }
+        VStack(alignment: .center) {
+            HStack(spacing: 16) {
+                Text(viewModel.runningText)
+                Text(viewModel.onHoldText)
             }
+            .frame(maxWidth: .infinity)
+            
+            if viewModel.canDisplayUsageBar {
+                GeometryReader { proxy in
+                    UsageBarView(
+                        totalAmount: viewModel.totalAmount,
+                        usedAmount: viewModel.usedAmount,
+                        width: proxy.size.width
+                    )
+                }
+                .frame(maxHeight: UsageBarView.barHeight)
+            }
+
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 8)
