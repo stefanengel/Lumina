@@ -3,9 +3,13 @@ import BuildStatusChecker
 import Combine
 
 class BuildMonitorModel {
-    private var buildFetcher = BuildFetcherFactory.createBuildFetcher()
+    private var buildAPIClient: BuildAPIClient
     private var timerToken: AnyCancellable?
     private var observers: [ModelObserver] = []
+
+    init(buildAPIClient: BuildAPIClient) {
+        self.buildAPIClient = buildAPIClient
+    }
 }
 
 // MARK: - Start update mechanism
@@ -13,7 +17,7 @@ extension BuildMonitorModel {
     func startUpdating() {
         fetchBuilds()
 
-        let interval = TimeInterval(SettingsStore().readUpdateInterval())
+        let interval = TimeInterval(SettingsStore().settings.updateIntervalInSeconds)
         let timer = Timer.publish(every: interval, on: .main, in: .common).autoconnect()
         self.timerToken = timer.sink(receiveValue: {[weak self] _ in
             self?.fetchBuilds()
@@ -45,15 +49,15 @@ extension BuildMonitorModel {
         }
     }
 
-    func notifyUpdateFailed(error: BuildFetcherError) {
+    func notifyUpdateFailed(error: BuildAPIClientError) {
         for observer in observers {
             observer.updateFailed(error: error)
         }
     }
 
-    func notifyUpdateSucceeded(builds: Builds) {
+    func notifyUpdateSucceeded(builds: Builds, buildQueueInfo: BuildQueueInfo) {
         for observer in observers {
-            observer.update(builds: builds)
+            observer.update(builds: builds, buildQueueInfo: buildQueueInfo)
         }
     }
 }
@@ -67,10 +71,16 @@ extension BuildMonitorModel {
 
     @objc private func fetchBuilds() {
         notifyStartedLoading()
-        buildFetcher.getRecentBuilds() { result in
+        buildAPIClient.getRecentBuilds() { result in
             switch result {
-                case .success(let builds): self.notifyUpdateSucceeded(builds: builds)
-                case .failure(let error): self.notifyUpdateFailed(error: error)
+            case .success(let builds):
+                self.buildAPIClient.getBuildQueueInfo { buildQueueInfoResult in
+                    switch buildQueueInfoResult {
+                        case .success(let buildQueueInfo): self.notifyUpdateSucceeded(builds: builds, buildQueueInfo: buildQueueInfo)
+                        case .failure(let error): self.notifyUpdateFailed(error: error)
+                    }
+                }
+            case .failure(let error): self.notifyUpdateFailed(error: error)
             }
 
             self.notifyStoppedLoading()

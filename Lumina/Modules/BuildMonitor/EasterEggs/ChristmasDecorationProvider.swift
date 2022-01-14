@@ -6,7 +6,7 @@ struct ChristmasDecorationProvider {
     static var decorationIndex = 0
 
     static var showChristmasDecorations: Bool {
-        let settings: SettingsStoreProtocol = SettingsStore()
+        let settings = SettingsStore().settings
         let calendar = Calendar.current
         let month = calendar.component(.month, from: Date())
 

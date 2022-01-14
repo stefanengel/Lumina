@@ -2,13 +2,20 @@ import SwiftUI
 import BuildStatusChecker
 
 class SubBuildViewModel: ObservableObject {
+    let build: BuildRepresentation
     let title: String
     let url: String
+
+    private let model: BuildMonitorModel
+    private var buildAPIClient: BuildAPIClient
 
     @Published var backgroundColor: Color
     @Published var isRunning: Bool = false
 
-    init(from build: BuildRepresentation) {
+    init(model: BuildMonitorModel, build: BuildRepresentation, buildAPIClient: BuildAPIClient) {
+        self.model = model
+        self.build = build
+        self.buildAPIClient = buildAPIClient
         title = build.groupItemDescription ?? build.branch
         url = build.url
 
@@ -28,5 +35,10 @@ class SubBuildViewModel: ObservableObject {
     func openInBrowser() {
         let buildUrl = URL(string: url)!
         NSWorkspace.shared.open(buildUrl)
+    }
+
+    func cancelBuild() {
+        buildAPIClient.cancelBuild(buildId: build.id)
+        model.requestUpdate()
     }
 }

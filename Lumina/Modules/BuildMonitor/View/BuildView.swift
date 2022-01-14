@@ -32,7 +32,7 @@ struct BuildView: View {
                     if viewModel.hasSubBuilds {
                         HStack {
                             ForEach(viewModel.subBuilds, id: \.self) { subBuild in
-                                SubBuildView(viewModel: SubBuildViewModel(from: subBuild))
+                                SubBuildView(viewModel: SubBuildViewModel(model: viewModel.model, build: subBuild, buildAPIClient: viewModel.buildAPI))
                             }
                         }
                         .padding(.top, 10)
@@ -47,10 +47,20 @@ struct BuildView: View {
         .cornerRadius(15)
         .opacity(opacity)
         .contextMenu(menuItems: {
-            Button(action: self.copyBuildNumber) {
+            Button(action: self.viewModel.copyBuildNumber) {
                 // replace with Label once macOS 11.0 is the min. deployment target
                 // Label("Copy Build Number", systemImage: "number")
                 Text("Copy Build Number")
+            }
+            if viewModel.isRunning {
+                Button(action: self.viewModel.cancelBuild) {
+                    Text("Cancel Build")
+                }
+            }
+            else {
+                Button(action: self.viewModel.triggerBuild) {
+                    Text("Trigger Build")
+                }
             }
         })
         .onTapGesture {
@@ -62,23 +72,19 @@ struct BuildView: View {
             }
         }
     }
-    
-    private func copyBuildNumber() {
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.setString("#\(viewModel.build.buildNumber)", forType: .string)
-    }
 }
 
 struct BuildView_Previews: PreviewProvider {
     static var previews: some View {
-        let runningBuild = Build(buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", info: "Some info text", commitHash: "abc")
-        let succeededBuild = Build(buildNumber: 12345, status: .success, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
+        let runningBuild = Build(id: "asdfghjk", buildNumber: 12345, status: .running, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", info: "Some info text", commitHash: "abc")
+        let succeededBuild = Build(id: "asdfghjk", buildNumber: 12345, status: .success, branch: "develop", triggeredAt: Date(), startedAt: nil, url: "https://www.bitrise.io", commitHash: "abc")
 
         return Group {
-            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: runningBuild)))
-            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: succeededBuild)))
-            BuildView(viewModel: BuildViewModel(from: BuildRepresentation(wrapped: GroupedBuild(builds: [BuildRepresentation(wrapped: runningBuild), BuildRepresentation(wrapped: succeededBuild)]))))
+            BuildView(
+                viewModel: BuildViewModel(
+                    model: BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create()), build: BuildRepresentation(wrapped: runningBuild, settings: SettingsMock.settings), buildAPI: BuildAPIClientMock.create()))
+            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create()), build: BuildRepresentation(wrapped: succeededBuild, settings: SettingsMock.settings), buildAPI: BuildAPIClientMock.create()))
+            BuildView(viewModel: BuildViewModel(model: BuildMonitorModel(buildAPIClient: BuildAPIClientMock.create()), build: BuildRepresentation(wrapped: GroupedBuild(builds: [BuildRepresentation(wrapped: runningBuild, settings: SettingsMock.settings), BuildRepresentation(wrapped: succeededBuild, settings: SettingsMock.settings)]), settings: SettingsMock.settings), buildAPI: BuildAPIClientMock.create()))
         }
     }
 }

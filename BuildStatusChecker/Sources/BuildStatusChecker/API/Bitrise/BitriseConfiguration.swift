@@ -1,26 +1,18 @@
-class BitriseConfiguration {
-    private let bitrise = BitriseStore()
+public struct BitriseConfiguration {
+    public let authToken: String
+    public var baseUrl: String
+    public var appSlug: String
+    public var orgSlug: String
 
-    public lazy var authToken: String = {
-        return bitrise.read(setting: .bitriseAuthToken)
-    }()
-    public lazy var baseUrl: String = {
-        return bitrise.read(setting: .bitriseBaseUrl)
-    }()
-    public lazy var appSlug: String = {
-        return bitrise.read(setting: .bitriseAppSlug)
-    }()
-
-    public var workflowList: [String] {
-        bitrise.readWorkflowList()
-    }
-
-    public var groupByBuildNumber: Bool {
-        bitrise.groupByBuildNumber
+    public init(authToken: String, baseUrl: String, appSlug: String, orgSlug: String) {
+        self.authToken = authToken
+        self.baseUrl = baseUrl
+        self.appSlug = appSlug
+        self.orgSlug = orgSlug
     }
 
     public var isComplete: Bool {
-         return ![authToken, baseUrl, appSlug]
+        return ![authToken, baseUrl, appSlug]
             .map { $0.isEmpty }
             .contains(true)
     }

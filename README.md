@@ -15,22 +15,58 @@ Clicking on any build will open it in your browser.
 
 ## Configuration
 
-### Settings
-
 Lumina assumes the default branch names from gitflow, but you can configure them. It is also possible to define a different update interval. Interval changes require Lumina to be restarted to take effect.
-
-If you want to filter out builds with a specific character sequence within their branch name, add them to the ignore list. This will take effect at the next refresh.
-
-### Provider
-
-For now, Bitrise is the only provider supported by Lumina.
 
 To connect to Bitrise you have to provide the base url, your auth token and the slug of the app which builds you want to monitor. The base url might look like this: ```https://api.bitrise.io/v0.1/apps```.
 
-The auth token can be obtained by logging into Bitrise, where you can create one in the security settings.
+If you want to filter out builds with a specific character sequence within their branch name, add them to the ignore list. This will take effect at the next refresh.
 
-The app slug can be obtained from the url when you log into bitrise and click on the app that you want to monitor: https://app.bitrise.io/app/HERE_IS_YOUR_APPS_BUILD_SLUG#/builds.
+## TODO
 
-If you enable "Group triggered builds by parent build number", Lumina will scan each builds environment variables for a ```SOURCE_BITRISE_BUILD_NUMBER```. If it finds one, the build will be grouped with other builds that have the same ```SOURCE_BITRISE_BUILD_NUMBER``` and with the source build that hat the corresponding build number. The grouped builds will appear by the name of the workflow that they are running.
+### Build queue status
 
-You can configure the workflows that you are interested in. If the list is empty, only builds running on the ```primary``` workflow will be considered.
+- Get organizations:
+https://api.bitrise.io/v0.1/organizations
+
+```
+{
+  "data": [
+    {
+      "name": "dmTECH",
+      "slug": "c1b0c43e6f46c876",
+      "avatar_icon_url": "https://concrete-userfiles-production.s3.us-west-2.amazonaws.com/organizations/c1b0c43e6f46c876/avatar/avatar.png",
+      "concurrency_count": 10,
+      "owners": [
+        {
+          "slug": "ea7aca815ae5dac7",
+          "username": "stefan.engel",
+          "email": "Stefan.Engel@dm.de"
+        },
+        {
+          "slug": "c1d6fa663da7fd4e",
+          "username": "christophwendt",
+          "email": "Christoph.Wendt@dm.de"
+        }
+      ]
+    }
+  ]
+}
+```
+
+- Get number of queue slots for organization:
+https://api.bitrise.io/v0.1/organizations/c1b0c43e6f46c876
+
+```
+{
+  "data": {
+    "name": "dmTECH",
+    "slug": "c1b0c43e6f46c876",
+    "avatar_icon_url": "https://concrete-userfiles-production.s3.us-west-2.amazonaws.com/organizations/c1b0c43e6f46c876/avatar/avatar.png",
+    "concurrency_count": 10,
+```
+
+- Get number of running builds:
+https://api.bitrise.io/v0.1/builds?owner_slug=c1b0c43e6f46c876&is_on_hold=false&status=0
+
+- Get number of waiting builds:
+https://api.bitrise.io/v0.1/builds?owner_slug=c1b0c43e6f46c876&is_on_hold=true&status=0

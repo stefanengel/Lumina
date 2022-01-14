@@ -2,10 +2,11 @@ import Foundation
 
 public struct BuildRepresentation {
     public let wrapped: BuildProtocol
-    private let settings: SettingsStoreProtocol = SettingsStore()
+    private let settings: Settings
 
-    public init(wrapped: BuildProtocol) {
+    public init(wrapped: BuildProtocol, settings: Settings) {
         self.wrapped = wrapped
+        self.settings = settings
     }
 }
 
@@ -58,6 +59,10 @@ extension BuildRepresentation: BuildProtocol {
         wrapped.groupItemDescription
     }
 
+    public var originalBuildParameters: OriginalBuildParams? {
+        wrapped.originalBuildParameters
+    }
+
     public var isGroupedBuild: Bool {
         wrapped is GroupedBuild
     }
@@ -104,22 +109,22 @@ extension BuildRepresentation: Comparable {
 // MARK: - GitFlow specifics
 extension BuildRepresentation {
     public var isDevelopBranch: Bool {
-        return wrapped.branch == settings.read(setting: .developBranchName)
+        return wrapped.branch == settings.developBranchName
     }
 
     public var isMasterBranch: Bool {
-        return wrapped.branch == settings.read(setting: .masterBranchName)
+        return wrapped.branch == settings.masterBranchName
     }
 
     public var isReleaseBranch: Bool {
-        return wrapped.branch.starts(with: settings.read(setting: .releaseBranchPrefix))
+        return wrapped.branch.starts(with: settings.releaseBranchPrefix)
     }
 
     public var isHotfixBranch: Bool {
-        return wrapped.branch.starts(with: settings.read(setting: .hotfixBranchPrefix))
+        return wrapped.branch.starts(with: settings.hotfixBranchPrefix)
     }
 
     public var isFeatureBranch: Bool {
-        return wrapped.branch.starts(with: settings.read(setting: .featureBranchPrefix))
+        return wrapped.branch.starts(with: settings.featureBranchPrefix)
     }
 }
