@@ -17,32 +17,16 @@ struct PreferencesView: View {
         TabView {
             // Settings
             VStack {
-                HStack(alignment: .center) {
-                    VStack(alignment: .trailing, spacing: 10.0) {
-                        Text("Master branch name:")
-                            .frame(maxHeight: .infinity)
-                        Text("Develop branch name:")
-                            .frame(maxHeight: .infinity)
-                        Text("Feature branch prefix:")
-                            .frame(maxHeight: .infinity)
-                        Text("Release branch prefix:")
-                            .frame(maxHeight: .infinity)
-                        Text("Hotfix branch prefix:")
-                            .frame(maxHeight: .infinity)
-                    }
-                    VStack(spacing: 10.0) {
-                        TextField("master", text: $viewModel.masterBranchName)
-                            .frame(maxHeight: .infinity)
-                        TextField("develop", text: $viewModel.developBranchName)
-                            .frame(maxHeight: .infinity)
-                        TextField("feature/", text: $viewModel.featureBranchPrefix)
-                            .frame(maxHeight: .infinity)
-                        TextField("release/", text: $viewModel.releaseBranchPrefix)
-                            .frame(maxHeight: .infinity)
-                        TextField("hotfix/", text: $viewModel.hotfixBranchPrefix)
-                            .frame(maxHeight: .infinity)
-                    }
-                    .padding(.leading)
+                Form {
+                    Section(content: {
+                        TextField("Master branch name", text: $viewModel.masterBranchName)
+                        TextField("Develop branch name", text: $viewModel.developBranchName)
+                        TextField("Feature branch prefix", text: $viewModel.featureBranchPrefix)
+                        TextField("Release branch prefix", text: $viewModel.releaseBranchPrefix)
+                        TextField("Hotfix branch prefix", text: $viewModel.hotfixBranchPrefix)
+                    }, header: {
+                        Text("Branch configuration")
+                    })
                 }
                 .padding(.horizontal)
 //                .fixedSize(horizontal: false, vertical: true)
@@ -114,28 +98,16 @@ struct PreferencesView: View {
 
             // Provider
             VStack {
-                HStack(alignment: .center) {
-                    VStack(alignment: .trailing, spacing: 10.0) {
-                        Text("Bitrise base URL:")
-                            .frame(maxHeight: .infinity)
-                        Text("Bitrise auth token:")
-                            .frame(maxHeight: .infinity)
-                        Text("Bitrise app slug:")
-                            .frame(maxHeight: .infinity)
-                        Text("Bitrise org slug:")
-                            .frame(maxHeight: .infinity)
-                    }
-                    VStack(spacing: 10.0) {
+                Form {
+                    Section(content: {
                         TextField("Bitrise base URL", text: $viewModel.bitriseBaseUrl)
-                            .frame(maxHeight: .infinity)
                         TextField("Bitrise auth token", text: $viewModel.bitriseAuthToken)
-                            .frame(maxHeight: .infinity)
                         TextField("Bitrise app slug", text: $viewModel.bitriseAppSlug)
-                            .frame(maxHeight: .infinity)
                         TextField("Bitrise org slug", text: $viewModel.bitriseOrgSlug)
-                            .frame(maxHeight: .infinity)
-                    }
-                    .padding(.leading)
+
+                    }, header: {
+                        Text("Bitrise configuration")
+                    })
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10.0)

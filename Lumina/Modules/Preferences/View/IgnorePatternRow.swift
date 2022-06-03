@@ -15,6 +15,15 @@ struct IgnorePatternRow: View {
         .onTapGesture {
                 self.selectedIgnorePattern = self.ignorePattern
         }
-        .padding(-10)
+        .padding(0)
+    }
+}
+
+struct IgnorePatternRow_Previews: PreviewProvider {
+    static var previews: some View {
+        IgnorePatternRow(
+            ignorePattern: IgnorePattern(pattern: "RECO-"),
+            selectedIgnorePattern: .constant(nil)
+        )
     }
 }
